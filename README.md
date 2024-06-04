@@ -24,11 +24,11 @@ especially in the case when :
 
 ## Usage example
 The Xyz research institution wants to extract people and structures information from various sources :
-- for the ABC laboratory, the data is available from a laboratory app REST API
+- for the ABC laboratory, the data is available from a laboratory application REST API
 - in common cases, the data is available from the institutional LDAP directory, but is overlapping and partially conflicting with the data from the ABC laboratory
 - for a very particular DEF Research group, the data is only available from an Excel file that can be uploaded by the research department
 
-In this particular case, the CRISalid directory bridge can be configured to watch the ABC laboratory app REST API, the institutional LDAP directory and the Excel file upload endpoint.
-The two most reliable sources (the ABC laboratory app and the DEF Research group Excel file) can be given a higher priority than the institutional LDAP directory.
+In this particular case, the CRISalid directory bridge can be configured to watch the ABC laboratory application REST API, the institutional LDAP directory and the Excel file upload endpoint.
+The two most reliable sources (the ABC laboratory application and the DEF Research group Excel file) can be given a higher priority than the institutional LDAP directory.
 CRISalid directory bridge can be configured to prevent additional people from being affiliated to the ABC laboratory or to the DEF Research group from other data sources.
 But for people already known, data from other sources like LDAP can be used to enrich existing data.
