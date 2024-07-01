@@ -11,10 +11,6 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
-
-    env:
-      AIRFLOW_HOME: ${{ github.workspace }}
-
     steps:
       - uses: actions/checkout@v3
 
@@ -32,6 +28,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
+      - name: Set AIRFLOW_HOME
+        run: echo "AIRFLOW_HOME=$(mktemp -d)" >> $GITHUB_ENV
 
       - name: Initialize Airflow configuration
         run: |

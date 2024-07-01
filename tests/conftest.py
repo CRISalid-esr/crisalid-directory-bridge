@@ -26,7 +26,7 @@ def fixture_dagbag() -> DagBag:
     Create a DagBag for testing dag loading
     :return: DagBag
     """
-    dag_folder = f"{os.path.dirname(os.path.abspath(__file__))}/.."
+    dag_folder = f"{os.getenv('AIRFLOW_HOME')}/dags"
     print(f"*********Dag folder: {dag_folder}*********")
     # print current directory
     print(f"*********Current file folder: {os.getcwd()}*********")
