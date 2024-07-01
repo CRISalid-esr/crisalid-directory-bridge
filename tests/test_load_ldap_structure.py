@@ -1,4 +1,4 @@
-from conftest import assert_dag_dict_equal
+from test_utils.dags import assert_dag_dict_equal
 
 
 def test_dag_loaded(dagbag) -> None:

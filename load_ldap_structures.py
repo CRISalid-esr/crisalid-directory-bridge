@@ -45,4 +45,4 @@ def load_ldap_structures():
     update_database_task.expand(result=combined_results)
 
 
-fetch_ldap_structures_dag = load_ldap_structures()
+load_ldap_structures()

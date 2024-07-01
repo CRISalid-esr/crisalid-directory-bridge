@@ -1,0 +1,9 @@
+[MASTER]
+disable=too-few-public-methods,
+            missing-module-docstring
+
+ignore-paths=.github/.*$,
+                .*.pytest_cache/.*$,
+                .*_test.py$
+
+init-hook='import sys; sys.path.append(".")'
