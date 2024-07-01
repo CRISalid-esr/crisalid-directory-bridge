@@ -36,8 +36,6 @@ jobs:
       - name: Initialize Airflow configuration
         run: |
           airflow config list --defaults > "${AIRFLOW_HOME}/airflow.cfg"
-          echo "[core]" >> "${AIRFLOW_HOME}/airflow.cfg"
-          echo "executor = SequentialExecutor" >> "${AIRFLOW_HOME}/airflow.cfg"
           echo "load_examples = False" >> "${AIRFLOW_HOME}/airflow.cfg"
 
       - name: Test with pytest
