@@ -12,6 +12,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      AIRFLOW_HOME: ${{ github.workspace }}
+
     steps:
       - uses: actions/checkout@v3
 
