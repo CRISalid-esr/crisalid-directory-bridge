@@ -32,6 +32,11 @@ jobs:
       - name: Set AIRFLOW_HOME
         run: echo "AIRFLOW_HOME=$(mktemp -d)" >> $GITHUB_ENV
 
+      - name: Create symbolic link for dags
+        run: |
+          mkdir -p "${AIRFLOW_HOME}/dags"
+          ln -s "${GITHUB_WORKSPACE}" "${AIRFLOW_HOME}/dags"
+
       - name: Initialize Airflow configuration
         run: |
           airflow config list --defaults > "${AIRFLOW_HOME}/airflow.cfg"
