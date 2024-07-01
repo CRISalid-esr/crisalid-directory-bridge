@@ -10,6 +10,8 @@ def test_dag_loaded(dagbag) -> None:
     """
     dag = dagbag.get_dag(dag_id="load_ldap_structures")
     assert dagbag.import_errors == {}
+    print("******Debug github actions********")
+    print(dagbag.import_errors)
     assert dag is not None
     assert len(dag.tasks) == 7
 
