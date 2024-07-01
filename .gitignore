@@ -1,1 +1,4 @@
 .idea
+.env*
+!.env.example
+__init__.py
