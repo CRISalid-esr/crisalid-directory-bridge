@@ -2,25 +2,14 @@ from airflow.decorators import task
 
 
 @task
-def combine_results(names: list[str],
-                    acronyms: list[str],
-                    descriptions: list[str],
-                    addresses: list[str]
-                    ) -> list[dict[str, str]]:
+def combine_results(task_results: dict[str, list[str]]) -> list[dict[str, str]]:
     """
     Combine the results of the LDAP conversion tasks into a single JSON structure.
-    :param names:
-    :param acronyms:
-    :param descriptions:
-    :param addresses:
-    :return:
+    :param task_results: A dictionary containing lists of results from various tasks.
+    :return: A list of combined results as dictionaries.
     """
     combined = []
-    for name, acronym, description, address in zip(names, acronyms, descriptions, addresses):
-        combined.append({
-            "name": name,
-            "acronym": acronym,
-            "description": description,
-            "address": address
-        })
+    keys = task_results.keys()
+    for values in zip(*task_results.values()):
+        combined.append({key.lower(): value for key, value in zip(keys, values)})
     return combined
