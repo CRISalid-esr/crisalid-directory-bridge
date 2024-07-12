@@ -26,10 +26,8 @@ def fixture_dagbag() -> DagBag:
     Create a DagBag for testing dag loading
     :return: DagBag
     """
-    dag_folder = f"{os.getenv('AIRFLOW_HOME')}/dags"
-    print(f"*********Dag folder: {dag_folder}*********")
-    # print current directory
-    print(f"*********Current file folder: {os.getcwd()}*********")
-    # print directory of this file
-    print(f"*********Current file folder: {os.path.dirname(os.path.abspath(__file__))}*********")
+    airflow_home = os.getenv('AIRFLOW_HOME')
+    assert airflow_home is not None, "AIRFLOW_HOME is not set"
+    dag_folder = f"{airflow_home}/dags"
+    print(f"Dag folder is : {dag_folder}")
     return DagBag(dag_folder=dag_folder)
