@@ -1,59 +1,107 @@
-import datetime
-
-import pendulum
 import pytest
-from _pytest.fixtures import SubRequest
-from airflow import DAG
-from airflow.utils.state import DagRunState, TaskInstanceState
-from airflow.utils.types import DagRunType
+from airflow.utils.state import TaskInstanceState
 
-from utils.dependencies import import_task
+from test_utils.dags import create_dag_run, \
+    DATA_INTERVAL_START, \
+    DATA_INTERVAL_END, \
+    create_task_instance
 
 TEST_TASK_ID = "convert_ldap_structure_name_task"
-TEST_DAG_ID = "fixture_dag_id"
-DATA_INTERVAL_START = pendulum.datetime(2024, 1, 1, tz="UTC")
-DATA_INTERVAL_END = DATA_INTERVAL_START + datetime.timedelta(days=1)
 
-
-@pytest.fixture()
-def dag(request: SubRequest) -> DAG:
-    """
-    Create a DAG for testing the convert_ldap_structure_name_task
-    :param request: The pytest request object
-    :return: The DAG object
-    """
-    with DAG(
-            dag_id=TEST_DAG_ID,
-            schedule="@daily",
-            start_date=DATA_INTERVAL_START,
-    ) as dag:
-        convert_name_task = import_task(
-            "tasks.supann_2021.convert_ldap_structure_name.convert_ldap_structure_name_task")
-        ldap_results = request.param
-        convert_name_task(ldap_results)
-    return dag
+TESTED_TASK_NAME = 'tasks.supann_2021.convert_ldap_structure_name.convert_ldap_structure_name_task'
 
 
 @pytest.mark.parametrize("dag", [
     {
-        "dn": "uid=1234,ou=people,dc=example,dc=org",
-        "entry": {
-            "eduorglegalname": "University of Example",
-            "description": "A university in Example",
-        },
+        "task_name": TESTED_TASK_NAME,
+        "ldap_results":
+            {
+                "dn": "uid=1234,ou=people,dc=example,dc=org",
+                "entry": {
+                    "eduorglegalname": "University of Example",
+                    "description": "A university in Example",
+                },
+            }
     }
 ], indirect=True)
-def test_name_is_converted_from_ldap(dag):
-    dag_run = dag.create_dagrun(
-        state=DagRunState.RUNNING,
-        execution_date=DATA_INTERVAL_START,
-        data_interval=(DATA_INTERVAL_START, DATA_INTERVAL_END),
-        start_date=DATA_INTERVAL_END,
-        run_type=DagRunType.MANUAL,
-    )
-    ti = dag_run.get_task_instance(task_id=TEST_TASK_ID)
-    ti.task = dag.get_task(task_id=TEST_TASK_ID)
-
-    ti.run(ignore_ti_state=True)
+def test_name_is_converted_from_ldap(dag, unique_execution_date):
+    """
+    Test tha the name is converted from LDAP data
+    :param dag:
+    :param unique_execution_date:
+    :return:
+    """
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     assert ti.state == TaskInstanceState.SUCCESS
-    assert ti.xcom_pull(task_ids=TEST_TASK_ID) == "University of Example"
+    assert ti.xcom_pull(task_ids=TEST_TASK_ID) == [
+        {
+            'language': 'fr',
+            'value': 'University of Example'
+        }
+    ]
+
+
+# test that if eduorglegalname is not present, the description is used
+@pytest.mark.parametrize("dag", [
+    {
+        "task_name": TESTED_TASK_NAME,
+        "ldap_results":
+            {
+                "dn": "uid=1234,ou=people,dc=example,dc=org",
+                "entry": {
+                    "description": "A university in Example",
+                },
+            }
+    }
+], indirect=True)
+def test_description_used_if_name_not_present(dag, unique_execution_date):
+    """
+    Test that if the eduorglegalname field is not present, the description field is used instead.
+    :param dag: The DAG object
+    :param unique_execution_date: unique execution date
+    :return: None
+    """
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
+    assert ti.state == TaskInstanceState.SUCCESS
+    assert ti.xcom_pull(task_ids=TEST_TASK_ID) == [
+        {
+            'language': 'fr',
+            'value': 'A university in Example'
+        }
+    ]
+
+
+@pytest.mark.parametrize("dag", [
+    {
+        "task_name": TESTED_TASK_NAME,
+        "ldap_results":
+            {
+                "dn": "uid=1234,ou=people,dc=example,dc=org",
+                "entry": {
+                    "eduorglegalname": "University of Example",
+                    "description": "A university in Example",
+                },
+            }
+    }
+], indirect=True)
+def test_language_is_set_to_en(dag, unique_execution_date, monkeypatch):
+    """
+    Test that if the LDAP_DEFAULT_LANGUAGE environment variable is set to 'en',
+    the language is set to 'en'.
+    :param dag: The DAG object
+    :param unique_execution_date:
+    :param monkeypatch: The monkeypatch fixture
+    :return: None
+    """
+    monkeypatch.setenv("LDAP_DEFAULT_LANGUAGE", "en")
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
+    assert ti.state == TaskInstanceState.SUCCESS
+    assert ti.xcom_pull(task_ids=TEST_TASK_ID) == [
+        {
+            'language': 'en',
+            'value': 'University of Example'
+        }
+    ]

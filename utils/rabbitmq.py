@@ -16,8 +16,11 @@ def get_rabbitmq_hook() -> RabbitMQHook | None:
     :return: The RabbitMQ hook
     """
     rabbitmq_conn_id = get_rabbitmq_conn_id()
+    print(f"RabbitMQ connection ID: {rabbitmq_conn_id}")
     try:
+        print(">>>>> Trying to get RabbitMQ hook")
         hook = RabbitMQHook(rabbitmq_conn_id=rabbitmq_conn_id)
+        print(f"RabbitMQ hook: {hook}")
     except AirflowNotFoundException as e:
         logger.warning("No existing connection found: %s", str(e))
         return None
@@ -49,5 +52,8 @@ def create_rabbitmq_connection(session=None):
         password=get_env_variable("RABBITMQ_PASSWORD"),
         port=get_env_variable("RABBITMQ_PORT"),
     )
+    print(f"RabbitMQ connection: {connection} with conn_id: {connection.conn_id}")
     session.add(connection)
+    print(">>>>> Committing RabbitMQ connection")
     session.commit()
+    print(">>>>> RabbitMQ connection committed")
