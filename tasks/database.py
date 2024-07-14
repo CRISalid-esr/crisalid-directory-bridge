@@ -55,9 +55,11 @@ def update_database_task(result: dict, **kwargs) -> str:
     """
     date: DateTime = kwargs.get('data_interval_start')
     timestamp = date.int_timestamp
-
     client = get_redis_client()
-    identifier = result.get('identifier', None)
+    identifier = next(
+        (i['value'] for i in result.get('identifier', []) if i.get('type') == 'local'),
+        None
+    )
     assert identifier is not None, f"Identifier is None in {result}"
     redis_key = f"{STRUCTURE_PREFIX}{identifier}"
     serialized_result = json.dumps({"data": result, "timestamp": timestamp})
