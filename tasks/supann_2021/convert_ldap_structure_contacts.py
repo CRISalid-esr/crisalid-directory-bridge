@@ -45,7 +45,7 @@ def convert_ldap_structure_contacts_task(ldap_result: dict[str, str | dict]) -> 
             'format': 'structured_physical_address',
             'value': address_dict
         }]
-    except ValueError:
+    except (ValueError, IndexError):
         return [{
             'type': 'postal_address',
             'format': 'simple_physical_address',
