@@ -1,53 +1,62 @@
 from airflow.decorators import task
 
 
-@task
-def convert_ldap_structure_contacts_task(ldap_result: dict[str, str | dict]) -> list[dict]:
-    """Extract and parse the 'postalAddress' field from an LDAP entry.
+@task(task_id="convert_ldap_structure_contacts")
+def convert_ldap_structure_contacts(ldap_results: dict[str, dict[str, str | dict]]) \
+        -> dict[str, list[dict]]:
+    """
+    Extract and parse the 'postalAddress' field from a dict of LDAP entries.
 
     Args:
-        ldap_result (dict): An LDAP result with "dn" and "entry" fields.
+        ldap_results (dict): A dict of LDAP results with dn as key and entry as value.
 
     Returns:
-        list[dict]: A list containing a single dictionary with the parsed address.
+        dict: A dict with dn as key and a list containing a
+        single dictionary with the parsed address as value.
     """
-    ldap_entry = ldap_result.get('entry', None)
-    assert ldap_entry is not None, "LDAP entry is None"
+    task_results = {}
+    for dn, ldap_entry in ldap_results.items():
+        assert ldap_entry is not None, f"LDAP entry is None for dn: {dn}"
 
-    postal_address = ldap_entry.get('postalAddress', '')
-    if not postal_address:
-        return []
+        postal_address = ldap_entry.get('postalAddress', '')
+        if not postal_address:
+            task_results[dn] = []
+            continue
 
-    lines = postal_address.split('$')
+        lines = postal_address.split('$')
 
-    try:
-        address_dict = {}
+        try:
+            address_dict = _parse_address_lines(lines)
 
-        # Handle the country
-        if not any(char.isdigit() for char in lines[-1]):
-            address_dict["country"] = lines.pop()
+            task_results[dn] = {"contacts": [{
+                'type': 'postal_address',
+                'format': 'structured_physical_address',
+                'value': address_dict
+            }]}
+        except (ValueError, IndexError):
+            task_results[dn] = {"contacts": [{
+                'type': 'postal_address',
+                'format': 'simple_physical_address',
+                'value': {'address': postal_address.replace('$', '\n')}
+            }]}
 
-        # Handle the city and zip code
-        if any(char.isdigit() for char in lines[-1]):
-            zip_city = lines.pop().split(maxsplit=1)
-            if len(zip_city) != 2:
-                raise ValueError("Invalid zip code and city format")
-            address_dict["zip_code"], address_dict["city"] = zip_city
+    return task_results
 
-        # Handle the streets
-        if lines:
-            address_dict["street"] = lines.pop(0)
-        if lines:
-            address_dict["street"] += f", {' '.join(lines)}"
 
-        return [{
-            'type': 'postal_address',
-            'format': 'structured_physical_address',
-            'value': address_dict
-        }]
-    except (ValueError, IndexError):
-        return [{
-            'type': 'postal_address',
-            'format': 'simple_physical_address',
-            'value': {'address': postal_address.replace('$', '\n')}
-        }]
+def _parse_address_lines(lines):
+    address_dict = {}
+    # Handle the country
+    if not any(char.isdigit() for char in lines[-1]):
+        address_dict["country"] = lines.pop()
+    # Handle the city and zip code
+    if any(char.isdigit() for char in lines[-1]):
+        zip_city = lines.pop().split(maxsplit=1)
+        if len(zip_city) != 2:
+            raise ValueError("Invalid zip code and city format")
+        address_dict["zip_code"], address_dict["city"] = zip_city
+    # Handle the streets
+    if lines:
+        address_dict["street"] = lines.pop(0)
+    if lines:
+        address_dict["street"] += f", {' '.join(lines)}"
+    return address_dict

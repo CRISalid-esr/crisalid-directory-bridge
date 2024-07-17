@@ -10,13 +10,11 @@ from utils.redis import get_redis_client, \
     get_redis_connection, \
     create_redis_connection
 
-STRUCTURE_PREFIX = "struct:ldap:"
-
 logger = logging.getLogger(__name__)
 
 
 @task(task_id="read_structures_from_redis")
-def read_structure_keys_from_redis() -> list:
+def read_keys_from_redis(prefix: str, ) -> list:
     """
     Read structures from Redis.
 
@@ -24,7 +22,7 @@ def read_structure_keys_from_redis() -> list:
     :return:
     """
     client = get_redis_client()
-    keys = client.keys(f"{STRUCTURE_PREFIX}*")
+    keys = client.keys(f"{prefix}*")
     return [key.decode('utf-8') for key in keys]
 
 
@@ -44,27 +42,31 @@ def read_structure_with_scores_from_redis(redis_key: str, **kwargs) -> dict:
 
 
 @task
-def update_database_task(result: dict, **kwargs) -> str:
+def update_database(result: dict, prefix: str, **kwargs) -> list[str]:
     """
     Update the database with the result of a task.
 
     :param result: the converted result
-    :param conn_id: the connection id to the Redis database
+    :param prefix: the prefix to use for the Redis key
     :param kwargs:
     :return:
     """
-    date: DateTime = kwargs.get('data_interval_start')
-    timestamp = date.int_timestamp
-    client = get_redis_client()
-    identifier = next(
-        (i['value'] for i in result.get('identifier', []) if i.get('type') == 'local'),
-        None
-    )
-    assert identifier is not None, f"Identifier is None in {result}"
-    redis_key = f"{STRUCTURE_PREFIX}{identifier}"
-    serialized_result = json.dumps({"data": result, "timestamp": timestamp})
-    client.zadd(redis_key, {serialized_result: timestamp})
-    return redis_key
+    redis_keys = []
+    for entry in result.values():
+        logger.debug("Updating database with entry: %s", entry)
+        date: DateTime = kwargs.get('data_interval_start')
+        timestamp = date.int_timestamp
+        client = get_redis_client()
+        identifier = next(
+            (i['value'] for i in entry.get('identifiers', []) if i.get('type') == 'local'),
+            None
+        )
+        assert identifier is not None, f"Identifier is None in {entry}"
+        redis_key = f"{prefix}{identifier}"
+        serialized_entry = json.dumps({"data": entry, "timestamp": timestamp})
+        client.zadd(redis_key, {serialized_entry: timestamp})
+        redis_keys.append(redis_key)
+    return redis_keys
 
 
 @task

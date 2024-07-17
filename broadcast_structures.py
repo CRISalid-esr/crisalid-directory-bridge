@@ -6,7 +6,7 @@ from airflow.sensors.external_task import ExternalTaskSensor
 
 from tasks.broadcast.send_status_messages import send_status_messages
 from tasks.compute_status import compute_structure_status
-from tasks.database import read_structure_keys_from_redis, create_redis_connection_task, \
+from tasks.database import read_keys_from_redis, create_redis_connection_task, \
     read_structure_with_scores_from_redis
 from tasks.rabbitmq import create_rabbitmq_connection_task
 
@@ -49,7 +49,7 @@ def broadcast_structures():
 
     redis_connection = create_redis_connection_task()
 
-    keys = read_structure_keys_from_redis()
+    keys = read_keys_from_redis(prefix="struct:ldap:")
 
     structure_data_with_scores = read_structure_with_scores_from_redis.expand(redis_key=keys)
 
