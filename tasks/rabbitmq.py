@@ -1,7 +1,7 @@
 from airflow.decorators import task
 from airflow.models import Connection
 
-from utils.rabbitmq import create_rabbitmq_connection, get_rabbitmq_conn_id
+from utils.rabbitmq import create_rabbitmq_connection, get_rabbitmq_conn_id, get_rabbitmq_hook
 
 
 @task
@@ -10,5 +10,7 @@ def create_rabbitmq_connection_task() -> Connection:
     Get or create the Airflow managed RabbitMQ connection.
     :return: The RabbitMQ connection
     """
-    create_rabbitmq_connection()
+    connexion = get_rabbitmq_hook()
+    if connexion is None:
+        create_rabbitmq_connection()
     return {"conn_id": get_rabbitmq_conn_id()}

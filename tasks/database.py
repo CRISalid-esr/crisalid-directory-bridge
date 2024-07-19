@@ -13,32 +13,41 @@ from utils.redis import get_redis_client, \
 logger = logging.getLogger(__name__)
 
 
-@task(task_id="read_structures_from_redis")
-def read_keys_from_redis(prefix: str, ) -> list:
+@task(task_id="read_entity_keys_from_redis")
+def read_entity_keys_from_redis(entity_type: str, entity_source: str) -> list[str]:
     """
     Read structures from Redis.
 
-    :param kwargs:
-    :return:
+    :param entity_type: the type of the entity e.g. 'structures'
+    :param entity_source: the source of the entity e.g 'ldap'
+    :return: List of keys of the sorted sets in Redis
     """
+    prefix = f"{entity_type}:{entity_source}:"
     client = get_redis_client()
+    logger.info("Reading keys from Redis with prefix: %s", prefix)
     keys = client.keys(f"{prefix}*")
     return [key.decode('utf-8') for key in keys]
 
 
 @task
-def read_structure_with_scores_from_redis(redis_key: str, **kwargs) -> dict:
+def read_entities_with_scores_from_redis(entity_keys: list[str], timestamp: str) -> list[dict]:
     """
     Read structures from Redis.
 
-    :param redis_key: Key of the sorted set in Redis
-    :return: Dictionary of the 2 most recent records of the structure with the scores
+    :param entity_keys: list of keys of the sorted set in Redis
+    :param arguments: dict with the timenstand and entity type and source
+    :return: List of dictionaries of the 2 most recent records of the structure with the scores
     """
-    timestamp = kwargs['dag_run'].conf.get('timestamp')
     client = get_redis_client()
-    # Get top 2 highest scores from the sorted set less or equal to the timestamp
-    data = client.zrevrangebyscore(redis_key, timestamp, '-inf', start=0, num=2, withscores=True)
-    return {str(int(d[1])): json.loads(d[0].decode('utf-8')) for d in data}
+    entities_with_scores: list[dict] = []
+    for redis_key in entity_keys:
+        data = client.zrevrangebyscore(
+            redis_key, timestamp, '-inf', start=0, num=2, withscores=True
+        )
+        entities_with_scores.append(
+            {str(int(d[1])): json.loads(d[0].decode('utf-8')) for d in data}
+        )
+    return entities_with_scores
 
 
 @task

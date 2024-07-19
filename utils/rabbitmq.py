@@ -52,8 +52,11 @@ def create_rabbitmq_connection(session=None):
         password=get_env_variable("RABBITMQ_PASSWORD"),
         port=get_env_variable("RABBITMQ_PORT"),
     )
-    print(f"RabbitMQ connection: {connection} with conn_id: {connection.conn_id}")
+    # usze lazy % formatting
+    logger.info(
+        "Creating RabbitMQ connection: %s with connection id <%s>",
+        connection,
+        connection.conn_id
+    )
     session.add(connection)
-    print(">>>>> Committing RabbitMQ connection")
     session.commit()
-    print(">>>>> RabbitMQ connection committed")

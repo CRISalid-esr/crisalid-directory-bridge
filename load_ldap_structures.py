@@ -30,6 +30,8 @@ def load_ldap_structures():
     This DAG fetches data from an LDAP server, processes specific fields in parallel,
     and then combines the results into a target JSON structure.
     """
+    entity_type = "structures"
+    entity_source = "ldap"
     task_keys = ["NAME", "ACRONYM", "DESCRIPTION", "ADDRESS", "IDENTIFIER"]
     tasks = {}
 
@@ -38,22 +40,28 @@ def load_ldap_structures():
 
     connexion = create_redis_connection_task()
     ldap_results = fetch_structures_task()
-
+    # pylint: disable=duplicate-code
     trigger_broadcast = TriggerDagRunOperator(
         task_id='trigger_broadcast',
-        trigger_dag_id='broadcast_structures',
-        execution_date="{{ execution_date }}",
-        conf={"timestamp": "{{ execution_date.int_timestamp }}"},
-        wait_for_completion=True,
+        trigger_dag_id='broadcast_entities',
+        execution_date="{{ execution_date + macros.timedelta(seconds=10) }}",
+        trigger_run_id='ldap_structures_run_{{ execution_date.int_timestamp }}',
+        conf={
+            "timestamp": "{{ execution_date.int_timestamp }}",
+            "entity_type": entity_type,
+            "entity_source": entity_source,
+        },
+        wait_for_completion=False,
     )
 
     batch_results = []
+    # pylint: disable=duplicate-code
     with TaskGroup("structure_fields_conversion_tasks"):
         for key, task in tasks.items():
             converted_result = task(ldap_results=ldap_results)
             batch_results.append(converted_result)
     combined_results = combine_batch_results(batch_results)
-    redis_keys = update_database(result=combined_results, prefix="struct:ldap:")
+    redis_keys = update_database(result=combined_results, prefix=f"{entity_type}:{entity_source}:")
     connexion >> redis_keys >> trigger_broadcast  # pylint: disable=pointless-statement
 
 

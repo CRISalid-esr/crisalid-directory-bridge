@@ -2,6 +2,7 @@ import logging
 
 import pendulum
 from airflow.decorators import dag
+from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.utils.task_group import TaskGroup
 
 from tasks.combine_batch_results import combine_batch_results
@@ -29,6 +30,8 @@ def load_ldap_people():
     This DAG fetches data from an LDAP server, processes specific fields in parallel,
     and then combines the results into a target JSON structure.
     """
+    entity_type = "people"
+    entity_source = "ldap"
     task_keys = ["NAME", "IDENTIFIER"]
     tasks = {}
 
@@ -38,14 +41,29 @@ def load_ldap_people():
     connexion = create_redis_connection_task()
     ldap_results = fetch_people_task()
 
+    # pylint: disable=duplicate-code
+    trigger_broadcast = TriggerDagRunOperator(
+        task_id='trigger_broadcast',
+        trigger_dag_id='broadcast_entities',
+        execution_date="{{ execution_date + macros.timedelta(seconds=20) }}",
+        trigger_run_id='ldap_people_run_{{ execution_date.int_timestamp }}',
+        conf={
+            "timestamp": "{{ execution_date.int_timestamp }}",
+            "entity_type": entity_type,
+            "entity_source": entity_source,
+        },
+        wait_for_completion=False,
+    )
+
     batch_results = []
+    # pylint: disable=duplicate-code
     with TaskGroup("people_fields_conversion_tasks"):
         for key, task in tasks.items():
             converted_result = task(ldap_results=ldap_results)
             batch_results.append(converted_result)
     combined_results = combine_batch_results(batch_results)
-    redis_keys = update_database(result=combined_results, prefix="pers:ldap:")
-    connexion >> redis_keys  # pylint: disable=pointless-statement
+    redis_keys = update_database(result=combined_results, prefix=f"{entity_type}:{entity_source}:")
+    connexion >> redis_keys >> trigger_broadcast  # pylint: disable=pointless-statement # pylint: disable=pointless-statement
 
 
 load_ldap_people()
