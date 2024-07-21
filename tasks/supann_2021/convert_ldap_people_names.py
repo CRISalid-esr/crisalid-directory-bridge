@@ -7,8 +7,8 @@ from utils.config import get_env_variable
 logger = logging.getLogger(__name__)
 
 
-@task(task_id="convert_ldap_people_names_task")
-def convert_ldap_people_names_task(ldap_results: dict[str, dict[str, str | dict]]) \
+@task(task_id="convert_ldap_people_names")
+def convert_ldap_people_names(ldap_results: dict[str, dict[str, str | dict]]) \
         -> dict[str, dict[str, str | dict]]:
     """Extract the 'name' field from an LDAP entry.
 

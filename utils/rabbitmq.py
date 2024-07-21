@@ -1,6 +1,7 @@
 import logging
 
 from airflow.exceptions import AirflowNotFoundException
+from airflow.hooks.base import BaseHook
 from airflow.models import Connection
 from airflow.utils.db import provide_session
 from rabbitmq_provider.hooks.rabbitmq import RabbitMQHook
@@ -12,15 +13,18 @@ logger = logging.getLogger(__name__)
 
 def get_rabbitmq_hook() -> RabbitMQHook | None:
     """
-    Get the RabbitMQ hook from the Airflow RabbitMQ connection.
-    :return: The RabbitMQ hook
+    Get the RabbitMQ hook from the Airflow managed connections.
+    :return: The RabbitMQ hook or None if it does not exist
     """
     rabbitmq_conn_id = get_rabbitmq_conn_id()
     print(f"RabbitMQ connection ID: {rabbitmq_conn_id}")
     try:
-        print(">>>>> Trying to get RabbitMQ hook")
+        # looking for the hook is not enough,
+        # it would be non null even if the connection does not exist
+        conn = BaseHook.get_connection(rabbitmq_conn_id)
+        logger.info("RabbitMQ connection: %s", conn)
         hook = RabbitMQHook(rabbitmq_conn_id=rabbitmq_conn_id)
-        print(f"RabbitMQ hook: {hook}")
+        logger.info("RabbitMQ hook: %s", hook)
     except AirflowNotFoundException as e:
         logger.warning("No existing connection found: %s", str(e))
         return None
@@ -38,7 +42,7 @@ def get_rabbitmq_conn_id() -> str:
 
 
 @provide_session
-def create_rabbitmq_connection(session=None):
+def create_rabbitmq_managed_connection(session=None):
     """
     Create an Airflow managed RabbitMQ connection.
     :param session: The SQLAlchemy session
@@ -52,7 +56,6 @@ def create_rabbitmq_connection(session=None):
         password=get_env_variable("RABBITMQ_PASSWORD"),
         port=get_env_variable("RABBITMQ_PORT"),
     )
-    # usze lazy % formatting
     logger.info(
         "Creating RabbitMQ connection: %s with connection id <%s>",
         connection,

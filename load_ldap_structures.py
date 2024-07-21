@@ -6,8 +6,8 @@ from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.utils.task_group import TaskGroup
 
 from tasks.combine_batch_results import combine_batch_results
-from tasks.database import update_database, create_redis_connection_task
-from tasks.fetch_structures import fetch_structures_task
+from tasks.database import update_database, create_redis_connection
+from tasks.fetch_structures import fetch_structures
 from utils.config import get_env_variable
 from utils.dependencies import import_from_path
 
@@ -38,8 +38,8 @@ def load_ldap_structures():
     for key in task_keys:
         tasks[key] = import_from_path(get_env_variable(f"LDAP_STRUCTURE_{key}_TASK"))
 
-    connexion = create_redis_connection_task()
-    ldap_results = fetch_structures_task()
+    connexion = create_redis_connection()
+    ldap_results = fetch_structures()
     # pylint: disable=duplicate-code
     trigger_broadcast = TriggerDagRunOperator(
         task_id='trigger_broadcast',

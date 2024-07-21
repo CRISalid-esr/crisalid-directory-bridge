@@ -6,8 +6,8 @@ from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.utils.task_group import TaskGroup
 
 from tasks.combine_batch_results import combine_batch_results
-from tasks.database import update_database, create_redis_connection_task
-from tasks.fetch_people import fetch_people_task
+from tasks.database import update_database, create_redis_connection
+from tasks.fetch_people import fetch_people
 from utils.config import get_env_variable
 from utils.dependencies import import_from_path
 
@@ -32,14 +32,14 @@ def load_ldap_people():
     """
     entity_type = "people"
     entity_source = "ldap"
-    task_keys = ["NAME", "IDENTIFIER"]
+    task_keys = ["NAME", "IDENTIFIER", "MEMBERSHIP"]
     tasks = {}
 
     for key in task_keys:
         tasks[key] = import_from_path(get_env_variable(f"LDAP_PERSON_{key}_TASK"))
 
-    connexion = create_redis_connection_task()
-    ldap_results = fetch_people_task()
+    connexion = create_redis_connection()
+    ldap_results = fetch_people()
 
     # pylint: disable=duplicate-code
     trigger_broadcast = TriggerDagRunOperator(

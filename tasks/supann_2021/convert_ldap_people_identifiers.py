@@ -5,8 +5,8 @@ from airflow.decorators import task
 logger = logging.getLogger(__name__)
 
 
-@task(task_id="convert_ldap_people_identifiers_task")
-def convert_ldap_people_identifiers_task(ldap_results: dict[str, dict[str, str | dict]]) -> dict[
+@task(task_id="convert_ldap_people_identifiers")
+def convert_ldap_people_identifiers(ldap_results: dict[str, dict[str, str | dict]]) -> dict[
     str, dict[str, str | dict]
 ]:
     """

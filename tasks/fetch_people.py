@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 @task
-def fetch_people_task():
+def fetch_people():
     """Fetch LDAP people.
 
     Returns:

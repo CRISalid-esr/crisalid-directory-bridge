@@ -5,9 +5,9 @@ from airflow.decorators import dag, task
 
 from tasks.broadcast.send_status_messages import send_status_messages
 from tasks.compute_status import compute_entity_statuses
-from tasks.database import read_entity_keys_from_redis, create_redis_connection_task, \
+from tasks.database import read_entity_keys_from_redis, create_redis_connection, \
     read_entities_with_scores_from_redis
-from tasks.rabbitmq import create_rabbitmq_connection_task
+from tasks.rabbitmq import create_rabbitmq_connection
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +45,7 @@ def broadcast_entities():
     entity_type = read_entity_type()
     entity_source = read_entity_source()
 
-    redis_connection = create_redis_connection_task()
+    redis_connection = create_redis_connection()
 
     entity_keys = read_entity_keys_from_redis(entity_type=entity_type, entity_source=entity_source)
 
@@ -55,10 +55,10 @@ def broadcast_entities():
     entities_with_statuses = compute_entity_statuses(
         entities_with_scores=entities_with_scores, timestamp=timestamp)
 
+    rabbitmq_connection = create_rabbitmq_connection()
+
     status_messages = send_status_messages(
         entities_with_statuses=entities_with_statuses, entity_type=entity_type)
-
-    rabbitmq_connection = create_rabbitmq_connection_task()
 
     rabbitmq_connection >> status_messages  # pylint: disable=pointless-statement
 
