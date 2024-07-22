@@ -1,5 +1,6 @@
 .idea
 .env*
 !.env.example
+!.env.test
 __init__.py
 etc
