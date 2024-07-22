@@ -17,7 +17,7 @@ def connect_to_ldap() -> ldap:
     return conn
 
 
-def ldap_response_to_json(ldap_response):
+def ldap_response_to_json_dict(ldap_response):
     """Convert LDAP response to a JSON-serializable format.
 
     Args:
@@ -26,9 +26,8 @@ def ldap_response_to_json(ldap_response):
     Returns:
         list: A list of dictionaries with LDAP entries.
     """
-    result = []
+    result = {}
     for dn, entry in ldap_response:
-        entry_dict = {k: v[0].decode('utf-8') if isinstance(v[0], bytes) else v[0]
+        result[dn] = {k: v[0].decode('utf-8') if isinstance(v[0], bytes) else v[0]
                       for k, v in entry.items()}
-        result.append({'dn': dn, 'entry': entry_dict})
     return result

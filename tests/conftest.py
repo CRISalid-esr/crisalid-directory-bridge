@@ -9,7 +9,7 @@ from airflow.models import DagBag
 from airflow.utils.db import resetdb
 
 from test_utils.dags import TEST_DAG_ID, DATA_INTERVAL_START
-from utils.dependencies import import_task
+from utils.dependencies import import_from_path
 
 environ["APP_ENV"] = "TEST"
 
@@ -61,6 +61,6 @@ def dag_fixture(request: SubRequest) -> DAG:
             schedule="@daily",
             start_date=DATA_INTERVAL_START,
     ) as created_dag:
-        convert_description_task = import_task(task_name)
+        convert_description_task = import_from_path(task_name)
         convert_description_task(ldap_results)
     return created_dag

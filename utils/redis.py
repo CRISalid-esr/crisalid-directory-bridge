@@ -51,7 +51,7 @@ def get_redis_conn_id() -> str:
 
 
 @provide_session
-def create_redis_connection(session=None) -> None:
+def create_redis_managed_connection(session=None) -> None:
     """
     Create an Airflow managed Redis connection.
     :param session: The SQLAlchemy session

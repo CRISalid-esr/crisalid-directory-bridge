@@ -23,21 +23,26 @@ def test_dag(dagbag) -> None:
     dag = dagbag.get_dag(dag_id="load_ldap_structures")
     assert_dag_dict_equal(
         {
-            "create_redis_connection_task": ["update_database_task"],
-            "fetch_structures_task": [
-                "conversion_tasks.convert_ldap_structure_name_task",
-                "conversion_tasks.convert_ldap_structure_acronym_task",
-                "conversion_tasks.convert_ldap_structure_description_task",
-                "conversion_tasks.convert_ldap_structure_contacts_task",
-                "conversion_tasks.convert_ldap_structure_identifier",
+            "create_redis_connection": ["update_database"],
+            "fetch_structures": [
+                "structure_fields_conversion_tasks.convert_ldap_structure_names",
+                "structure_fields_conversion_tasks.convert_ldap_structure_acronyms",
+                "structure_fields_conversion_tasks.convert_ldap_structure_descriptions",
+                "structure_fields_conversion_tasks.convert_ldap_structure_contacts",
+                "structure_fields_conversion_tasks.convert_ldap_structure_identifiers",
             ],
-            "conversion_tasks.convert_ldap_structure_identifier": ["combine_results"],
-            "conversion_tasks.convert_ldap_structure_name_task": ["combine_results"],
-            "conversion_tasks.convert_ldap_structure_acronym_task": ["combine_results"],
-            "conversion_tasks.convert_ldap_structure_description_task": ["combine_results"],
-            "conversion_tasks.convert_ldap_structure_contacts_task": ["combine_results"],
-            "combine_results": ["update_database_task"],
-            "update_database_task": ["trigger_broadcast"],
+            "structure_fields_conversion_tasks.convert_ldap_structure_identifiers":
+                ["combine_batch_results"],
+            "structure_fields_conversion_tasks.convert_ldap_structure_names":
+                ["combine_batch_results"],
+            "structure_fields_conversion_tasks.convert_ldap_structure_acronyms":
+                ["combine_batch_results"],
+            "structure_fields_conversion_tasks.convert_ldap_structure_descriptions":
+                ["combine_batch_results"],
+            "structure_fields_conversion_tasks.convert_ldap_structure_contacts":
+                ["combine_batch_results"],
+            "combine_batch_results": ["update_database"],
+            "update_database": ["trigger_broadcast"],
             "trigger_broadcast": [],
         },
         dag,

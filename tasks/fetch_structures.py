@@ -3,11 +3,11 @@ from airflow.decorators import task
 
 from utils.config import get_env_variable
 from utils.exceptions import LDAPConnectionError, LDAPSizeLimitExceededError
-from utils.ldap import connect_to_ldap, ldap_response_to_json
+from utils.ldap import connect_to_ldap, ldap_response_to_json_dict
 
 
 @task
-def fetch_structures_task():
+def fetch_structures():
     """Fetch LDAP structures.
 
     Returns:
@@ -24,4 +24,4 @@ def fetch_structures_task():
         raise LDAPConnectionError("Unable to connect to the LDAP server") from error
     except ldap.SIZELIMIT_EXCEEDED as error:  # pylint: disable=no-member
         raise LDAPSizeLimitExceededError("The LDAP response exceeds the size limit") from error
-    return ldap_response_to_json(ldap_response)
+    return ldap_response_to_json_dict(ldap_response)
