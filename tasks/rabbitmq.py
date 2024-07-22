@@ -16,9 +16,6 @@ def create_rabbitmq_connection() -> Connection:
     :return: The RabbitMQ connection
     """
     connexion = get_rabbitmq_hook()
-    logger.info("**** Existing RabbitMQ connection ****")
-    logger.info("RabbitMQ connection: %s", connexion)
     if connexion is None:
-        logger.info("**** Creating RabbitMQ connection ****")
         create_rabbitmq_managed_connection()
     return {"conn_id": get_rabbitmq_conn_id()}
