@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
     schedule="@daily",
     catchup=False,
     tags=["people", "ldap"],
-    max_active_tasks=100,
+    max_active_tasks=10,
     default_args={
         "depends_on_past": False,
     }
