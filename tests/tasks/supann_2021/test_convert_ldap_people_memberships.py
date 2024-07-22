@@ -133,37 +133,6 @@ def test_no_memberships_present(dag, unique_execution_date):
     }
 
 
-# test with this data
-# 'uid=hdupont,ou=people,dc=univ-paris1,dc=fr': {
-#     'supannListeRouge': 'FALSE',
-#     'objectClass': 'person',
-#     'uid': 'hdupont',
-#     'supannAliasLogin': 'hdupont',
-#     'uidNumber': '413842',
-#     'gidNumber': '2000000',
-#     'gecos': 'Hélène Dupont',
-#     'displayName': 'Hélène Dupont',
-#     'cn': 'Dupont Hélène',
-#     'sn': 'Dupont',
-#     'givenName': 'Hélène',
-#     'supannCivilite': 'M.',
-#     'supannEntiteAffectation': 'U02',
-#     'supannOrganisme': '{EES}0751717J',
-#     'departmentNumber': 'CNU 05',
-#     'employeeType': 'Professeur des universités',
-#     'supannActivite': '{CNU}0500',
-#     'eduPersonAffiliation': 'member',
-#     'eduPersonPrimaryAffiliation': 'teacher',
-#     'postalAddress': '48 BOULEVARD JOURDAN$75014 PARIS$FRANCE',
-#     'supannEntiteAffectationPrincipale': 'U02',
-#     'supannEtablissement': '{UAI}0751717J',
-#     'buildingName': 'Campus Jourdan',
-#     'eduPersonOrgUnitDN': 'ou=U02,ou=structures,o=Paris1,dc=univ-paris1,dc=fr',
-#     'eduPersonPrimaryOrgUnitDN': 'ou=U02,ou=structures,o=Paris1,dc=univ-paris1,dc=fr',
-#     'eduPersonOrgDN': 'supannCodeEntite=UP1,ou=structures,dc=univ-paris1,dc=fr',
-#     'labeledURI': 'http://perso.univ-paris1.fr/hdupont'
-#   }
-
 @pytest.mark.parametrize("dag", [
     {
         "task_name": TESTED_TASK_NAME,
