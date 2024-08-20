@@ -3,9 +3,15 @@ import logging
 
 from airflow.decorators import task
 
+from utils.config import get_env_variable
 from utils.rabbitmq import get_rabbitmq_hook
 
 logger = logging.getLogger(__name__)
+
+PREFIXES = {
+    "people": "AMQP_PEOPLE_MESSAGE_PREFIX",
+    "structures": "AMQP_STRUCTURES_MESSAGE_PREFIX",
+}
 
 
 @task
@@ -21,13 +27,21 @@ def send_status_messages(entities_with_statuses: list[dict], entity_type: str) -
 
 
 def _send_status_message(entity_with_status: dict, entity_type: str) -> dict:
+    assert entity_type in PREFIXES, f"No message prefix found for entity type {entity_type}"
+    prefix = get_env_variable(PREFIXES[entity_type])
     status = entity_with_status['status']
     data = entity_with_status['data']
+    wrapper = {
+        f"{entity_type}_event": {
+            "type": status,
+            "data": data,
+        }
+    }
     hook = get_rabbitmq_hook()
     message = {
         'exchange': 'directory',
-        'routing_key': f"event.directory.{entity_type}.{status}",
-        'message': json.dumps(data, default=str)
+        'routing_key': f"{prefix}{status}",
+        'message': json.dumps(wrapper, default=str)
     }
     hook.publish(**message)
     return message
