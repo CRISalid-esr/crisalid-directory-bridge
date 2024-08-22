@@ -16,16 +16,16 @@ TEST_TASK_ID = "convert_ldap_structure_contacts"
         'task_name': TESTED_TASK_NAME,
         'ldap_results': {
             "uid=1234,ou=people,dc=example,dc=org": {
-                "postalAddress": "Center Meudon$1 PLACE ARISTIDE BRIAND$92190 MEUDON$France",
-                "eduorglegalname": "University of Example",
+                "postalAddress": ["Center Meudon$1 PLACE ARISTIDE BRIAND$92190 MEUDON$France"],
+                "eduorglegalname": ["University of Example"],
             },
             "uid=5678,ou=people,dc=example,dc=org": {
-                "postalAddress": "Another Center$456 Another Street$12345 Another City",
-                "eduorglegalname": "Another University",
+                "postalAddress": ["Another Center$456 Another Street$12345 Another City"],
+                "eduorglegalname": ["Another University"],
             },
             "uid=91011,ou=people,dc=example,dc=org": {
-                "postalAddress": "Simple Address Without Proper Format",
-                "eduorglegalname": "Simple University",
+                "postalAddress": ["Simple Address Without Proper Format"],
+                "eduorglegalname": ["Simple University"],
             }
         }
     }

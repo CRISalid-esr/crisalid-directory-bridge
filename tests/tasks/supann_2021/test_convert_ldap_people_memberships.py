@@ -18,7 +18,7 @@ TESTED_TASK_NAME = 'tasks.supann_2021.convert_ldap_people_memberships' \
         "task_name": TESTED_TASK_NAME,
         "ldap_results": {
             "uid=1234,ou=people,dc=example,dc=org": {
-                "supannEntiteAffectationPrincipale": "mainEntity",
+                "supannEntiteAffectationPrincipale": ["mainEntity"],
                 "supannEntiteAffectation": ["entity1", "entity2"],
             },
         },
@@ -82,12 +82,12 @@ def test_only_supann_entite_affectation_present(dag, unique_execution_date):
         "task_name": TESTED_TASK_NAME,
         "ldap_results": {
             "uid=1234,ou=people,dc=example,dc=org": {
-                "supannEntiteAffectationPrincipale": "mainEntity",
+                "supannEntiteAffectationPrincipale": ["mainEntity"],
             },
         },
     }
 ], indirect=True)
-def test_only_supann_entite_affectation_principale_present(dag, unique_execution_date):
+def test_only_supann_entite_main_affectation_present(dag, unique_execution_date):
     """
     Test that if only supannEntiteAffectationPrincipale is present, it is converted correctly.
     :param dag: The DAG object
@@ -138,33 +138,29 @@ def test_no_memberships_present(dag, unique_execution_date):
         "task_name": TESTED_TASK_NAME,
         "ldap_results": {
             'uid=hdupont,ou=people,dc=univ-paris1,dc=fr': {
-                'supannListeRouge': 'FALSE',
-                'objectClass': 'person',
-                'uid': 'hdupont',
-                'supannAliasLogin': 'hdupont',
-                'uidNumber': '123456',
-                'gidNumber': '2000000',
-                'gecos': 'Hélène Dupont',
-                'displayName': 'Hélène Dupont',
-                'cn': 'Dupont Hélène',
-                'sn': 'Dupont',
-                'givenName': 'Hélène',
-                'supannCivilite': 'M.',
-                'supannEntiteAffectation': 'U02',
-                'supannOrganisme': '{EES}0751717J',
-                'departmentNumber': 'CNU 05',
-                'employeeType': 'Professeur des universités',
-                'supannActivite': '{CNU}0500',
-                'eduPersonAffiliation': 'member',
-                'eduPersonPrimaryAffiliation': 'teacher',
-                'postalAddress': '48 BOULEVARD JOURDAN$75014 PARIS$FRANCE',
-                'supannEntiteAffectationPrincipale': 'U02',
-                'supannEtablissement': '{UAI}0751717J',
-                'buildingName': 'Campus Jourdan',
-                'eduPersonOrgUnitDN': 'ou=U02,ou=structures,o=Paris1,dc=univ-paris1,dc=fr',
-                'eduPersonPrimaryOrgUnitDN': 'ou=U02,ou=structures,o=Paris1,dc=univ-paris1,dc=fr',
-                'eduPersonOrgDN': 'supannCodeEntite=UP1,ou=structures,dc=univ-paris1,dc=fr',
-                'labeledURI': 'http://perso.univ-paris1.fr/hdupont'
+                'uid': ['soussiat'],
+                'sn': ['Soussiat'],
+                'givenName': ['Sylvain'],
+                'cn': ['Soussiat Sylvain'],
+                'displayName': ['Sylvain Soussiat'],
+                'supannRefId': ['{MIFARE}803853BA631B04', '{SIHAM}UP1000010877',
+                                '{HARPEGE}10877', '{APOGEE.PER}15817',
+                                '{BARCODE.HISTORY}201000004689',
+                                '{MIFARE.HISTORY}803853BA631B04', '{SEAL}51027',
+                                '{SEAL:ID}51027'],
+                'eduPersonOrgDN': ['o=Paris1,dc=univ-paris1,dc=fr'],
+                'supannEntiteAffectation': ['U02'],
+                'employeeType': ['Professeur des universités'],
+                'eduPersonAffiliation': ['member', 'teacher', 'faculty', 'researcher', 'employee'],
+                'supannEntiteAffectationPrincipale': ['U02'],
+                'supannEtablissement': ['{UAI}0753364Z'],
+                'eduPersonPrimaryOrgUnitDN': ['supannCodeEntite=U02,'
+                                              'ou=structures,dc=univ-paris1,dc=fr'],
+                'eduPersonOrgUnitDN': ['supannCodeEntite=U02,ou=structures,dc=univ-paris1,dc=fr'],
+                'eduPersonPrimaryAffiliation': ['faculty'],
+                'postalAddress': ['8 bis rue de la Croix Jarry$75644 PARIS cedex 13$France'],
+                'mail': ['sylvain.soussiat@univ-paris1.fr'],
+                'labeledURI': ['http://perso.univ-paris1.fr/soussiat']
             },
         },
     }

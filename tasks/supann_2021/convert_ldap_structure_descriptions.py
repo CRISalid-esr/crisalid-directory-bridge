@@ -19,7 +19,10 @@ def convert_ldap_structure_descriptions(ldap_results: dict[str, dict[str, str | 
     language = get_env_variable("LDAP_DEFAULT_LANGUAGE")
     for dn, ldap_entry in ldap_results.items():
         assert ldap_entry is not None, f"LDAP entry is None for dn: {dn}"
-        description = ldap_entry.get('description', '')
-        task_results[dn] = {"descriptions": [{"value": description, "language": language}]}
+        descriptions = ldap_entry.get('description', '')
+        if isinstance(descriptions, list) and len(descriptions) > 0:
+            task_results[dn] = {"descriptions": [{"value": descriptions[0], "language": language}]}
+        else:
+            task_results[dn] = {"descriptions": []}
 
     return task_results

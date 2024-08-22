@@ -16,11 +16,11 @@ TEST_TASK_ID = "convert_ldap_structure_descriptions"
         'task_name': TESTED_TASK_NAME,
         'ldap_results': {
             "uid=3456,ou=people,dc=example,dc=org": {
-                "description": "A university in Example 1",
-                "eduorglegalname": "University of Example 1",
+                "description": ["A university in Example 1"],
+                "eduorglegalname": ["University of Example 1"],
             },
             "uid=6789,ou=people,dc=example,dc=org": {
-                "eduorglegalname": "Another University 3",
+                "eduorglegalname": ["Another University 3"],
             }
         }
     }
@@ -39,7 +39,7 @@ def test_description_is_converted_from_ldap(dag, unique_execution_date) -> None:
         "uid=3456,ou=people,dc=example,dc=org": {
             "descriptions": [{"language": "fr", "value": "A university in Example 1"}]},
         "uid=6789,ou=people,dc=example,dc=org": {
-            "descriptions": [{"language": "fr", "value": ""}]
+            "descriptions": []
         }
     }
 

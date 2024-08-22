@@ -24,7 +24,12 @@ def convert_ldap_structure_names(ldap_results: dict[str, dict[str, str | dict]])
     language = get_env_variable("LDAP_DEFAULT_LANGUAGE")
     for dn, ldap_entry in ldap_results.items():
         assert ldap_entry is not None, f"LDAP entry is None for dn: {dn}"
-        name = ldap_entry.get('eduorglegalname', ldap_entry.get('description', ''))
+        name = ldap_entry.get('eduorglegalname', ldap_entry.get('description', []))
+        if isinstance(name, list) and len(name) > 0:
+            name = name[0]
+        else:
+            logger.error("Invalid name for %s: %s", dn, name)
+            name = None
         task_results[dn] = {"names": [{"value": name, "language": language}]}
 
     return task_results

@@ -20,7 +20,12 @@ def convert_ldap_people_identifiers(ldap_results: dict[str, dict[str, str | dict
     """
     task_results = {}
     for dn, entry in ldap_results.items():
-        identifier = entry.get('uid')
+        identifiers = entry.get('uid')
+        if isinstance(identifiers, list) and len(identifiers) == 1:
+            identifier = identifiers[0]
+        else:
+            logger.error("Invalid identifier for %s: %s", dn, identifiers)
+            identifier = None
         task_results[dn] = {"identifiers": [{
             "type": "local",
             "value": identifier

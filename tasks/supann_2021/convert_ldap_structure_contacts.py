@@ -18,13 +18,12 @@ def convert_ldap_structure_contacts(ldap_results: dict[str, dict[str, str | dict
     for dn, ldap_entry in ldap_results.items():
         assert ldap_entry is not None, f"LDAP entry is None for dn: {dn}"
 
-        postal_address = ldap_entry.get('postalAddress', '')
-        if not postal_address:
-            task_results[dn] = []
+        postal_addresses = ldap_entry.get('postalAddress', '')
+        if not isinstance(postal_addresses, list) or not postal_addresses:
+            task_results[dn] = {"contacts": []}
             continue
-
+        postal_address = postal_addresses[0]
         lines = postal_address.split('$')
-
         try:
             address_dict = _parse_address_lines(lines)
 
