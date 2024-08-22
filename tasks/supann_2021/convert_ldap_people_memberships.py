@@ -22,8 +22,8 @@ def convert_ldap_people_memberships(ldap_results: dict[str, dict[str, str | dict
     for dn, entry in ldap_results.items():
         affectations = []
         main_affectation = entry.get('supannEntiteAffectationPrincipale', None)
-        if main_affectation is not None:
-            affectations.append(main_affectation)
+        if isinstance(main_affectation, list) and len(main_affectation) > 0:
+            affectations.append(main_affectation[0])
         other_affectations = ensure_list(entry.get('supannEntiteAffectation', []))
         for affectation in other_affectations:
             if affectation in affectations or affectation == main_affectation:

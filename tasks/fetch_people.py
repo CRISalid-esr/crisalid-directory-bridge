@@ -24,12 +24,21 @@ def fetch_people():
         "LDAP_PEOPLE_FILTER_PATTERN")
     people_filters = people_filters_str.split(',')
     ldap_response = []
+    attributes = ["uid", "cn", "displayName", "sn", "givenName", "mail",
+                  "supannRefid", "description", "eduPersonORCID",
+                  "supannEntiteAffectationPrincipale", "supannEntiteAffectation",
+                  "eduPersonOrgUnitDN", "eduPersonPrimaryOrgUnitDN",
+                  "employeeType", "eduPersonAffiliation", "eduPersonPrimaryAffiliation",
+                  "supannEtablissement", "eduPersonOrgDN",
+                  "postalAddress", "labeledURI", "eduOrgHomePageURI"]
     for people_filter in people_filters:
         people_filter = people_filter_pattern % people_filter
         try:
             ldap_partial_response = ldap_connexion.search_s(people_branch,
                                                             ldap.SCOPE_SUBTREE,  # pylint: disable=no-member
-                                                            people_filter)
+                                                            people_filter,
+                                                            attrlist=attributes
+                                                            )
             ldap_response.extend(ldap_partial_response)
         except ldap.SERVER_DOWN as error:  # pylint: disable=no-member
             raise LDAPConnectionError(
@@ -39,4 +48,5 @@ def fetch_people():
             raise LDAPSizeLimitExceededError(
                 "The LDAP response exceeds the size limit"
                 f"for people filter {people_filter}") from error
-    return ldap_response_to_json_dict(ldap_response)
+    formatted_result = ldap_response_to_json_dict(ldap_response)
+    return formatted_result

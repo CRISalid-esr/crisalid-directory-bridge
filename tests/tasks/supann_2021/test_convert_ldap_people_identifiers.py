@@ -18,7 +18,7 @@ TESTED_TASK_NAME = 'tasks.supann_2021.convert_ldap_people_identifiers' \
         "task_name": TESTED_TASK_NAME,
         "ldap_results": {
             "uid=1234,ou=people,dc=example,dc=org": {
-                "uid": "1234",
+                "uid": ["1234"],
             },
         },
     }
@@ -54,7 +54,7 @@ def test_identifier_is_converted_from_ldap(dag, unique_execution_date):
         },
     }
 ], indirect=True)
-def test_identifier_absent(dag, unique_execution_date):
+def test_missing_identifier(dag, unique_execution_date):
     """
     Test that if the identifier is not present, the value is None.
     :param dag: The DAG object

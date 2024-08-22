@@ -22,9 +22,17 @@ def convert_ldap_structure_identifiers(ldap_results: dict[str, dict[str, str | d
     for dn, ldap_entry in ldap_results.items():
         assert 'supannCodeEntite' in ldap_entry, \
             f"missing supannCodeEntite in {ldap_entry} for dn: {dn}"
-        identifiers = [{"type": "local", "value": ldap_entry["supannCodeEntite"]}]
-        if 'supannRefId' in ldap_entry:
-            ref_id = ldap_entry['supannRefId']
+        entity_codes = ldap_entry["supannCodeEntite"]
+        entity_code = None
+        if isinstance(entity_codes, list) and len(entity_codes) > 0:
+            entity_code = entity_codes[0]
+        assert entity_code is not None, f"Invalid entity code for {dn}: {entity_codes}"
+        identifiers = [{"type": "local", "value": entity_code}]
+        ref_ids = ldap_entry.get('supannRefId', [])
+        if not isinstance(ref_ids, list):
+            logger.error("Invalid ref_id for %s: %s", dn, ref_ids)
+            ref_ids = []
+        for ref_id in ref_ids:
             if ref_id.startswith('{RNSR}'):
                 identifiers.append({"type": "RNSR", "value": ref_id[6:]})
         task_results[dn] = {"identifiers": identifiers}

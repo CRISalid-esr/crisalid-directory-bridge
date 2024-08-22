@@ -17,8 +17,8 @@ TESTED_TASK_NAME = 'tasks.supann_2021.convert_ldap_people_names.convert_ldap_peo
         "task_name": TESTED_TASK_NAME,
         "ldap_results": {
             "uid=1234,ou=people,dc=example,dc=org": {
-                "sn": "Doe",
-                "givenName": "John",
+                "sn": ["Doe"],
+                "givenName": ["John"],
             },
         },
     }
@@ -51,7 +51,7 @@ def test_names_are_converted_from_ldap(dag, unique_execution_date):
         "task_name": TESTED_TASK_NAME,
         "ldap_results": {
             "uid=1234,ou=people,dc=example,dc=org": {
-                "sn": "Doe",
+                "sn": ["Doe"],
             },
         },
     }
@@ -84,7 +84,7 @@ def test_only_last_name_present(dag, unique_execution_date):
         "task_name": TESTED_TASK_NAME,
         "ldap_results": {
             "uid=1234,ou=people,dc=example,dc=org": {
-                "givenName": "John",
+                "givenName": ["John"],
             },
         },
     }
@@ -117,8 +117,8 @@ def test_only_first_name_present(dag, unique_execution_date):
         "task_name": TESTED_TASK_NAME,
         "ldap_results": {
             "uid=1234,ou=people,dc=example,dc=org": {
-                "sn": "Doe",
-                "givenName": "John",
+                "sn": ["Doe"],
+                "givenName": ["John"],
             },
         },
     }

@@ -28,6 +28,6 @@ def ldap_response_to_json_dict(ldap_response):
     """
     result = {}
     for dn, entry in ldap_response:
-        result[dn] = {k: v[0].decode('utf-8') if isinstance(v[0], bytes) else v[0]
+        result[dn] = {k: [val.decode('utf-8') if isinstance(val, bytes) else val for val in v]
                       for k, v in entry.items()}
     return result
