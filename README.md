@@ -87,3 +87,18 @@ airflow standalone
 
 Note that the `standalone` command is a custom command that starts the webserver and scheduler in the same process. It
 is useful for development and testing purposes only.
+
+
+## Documentation compilation and publication
+
+The documentation is written in reStructuredText and compiled with Sphinx.
+
+### HTML publication
+
+To export the documentation to HTML, run the following command from the `docs` directory :
+
+```bash
+python -m sphinx -b html source build/html
+```
+
+Then, copy the content of the `docs/build/html` directory to the server of your choice.
