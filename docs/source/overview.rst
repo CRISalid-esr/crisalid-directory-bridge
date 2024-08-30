@@ -1,0 +1,27 @@
+Overview
+========
+
+Project repository
+------------------
+
+.. |ico1| image:: https://img.shields.io/badge/github.com%2FCRISalid-esr%2Fcrisalid-directory-bridge%23readme?style=flat&logo=GitHub&color=blue
+    :target: https://github.com/CRISalid-esr/crisalid-directory-bridge#readme
+    :alt: GitHub repository
+
+|ico1| Source code is available on Github
+
+Overall operating mode
+----------------------
+
+.. raw:: html
+
+    <a href="_static/ikg_rabbit_relationship.drawio.svg" target="_blank">
+    <img src="_static/ikg_rabbit_relationship.drawio.svg" width="100%" alt="Relationship between the different CRISalid apps and RabbitMQ"/></a>
+
+Key features
+--------------
+
+
+
+Functional scope limitations
+-----------------------------
