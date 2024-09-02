@@ -1,5 +1,5 @@
 import logging
-
+from utils.config import get_env_variable
 from airflow.decorators import task
 
 logger = logging.getLogger(__name__)
@@ -18,15 +18,21 @@ def convert_spreadsheet_people(source_data: list[dict[str, str]]) -> dict[
     Returns:
         dict: A dict of converted results with the "identifiers" field populated
     """
+    people_branch = get_env_variable("LDAP_PEOPLE_BRANCH")
     task_results = {}
-    task_results['totologin'] = {'names': [
-        {'last_names': [{'value': 'Dupont', 'language': 'fr'}],
-         'first_names': [{'value': 'Benoit', 'language': 'fr'}]}],
-        "identifiers": [{
-            "type": "local",
-            "value": "totologin"
-        }, {
-            "type": "orcid",
-            "value": "0000-0000-0000-0000"
-        }]}
+
+    for row in source_data:
+        task_results[f"uid={row['local_identifier']},{people_branch}"] = {
+            'names': [
+                {'last_names': [{'value': row['last_name'], 'language': 'fr'}],
+                 'first_names': [{'value': row['first_name'], 'language': 'fr'}]}
+            ],
+            'identifiers': [
+                {'type': 'local', 'value': row['local_identifier']},
+                {'type': 'orcid', 'value': row['orcid']},
+                {'type': 'idref', 'value': row['idref']},
+            ],
+            'memberships': [{'entity': row['main_laboratory_supann']}]
+        }
+
     return task_results
