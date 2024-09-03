@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 @task
-def fetch_structure_from_spreadsheet():
+def fetch_structures_from_spreadsheet():
     """Fetch structure from a spreadsheet.
 
     Returns:
@@ -22,8 +22,8 @@ def fetch_structure_from_spreadsheet():
         "local_identifier",
         "RNSR",
         "city_name",
-        'city_code',
-        'city_adress',
+        "city_code",
+        "city_adress",
     ]
 
     df = pd.read_csv("structure.csv", usecols=columns_to_return)

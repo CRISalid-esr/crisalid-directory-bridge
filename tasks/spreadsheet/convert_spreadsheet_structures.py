@@ -5,8 +5,8 @@ from airflow.decorators import task
 logger = logging.getLogger(__name__)
 
 
-@task(task_id="convert_spreadsheet_structure")
-def convert_spreadsheet_structure(source_data: list[dict[str, str]]) -> dict[
+@task(task_id="convert_spreadsheet_structures")
+def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[
     str, dict[str, str | dict]
 ]:
     """
@@ -22,14 +22,14 @@ def convert_spreadsheet_structure(source_data: list[dict[str, str]]) -> dict[
     task_results = {}
 
     for row in source_data:
-        task_results[f"uid={row['local_identifier']},{structure_branch}"] = {
+        task_results[f"supannCodeEntite={row['local_identifier']},{structure_branch}"] = {
             'names': [
                 {
                     'value': row['name'],
                     'language': 'fr'
                 },
             ],
-            'acronym': row['acronym'],
+            'acronym': row['acronym'] or None,
             'descriptions': [
                 {
                     'value': row['description'],

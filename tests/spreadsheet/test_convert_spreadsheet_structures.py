@@ -7,9 +7,9 @@ from test_utils.dags import create_dag_run, \
     DATA_INTERVAL_START, \
     DATA_INTERVAL_END
 
-TEST_TASK_ID = "convert_spreadsheet_structure"
+TEST_TASK_ID = "convert_spreadsheet_structures"
 
-TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structure.convert_spreadsheet_structure'
+TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spreadsheet_structures'
 
 
 @pytest.mark.parametrize("dag, expected_result", [
@@ -70,7 +70,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structure.convert_spre
             }
     ),
 ], indirect=["dag"])
-def test_convert_spreadsheet_structure(dag, expected_result, unique_execution_date):
+def test_convert_spreadsheet_structures(dag, expected_result, unique_execution_date):
     """
     Test that the csv data are converted to the expected format
     """
