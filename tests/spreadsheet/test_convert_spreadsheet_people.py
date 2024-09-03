@@ -117,7 +117,14 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
 
             }
     )
-], indirect=["dag"])
+],
+                         indirect=["dag"],
+                         ids=[
+                         "test_convert_spreadsheet_people",
+                         "test_convert_spreadsheet_people_without_orcid_&_idref",
+                         "test_convert_spreadsheet_with_two_people"
+                         ]
+                         )
 def test_convert_spreadsheet_people(dag, expected_result, unique_execution_date):
     """
     Test that the csv data are converted to the expected format

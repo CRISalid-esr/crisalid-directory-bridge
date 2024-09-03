@@ -69,7 +69,173 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                 }
             }
     ),
-], indirect=["dag"])
+    (
+            {
+                "task_name": TESTED_TASK_NAME,
+                "ldap_results": [
+                    {
+                        'name': 'Laboratoire des Tests (UMR 2024)',
+                        'acronym': 'TEST',
+                        'description': 'Laboratoire des Tests (UMR 2024)',
+                        'local_identifier': 'U086',
+                        'RNSR': '123456789F',
+                        'city_name': 'MEUDON',
+                        'city_code': '92190',
+                        'city_adress': 'Centre Meudon, 1 PLACE ARISTIDE BRIAND',
+                    }
+                ]
+            },
+            {
+                'supannCodeEntite=U086,ou=structures,dc=univ-paris1,dc=fr': {
+                    'names': [
+                        {
+                            'value': 'LGP\xa0: Laboratoire des Tests (UMR 2024)',
+                            'language': 'fr'
+                        }
+                    ],
+                    'acronym': 'TEST',
+                    'descriptions': [
+                        {
+                            'value': 'LGP\xa0: Laboratoire des Tests (UMR 2024)',
+                            'language': 'fr'
+                        }
+                    ],
+                    'contacts': [
+                        {
+                            'type': 'postal_address',
+                            'format': 'structured_physical_address',
+                            'value': {
+                                'country': 'France',
+                                'zip_code': '92190',
+                                'city': 'MEUDON',
+                                'street': 'Centre Meudon, 1 PLACE ARISTIDE BRIAND'
+                            }
+                        }
+                    ],
+                    'identifiers': [
+                        {
+                            'type': 'local',
+                            'value': 'U086'
+                        },
+                        {
+                            'type': 'RNSR',
+                            'value': '123456789F'
+                        }
+                    ]
+                }
+            }
+    ),
+    (
+            {
+                "task_name": TESTED_TASK_NAME,
+                "ldap_results": [
+                    {
+                        'name': 'Laboratoire des Tests (UMR 2024)',
+                        'acronym': 'TEST',
+                        'description': 'Laboratoire des Tests (UMR 2024)',
+                        'local_identifier': 'U086',
+                        'RNSR': '123456789F',
+                        'city_name': 'MEUDON',
+                        'city_code': '92190',
+                        'city_adress': 'Centre Meudon, 1 PLACE ARISTIDE BRIAND',
+                    },
+                    {
+                        'name': 'Laboratoire de gÃ©ographie physique Pierre Birot (UMR 8591)',
+                        'acronym': '',
+                        'description': 'Laboratoire de gÃ©ographie physique Pierre Birot (UMR 8591)',
+                        'local_identifier': 'U082',
+                        'RNSR': '199812919F',
+                        'city_name': 'MEUDON',
+                        'city_code': '92190',
+                        'city_adress': 'Centre Meudon, 1 PLACE ARISTIDE BRIAND',
+                    }
+                ]
+            },
+            {
+                'supannCodeEntite=U086,ou=structures,dc=univ-paris1,dc=fr': {
+                    'names': [
+                        {
+                            'value': 'LGP\xa0: Laboratoire des Tests (UMR 2024)',
+                            'language': 'fr'
+                        }
+                    ],
+                    'acronym': 'TEST',
+                    'descriptions': [
+                        {
+                            'value': 'LGP\xa0: Laboratoire des Tests (UMR 2024)',
+                            'language': 'fr'
+                        }
+                    ],
+                    'contacts': [
+                        {
+                            'type': 'postal_address',
+                            'format': 'structured_physical_address',
+                            'value': {
+                                'country': 'France',
+                                'zip_code': '92190',
+                                'city': 'MEUDON',
+                                'street': 'Centre Meudon, 1 PLACE ARISTIDE BRIAND'
+                            }
+                        }
+                    ],
+                    'identifiers': [
+                        {
+                            'type': 'local',
+                            'value': 'U086'
+                        },
+                        {
+                            'type': 'RNSR',
+                            'value': '123456789F'
+                        }
+                    ]
+                },
+                'supannCodeEntite=U082,ou=structures,dc=univ-paris1,dc=fr': {
+                    'names': [
+                        {
+                            'value': 'LGP\xa0: Laboratoire de gÃ©ographie physique Pierre Birot (UMR 8591)',
+                            'language': 'fr'
+                        }
+                    ],
+                    'acronym': None,
+                    'descriptions': [
+                        {
+                            'value': 'LGP\xa0: Laboratoire de gÃ©ographie physique Pierre Birot (UMR 8591)',
+                            'language': 'fr'
+                        }
+                    ],
+                    'contacts': [
+                        {
+                            'type': 'postal_address',
+                            'format': 'structured_physical_address',
+                            'value': {
+                                'country': 'France',
+                                'zip_code': '92190',
+                                'city': 'MEUDON',
+                                'street': 'Centre Meudon, 1 PLACE ARISTIDE BRIAND'
+                            }
+                        }
+                    ],
+                    'identifiers': [
+                        {
+                            'type': 'local',
+                            'value': 'U082'
+                        },
+                        {
+                            'type': 'RNSR',
+                            'value': '199812919F'
+                        }
+                    ]
+                }
+            }
+    ),
+],
+                         indirect=["dag"],
+                         ids=[
+                             "test_convert_structure_without_acronym",
+                             "test_convert_structure_with_acronym",
+                             "test_convert_with_two_structures"
+                         ]
+                         )
 def test_convert_spreadsheet_structures(dag, expected_result, unique_execution_date):
     """
     Test that the csv data are converted to the expected format
