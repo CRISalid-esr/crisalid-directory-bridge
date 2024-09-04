@@ -18,9 +18,9 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                 "task_name": TESTED_TASK_NAME,
                 "ldap_results": [
                     {
-                        'name': 'Laboratoire de gÃ©ographie physique Pierre Birot (UMR 8591)',
+                        'name': 'Laboratoire de géographie physique Pierre Birot (UMR 8591)',
                         'acronym': '',
-                        'description': 'Laboratoire de gÃ©ographie physique Pierre Birot (UMR 8591)',
+                        'description': 'Lab description',
                         'local_identifier': 'U082',
                         'RNSR': '199812919F',
                         'city_name': 'MEUDON',
@@ -30,17 +30,17 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                 ]
             },
             {
-                'supannCodeEntite=U082,ou=structures,dc=univ-paris1,dc=fr': {
+                'struct_id=U082': {
                     'names': [
                         {
-                            'value': 'LGP\xa0: Laboratoire de gÃ©ographie physique Pierre Birot (UMR 8591)',
+                            'value': 'Laboratoire de géographie physique Pierre Birot (UMR 8591)',
                             'language': 'fr'
                         }
                     ],
                     'acronym': None,
                     'descriptions': [
                         {
-                            'value': 'LGP\xa0: Laboratoire de gÃ©ographie physique Pierre Birot (UMR 8591)',
+                            'value': 'Lab description',
                             'language': 'fr'
                         }
                     ],
@@ -86,17 +86,17 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                 ]
             },
             {
-                'supannCodeEntite=U086,ou=structures,dc=univ-paris1,dc=fr': {
+                'struct_id=U086': {
                     'names': [
                         {
-                            'value': 'LGP\xa0: Laboratoire des Tests (UMR 2024)',
+                            'value': 'Laboratoire des Tests (UMR 2024)',
                             'language': 'fr'
                         }
                     ],
                     'acronym': 'TEST',
                     'descriptions': [
                         {
-                            'value': 'LGP\xa0: Laboratoire des Tests (UMR 2024)',
+                            'value': 'Laboratoire des Tests (UMR 2024)',
                             'language': 'fr'
                         }
                     ],
@@ -140,9 +140,9 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                         'city_adress': 'Centre Meudon, 1 PLACE ARISTIDE BRIAND',
                     },
                     {
-                        'name': 'Laboratoire de gÃ©ographie physique Pierre Birot (UMR 8591)',
+                        'name': 'Laboratoire de géographie physique Pierre Birot (UMR 8591)',
                         'acronym': '',
-                        'description': 'Laboratoire de gÃ©ographie physique Pierre Birot (UMR 8591)',
+                        'description': 'test geolab',
                         'local_identifier': 'U082',
                         'RNSR': '199812919F',
                         'city_name': 'MEUDON',
@@ -152,17 +152,17 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                 ]
             },
             {
-                'supannCodeEntite=U086,ou=structures,dc=univ-paris1,dc=fr': {
+                'struct_id=U086': {
                     'names': [
                         {
-                            'value': 'LGP\xa0: Laboratoire des Tests (UMR 2024)',
+                            'value': 'Laboratoire des Tests (UMR 2024)',
                             'language': 'fr'
                         }
                     ],
                     'acronym': 'TEST',
                     'descriptions': [
                         {
-                            'value': 'LGP\xa0: Laboratoire des Tests (UMR 2024)',
+                            'value': 'Laboratoire des Tests (UMR 2024)',
                             'language': 'fr'
                         }
                     ],
@@ -189,17 +189,17 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                         }
                     ]
                 },
-                'supannCodeEntite=U082,ou=structures,dc=univ-paris1,dc=fr': {
+                'struct_id=U082': {
                     'names': [
                         {
-                            'value': 'LGP\xa0: Laboratoire de gÃ©ographie physique Pierre Birot (UMR 8591)',
+                            'value': 'Laboratoire de géographie physique Pierre Birot (UMR 8591)',
                             'language': 'fr'
                         }
                     ],
                     'acronym': None,
                     'descriptions': [
                         {
-                            'value': 'LGP\xa0: Laboratoire de gÃ©ographie physique Pierre Birot (UMR 8591)',
+                            'value': 'test geolab',
                             'language': 'fr'
                         }
                     ],

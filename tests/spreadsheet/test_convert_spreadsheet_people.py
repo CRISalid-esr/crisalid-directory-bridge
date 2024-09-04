@@ -20,7 +20,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                     {
                         'first_name': 'Joe',
                         'last_name': 'Dupond',
-                        'main_laboratory_supann': 'U01',
+                        'main_laboratory_identifier': 'U01',
                         'local_identifier': 'jdupond',
                         'orcid': '0000-0000-0000-0001',
                         'idref': '12345678X',
@@ -28,7 +28,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                 ]
             },
             {
-                'uid=jdupond,ou=people,dc=univ-paris1,dc=fr': {
+                'uid=jdupond': {
                     'names': [
                         {'last_names': [{'value': 'Dupond', 'language': 'fr'}],
                          'first_names': [{'value': 'Joe', 'language': 'fr'}]}],
@@ -48,7 +48,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                     {
                         'first_name': 'Henry',
                         'last_name': 'Gerald',
-                        'main_laboratory_supann': 'U85',
+                        'main_laboratory_identifier': 'U85',
                         'local_identifier': 'hgerald',
                         'orcid': '',
                         'idref': '',
@@ -56,7 +56,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                 ]
             },
             {
-                'uid=hgerald,ou=people,dc=univ-paris1,dc=fr': {
+                'uid=hgerald': {
                     'names': [
                         {'last_names': [{'value': 'Gerald', 'language': 'fr'}],
                          'first_names': [{'value': 'Henry', 'language': 'fr'}]}],
@@ -76,7 +76,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                     {
                         'first_name': 'Henry',
                         'last_name': 'Gerald',
-                        'main_laboratory_supann': 'U85',
+                        'main_laboratory_identifier': 'U85',
                         'local_identifier': 'hgerald',
                         'orcid': '',
                         'idref': '',
@@ -84,7 +84,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                     {
                         'first_name': 'Joe',
                         'last_name': 'Dupond',
-                        'main_laboratory_supann': 'U01',
+                        'main_laboratory_identifier': 'U01',
                         'local_identifier': 'jdupond',
                         'orcid': '0000-0000-0000-0001',
                         'idref': '12345678X',
@@ -92,7 +92,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                 ]
             },
             {
-                'uid=hgerald,ou=people,dc=univ-paris1,dc=fr': {
+                'uid=hgerald': {
                     'names': [
                         {'last_names': [{'value': 'Gerald', 'language': 'fr'}],
                          'first_names': [{'value': 'Henry', 'language': 'fr'}]}],
@@ -103,7 +103,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                     ],
                     'memberships': [{'entity': 'U85'}]
                 },
-                'uid=jdupond,ou=people,dc=univ-paris1,dc=fr': {
+                'uid=jdupond': {
                     'names': [
                         {'last_names': [{'value': 'Dupond', 'language': 'fr'}],
                          'first_names': [{'value': 'Joe', 'language': 'fr'}]}],

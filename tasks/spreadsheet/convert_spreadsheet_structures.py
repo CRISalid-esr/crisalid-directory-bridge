@@ -18,11 +18,11 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[
     Returns:
         dict: A dict of converted results with the "identifiers" field populated
     """
-    structure_branch = get_env_variable("LDAP_STRUCTURES_BRANCH")
+
     task_results = {}
 
     for row in source_data:
-        task_results[f"supannCodeEntite={row['local_identifier']},{structure_branch}"] = {
+        task_results[f"struct_id={row['local_identifier']}"] = {
             'names': [
                 {
                     'value': row['name'],
