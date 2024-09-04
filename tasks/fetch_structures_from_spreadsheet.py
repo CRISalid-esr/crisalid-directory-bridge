@@ -2,7 +2,7 @@ import logging
 
 import pandas as pd
 from airflow.decorators import task
-
+from utils.config import get_env_variable
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +26,9 @@ def fetch_structures_from_spreadsheet():
         "city_adress",
     ]
 
-    df = pd.read_csv("structure.csv", usecols=columns_to_return)
+    data_path = get_env_variable("SPREADSHEET_PEOPLE_PATH")
+
+    df = pd.read_csv(data_path, usecols=columns_to_return)
 
     df = df.fillna("")
 
