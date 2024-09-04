@@ -24,7 +24,7 @@ def test_dag(dagbag) -> None:
     assert_dag_dict_equal(
         {
             "create_redis_connection": ["update_database"],
-            "fetch_structures": [
+            "fetch_structures_from_ldap": [
                 "structure_fields_conversion_tasks.convert_ldap_structure_names",
                 "structure_fields_conversion_tasks.convert_ldap_structure_acronyms",
                 "structure_fields_conversion_tasks.convert_ldap_structure_descriptions",

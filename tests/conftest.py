@@ -55,12 +55,12 @@ def dag_fixture(request: SubRequest) -> DAG:
     :return: The DAG object
     """
     task_name = request.param['task_name']
-    ldap_results = request.param['ldap_results']
+    raw_results = request.param['raw_results']
     with DAG(
             dag_id=TEST_DAG_ID,
             schedule="@daily",
             start_date=DATA_INTERVAL_START,
     ) as created_dag:
         convert_description_task = import_from_path(task_name)
-        convert_description_task(ldap_results)
+        convert_description_task(raw_results)
     return created_dag

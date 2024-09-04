@@ -7,7 +7,7 @@ from airflow.utils.task_group import TaskGroup
 
 from tasks.combine_batch_results import combine_batch_results
 from tasks.database import update_database, create_redis_connection
-from tasks.fetch_people import fetch_people
+from tasks.fetch_people_from_ldap import fetch_ldap_people
 from utils.config import get_env_variable
 from utils.dependencies import import_from_path
 
@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 )
 def load_ldap_people():
     """
-    This DAG fetches data from an LDAP server, processes specific fields in parallel,
+    This DAG fetches data from an LDAP server, processes specific fields,
     and then combines the results into a target JSON structure.
     """
     entity_type = "people"
@@ -39,7 +39,7 @@ def load_ldap_people():
         tasks[key] = import_from_path(get_env_variable(f"LDAP_PERSON_{key}_TASK"))
 
     connexion = create_redis_connection()
-    ldap_results = fetch_people()
+    ldap_results = fetch_ldap_people()
 
     # pylint: disable=duplicate-code
     trigger_broadcast = TriggerDagRunOperator(

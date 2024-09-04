@@ -7,7 +7,7 @@ from utils.ldap import connect_to_ldap, ldap_response_to_json_dict
 
 
 @task
-def fetch_structures():
+def fetch_structures_from_ldap():
     """Fetch LDAP structures.
 
     Returns:
