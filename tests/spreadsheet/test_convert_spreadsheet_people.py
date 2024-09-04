@@ -16,7 +16,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
     (
             {
                 "task_name": TESTED_TASK_NAME,
-                "ldap_results": [
+                "raw_results": [
                     {
                         'first_name': 'Joe',
                         'last_name': 'Dupond',
@@ -44,7 +44,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
     (
             {
                 "task_name": TESTED_TASK_NAME,
-                "ldap_results": [
+                "raw_results": [
                     {
                         'first_name': 'Henry',
                         'last_name': 'Gerald',
@@ -72,7 +72,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
     (
             {
                 "task_name": TESTED_TASK_NAME,
-                "ldap_results": [
+                "raw_results": [
                     {
                         'first_name': 'Henry',
                         'last_name': 'Gerald',

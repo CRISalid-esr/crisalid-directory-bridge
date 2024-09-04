@@ -15,7 +15,7 @@ TEST_TASK_ID = "convert_ldap_structure_identifiers"
 @pytest.mark.parametrize("dag", [
     {
         'task_name': TESTED_TASK_NAME,
-        'ldap_results': {
+        'raw_results': {
             "uid=1234,ou=people,dc=example,dc=org": {
                 "supannCodeEntite": ["123456"],
                 "supannRefId": ["{RNSR}654321"],
@@ -54,7 +54,7 @@ def test_identifiers_are_converted_from_ldap(dag, unique_execution_date):
 @pytest.mark.parametrize("dag", [
     {
         'task_name': TESTED_TASK_NAME,
-        'ldap_results': {
+        'raw_results': {
             "uid=91011,ou=people,dc=example,dc=org": {
                 "supannRefId": ["{RNSR}112233"],
                 "eduorglegalname": ["Missing Entity University"],

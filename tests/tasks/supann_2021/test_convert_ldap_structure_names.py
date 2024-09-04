@@ -15,7 +15,7 @@ TESTED_TASK_NAME = 'tasks.supann_2021.convert_ldap_structure_names.convert_ldap_
 @pytest.mark.parametrize("dag", [
     {
         "task_name": TESTED_TASK_NAME,
-        "ldap_results": {
+        "raw_results": {
             "uid=1234,ou=people,dc=example,dc=org": {
                 "eduorglegalname": ["University of Example"],
                 "description": ["A university in Example"],
@@ -50,7 +50,7 @@ def test_name_is_converted_from_ldap(dag, unique_execution_date):
 @pytest.mark.parametrize("dag", [
     {
         "task_name": TESTED_TASK_NAME,
-        "ldap_results": {
+        "raw_results": {
             "uid=1234,ou=people,dc=example,dc=org": {
                 "description": ["A university in Example"],
             },
@@ -82,7 +82,7 @@ def test_description_used_if_name_not_present(dag, unique_execution_date):
 @pytest.mark.parametrize("dag", [
     {
         "task_name": TESTED_TASK_NAME,
-        "ldap_results": {
+        "raw_results": {
             "uid=1234,ou=people,dc=example,dc=org": {
                 "eduorglegalname": ["University of Example"],
                 "description": ["A university in Example"],

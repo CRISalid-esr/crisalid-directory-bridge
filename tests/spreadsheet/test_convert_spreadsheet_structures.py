@@ -16,7 +16,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
     (
             {
                 "task_name": TESTED_TASK_NAME,
-                "ldap_results": [
+                "raw_results": [
                     {
                         'name': 'Laboratoire de géographie physique Pierre Birot (UMR 8591)',
                         'acronym': '',
@@ -72,7 +72,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
     (
             {
                 "task_name": TESTED_TASK_NAME,
-                "ldap_results": [
+                "raw_results": [
                     {
                         'name': 'Laboratoire des Tests (UMR 2024)',
                         'acronym': 'TEST',
@@ -128,7 +128,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
     (
             {
                 "task_name": TESTED_TASK_NAME,
-                "ldap_results": [
+                "raw_results": [
                     {
                         'name': 'Laboratoire des Tests (UMR 2024)',
                         'acronym': 'TEST',
