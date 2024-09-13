@@ -23,6 +23,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                         'description': 'Lab description',
                         'local_identifier': 'U082',
                         'RNSR': '199812919F',
+                        'ROR': '',
                         'city_name': 'MEUDON',
                         'city_code': '92190',
                         'city_adress': 'Centre Meudon, 1 PLACE ARISTIDE BRIAND',
@@ -64,6 +65,10 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                         {
                             'type': 'RNSR',
                             'value': '199812919F'
+                        },
+                        {
+                            'type': 'ROR',
+                            'value': ''
                         }
                     ]
                 }
@@ -79,6 +84,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                         'description': 'Laboratoire des Tests (UMR 2024)',
                         'local_identifier': 'U086',
                         'RNSR': '123456789F',
+                        'ROR': '567890123',
                         'city_name': 'MEUDON',
                         'city_code': '92190',
                         'city_adress': 'Centre Meudon, 1 PLACE ARISTIDE BRIAND',
@@ -120,6 +126,10 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                         {
                             'type': 'RNSR',
                             'value': '123456789F'
+                        },
+                        {
+                            'type': 'ROR',
+                            'value': '567890123'
                         }
                     ]
                 }
@@ -135,6 +145,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                         'description': 'Laboratoire des Tests (UMR 2024)',
                         'local_identifier': 'U086',
                         'RNSR': '123456789F',
+                        'ROR': '567890123',
                         'city_name': 'MEUDON',
                         'city_code': '92190',
                         'city_adress': 'Centre Meudon, 1 PLACE ARISTIDE BRIAND',
@@ -145,6 +156,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                         'description': 'test geolab',
                         'local_identifier': 'U082',
                         'RNSR': '199812919F',
+                        'ROR': '',
                         'city_name': 'MEUDON',
                         'city_code': '92190',
                         'city_adress': 'Centre Meudon, 1 PLACE ARISTIDE BRIAND',
@@ -186,6 +198,10 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                         {
                             'type': 'RNSR',
                             'value': '123456789F'
+                        },
+                        {
+                            'type': 'ROR',
+                            'value': '567890123'
                         }
                     ]
                 },
@@ -223,6 +239,10 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                         {
                             'type': 'RNSR',
                             'value': '199812919F'
+                        },
+                        {
+                            'type': 'ROR',
+                            'value': ''
                         }
                     ]
                 }
