@@ -22,6 +22,7 @@ def fetch_structures_from_spreadsheet():
         "description",
         "local_identifier",
         "RNSR",
+        "ROR",
         "city_name",
         "city_code",
         "city_adress",

@@ -1,0 +1,43 @@
+{
+  "struct_id=U086": {
+    "names": [
+      {
+        "value": "Laboratoire des Tests (UMR 2024)",
+        "language": "fr"
+      }
+    ],
+    "acronym": "TEST",
+    "descriptions": [
+      {
+        "value": "Laboratoire des Tests (UMR 2024)",
+        "language": "fr"
+      }
+    ],
+    "contacts": [
+      {
+        "type": "postal_address",
+        "format": "structured_physical_address",
+        "value": {
+          "country": "France",
+          "zip_code": "92190",
+          "city": "MEUDON",
+          "street": "Centre Meudon, 1 PLACE ARISTIDE BRIAND"
+        }
+      }
+    ],
+    "identifiers": [
+      {
+        "type": "local",
+        "value": "U086"
+      },
+      {
+        "type": "RNSR",
+        "value": "123456789F"
+      },
+      {
+        "type": "ROR",
+        "value": "567890123"
+      }
+    ]
+  }
+}

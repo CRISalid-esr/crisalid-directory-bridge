@@ -21,8 +21,11 @@ def fetch_people_from_spreadsheet():
         "last_name",
         "main_laboratory_identifier",
         "local_identifier",
+        "idHal_i",
+        "idHal_s",
         "orcid",
         "idref",
+        "scopus_eid",
     ]
 
     data_path = get_env_variable("SPREADSHEET_PEOPLE_PATH")

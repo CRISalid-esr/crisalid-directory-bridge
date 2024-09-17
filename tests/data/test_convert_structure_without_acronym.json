@@ -1,0 +1,43 @@
+{
+  "struct_id=U082": {
+    "names": [
+      {
+        "value": "Laboratoire de géographie physique Pierre Birot (UMR 8591)",
+        "language": "fr"
+      }
+    ],
+    "acronym": null,
+    "descriptions": [
+      {
+        "value": "Lab description",
+        "language": "fr"
+      }
+    ],
+    "contacts": [
+      {
+        "type": "postal_address",
+        "format": "structured_physical_address",
+        "value": {
+          "country": "France",
+          "zip_code": "92190",
+          "city": "MEUDON",
+          "street": "Centre Meudon, 1 PLACE ARISTIDE BRIAND"
+        }
+      }
+    ],
+    "identifiers": [
+      {
+        "type": "local",
+        "value": "U082"
+      },
+      {
+        "type": "RNSR",
+        "value": "199812919F"
+      },
+      {
+        "type": "ROR",
+        "value": ""
+      }
+    ]
+  }
+}

@@ -57,6 +57,10 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[
                     'type': 'RNSR',
                     'value': row['RNSR']
                 },
+                {
+                    'type': 'ROR',
+                    'value': row['ROR']
+                },
             ],
         }
 

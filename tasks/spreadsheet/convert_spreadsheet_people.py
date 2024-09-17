@@ -28,8 +28,11 @@ def convert_spreadsheet_people(source_data: list[dict[str, str]]) -> dict[
             ],
             'identifiers': [
                 {'type': 'local', 'value': row['local_identifier']},
+                {'type': 'idhal_i', 'value': row['idHal_i']},
+                {'type': 'idhal_s', 'value': row['idHal_s']},
                 {'type': 'orcid', 'value': row['orcid']},
                 {'type': 'idref', 'value': row['idref']},
+                {'type': 'scopus_eid', 'value': row['scopus_eid']},
             ],
             'memberships': [{'entity': row['main_laboratory_identifier']}]
         }
