@@ -5,7 +5,7 @@ from airflow.decorators import dag
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 
 from tasks.database import update_database, create_redis_connection
-from tasks.fetch_people_from_spreadsheet import fetch_people_from_spreadsheet
+from tasks.fetch_people_from_spreadsheet import _fetch_people_from_spreadsheet
 from tasks.spreadsheet.convert_spreadsheet_people import convert_spreadsheet_people
 
 logger = logging.getLogger(__name__)
@@ -32,7 +32,7 @@ def load_spreadsheet_people():
     entity_source = "spreadsheet"
 
     connexion = create_redis_connection()
-    people_source_data = fetch_people_from_spreadsheet()
+    people_source_data = _fetch_people_from_spreadsheet()
 
     # pylint: disable=duplicate-code
     trigger_broadcast = TriggerDagRunOperator(

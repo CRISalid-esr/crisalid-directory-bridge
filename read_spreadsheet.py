@@ -30,7 +30,7 @@ def fetch_people_from_spreadsheet():
         list: A list of rows from the people spreadsheet.
     """
 
-    columns_to_return = [
+    expected_columns = [
         "first_name",
         "last_name",
         "main_laboratory_identifier",
@@ -44,7 +44,7 @@ def fetch_people_from_spreadsheet():
 
     data_path = get_env_variable("SPREADSHEET_PEOPLE_PATH")
 
-    df = read_spreadsheet(data_path, columns_to_return)
+    df = read_spreadsheet(data_path, expected_columns)
 
     rows = df.to_dict(orient='records')
 
@@ -58,7 +58,7 @@ def fetch_structures_from_spreadsheet():
         list: A list of rows from the structure spreadsheet.
     """
 
-    columns_to_return = [
+    expected_columns = [
         "name",
         "acronym",
         "description",
@@ -72,7 +72,7 @@ def fetch_structures_from_spreadsheet():
 
     data_path = get_env_variable("SPREADSHEET_STRUCTURES_PATH")
 
-    df = read_spreadsheet(data_path, columns_to_return)
+    df = read_spreadsheet(data_path, expected_columns)
 
     rows = df.to_dict(orient='records')
 

@@ -2,17 +2,17 @@ import logging
 
 from airflow.decorators import task
 
-from read_spreadsheet import read_spreadsheet
-from utils.config import get_env_variable
-
-from read_spreadsheet import fetch_structures_from_spreadsheet as get_structure_rows
+from read_spreadsheet import fetch_structures_from_spreadsheet
 
 logger = logging.getLogger(__name__)
 
 
 @task
-def fetch_structures_from_spreadsheet():
+def _fetch_structures_from_spreadsheet():
+    """
+    The logic from this function has been exported to allow it to be tested.
+    """
 
-    rows = get_structure_rows()
+    rows = fetch_structures_from_spreadsheet()
 
     return rows
