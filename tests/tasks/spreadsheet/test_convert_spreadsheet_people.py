@@ -1,5 +1,6 @@
-import pytest
 import json
+
+import pytest
 from airflow.utils.state import TaskInstanceState
 
 from test_utils.dags import create_dag_run, \
@@ -80,13 +81,13 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                 ]
             },
             "./tests/data/test_convert_spreadsheet_with_two_people.json"
-    )
+    ),
 ],
                          indirect=["dag"],
                          ids=[
-                         "test_convert_spreadsheet_people",
-                         "test_convert_spreadsheet_people_with_local_identifier_only",
-                         "test_convert_spreadsheet_with_two_people"
+                             "test_convert_spreadsheet_people",
+                             "test_convert_spreadsheet_people_with_local_identifier_only",
+                             "test_convert_spreadsheet_with_two_people",
                          ]
                          )
 def test_convert_spreadsheet_people(dag, expected_result_path, unique_execution_date):
