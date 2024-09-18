@@ -1,5 +1,6 @@
-import pytest
 import json
+
+import pytest
 from airflow.utils.state import TaskInstanceState
 
 from test_utils.dags import create_dag_run, \
@@ -96,6 +97,7 @@ def test_convert_spreadsheet_structures(dag, expected_result_path, unique_execut
     dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
+
     with open(expected_result_path, 'r') as f:
         expected_result = json.load(f)
     assert ti.state == TaskInstanceState.SUCCESS

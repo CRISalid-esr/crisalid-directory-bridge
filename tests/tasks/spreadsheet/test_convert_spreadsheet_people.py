@@ -1,5 +1,6 @@
-import pytest
 import json
+
+import pytest
 from airflow.utils.state import TaskInstanceState
 
 from test_utils.dags import create_dag_run, \
