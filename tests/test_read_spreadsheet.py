@@ -4,11 +4,16 @@ from read_spreadsheet import fetch_people_from_spreadsheet, fetch_structures_fro
 
 
 def test_fetch_people_from_spreadsheet(monkeypatch):
+    """
+    Test opening a csv file and reading its content for people data
+    :param monkeypatch:
+    :return:
+    """
     monkeypatch.setenv("SPREADSHEET_PEOPLE_PATH", "./tests/data/csv/people.csv")
     assert os.getenv("SPREADSHEET_PEOPLE_PATH") == "./tests/data/csv/people.csv"
     expected_result = [{'first_name': 'Joe',
-                        'idHal_i': "012345678",
-                        'idHal_s': 'jean-dupond',
+                        'id_hal_i': "012345678",
+                        'id_hal_s': 'jean-dupond',
                         'idref': "012345678",
                         'last_name': 'Dupond',
                         'local_identifier': 'jdupond',
@@ -20,6 +25,11 @@ def test_fetch_people_from_spreadsheet(monkeypatch):
 
 
 def test_fetch_structures_from_spreadsheet(monkeypatch):
+    """
+    Test opening a csv file and reading its content for structures data
+    :param monkeypatch:
+    :return:
+    """
     monkeypatch.setenv("SPREADSHEET_STRUCTURES_PATH", "./tests/data/csv/structures.csv")
     assert os.getenv("SPREADSHEET_STRUCTURES_PATH") == "./tests/data/csv/structures.csv"
     expected_result = [{'RNSR': '0199812919',

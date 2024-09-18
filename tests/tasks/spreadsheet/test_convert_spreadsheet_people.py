@@ -23,8 +23,8 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'last_name': 'Dupond',
                         'main_laboratory_identifier': 'U01',
                         'local_identifier': 'jdupond',
-                        'idHal_i': '',
-                        'idHal_s': '',
+                        'id_hal_i': '',
+                        'id_hal_s': '',
                         'orcid': '0000-0000-0000-0001',
                         'idref': '12345678X',
                         'scopus_eid': '',
@@ -42,8 +42,8 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'last_name': 'Gerald',
                         'main_laboratory_identifier': 'U85',
                         'local_identifier': 'hgerald',
-                        'idHal_i': '',
-                        'idHal_s': '',
+                        'id_hal_i': '',
+                        'id_hal_s': '',
                         'orcid': '',
                         'idref': '',
                         'scopus_eid': '',
@@ -61,8 +61,8 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'last_name': 'Gerald',
                         'main_laboratory_identifier': 'U85',
                         'local_identifier': 'hgerald',
-                        'idHal_i': '054235',
-                        'idHal_s': 'henry-gerald',
+                        'id_hal_i': '054235',
+                        'id_hal_s': 'henry-gerald',
                         'orcid': '0000-0000-0000-0001',
                         'idref': '012345678X',
                         'scopus_eid': '5432345678X',
@@ -72,8 +72,8 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'last_name': 'Dupond',
                         'main_laboratory_identifier': 'U01',
                         'local_identifier': 'jdupond',
-                        'idHal_i': '',
-                        'idHal_s': '',
+                        'id_hal_i': '',
+                        'id_hal_s': '',
                         'orcid': '',
                         'idref': '',
                         'scopus_eid': '',
@@ -98,7 +98,7 @@ def test_convert_spreadsheet_people(dag, expected_result_path, unique_execution_
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
 
-    with open(expected_result_path, 'r') as f:
+    with open(expected_result_path, 'r', encoding='utf-8') as f:
         expected_result = json.load(f)
     assert ti.state == TaskInstanceState.SUCCESS
     assert ti.xcom_pull(task_ids=TEST_TASK_ID) == expected_result

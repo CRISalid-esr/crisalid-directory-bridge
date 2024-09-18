@@ -1,5 +1,5 @@
 import logging
-from utils.config import get_env_variable
+
 from airflow.decorators import task
 
 logger = logging.getLogger(__name__)
@@ -28,8 +28,8 @@ def convert_spreadsheet_people(source_data: list[dict[str, str]]) -> dict[
             ],
             'identifiers': [
                 {'type': 'local', 'value': row['local_identifier']},
-                {'type': 'idhal_i', 'value': row['idHal_i']},
-                {'type': 'idhal_s', 'value': row['idHal_s']},
+                {'type': 'id_hal_i', 'value': row['id_hal_i']},
+                {'type': 'id_hal_s', 'value': row['id_hal_s']},
                 {'type': 'orcid', 'value': row['orcid']},
                 {'type': 'idref', 'value': row['idref']},
                 {'type': 'scopus_eid', 'value': row['scopus_eid']},

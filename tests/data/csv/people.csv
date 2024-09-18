@@ -1,2 +1,2 @@
-first_name,last_name,main_laboratory_identifier,local_identifier,idHal_i,idHal_s,orcid,idref,scopus_eid
+first_name,last_name,main_laboratory_identifier,local_identifier,id_hal_i,id_hal_s,orcid,idref,scopus_eid
 Joe,Dupond,U01,jdupond,012345678,jean-dupond,0000-0000-0000-0001,012345678,012345678
