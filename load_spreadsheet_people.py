@@ -38,7 +38,7 @@ def load_spreadsheet_people():
     trigger_broadcast = TriggerDagRunOperator(
         task_id='trigger_broadcast',
         trigger_dag_id='broadcast_entities',
-        execution_date="{{ execution_date + macros.timedelta(seconds=20) }}",
+        execution_date="{{ execution_date + macros.timedelta(seconds=30) }}",
         trigger_run_id='spreadsheet_people_run_{{ execution_date.int_timestamp }}',
         conf={
             "timestamp": "{{ execution_date.int_timestamp }}",
