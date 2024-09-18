@@ -4,6 +4,10 @@ from airflow.decorators import task
 
 logger = logging.getLogger(__name__)
 
+LOCAL_PERSON_IDENTIFIER = 'local'
+
+PERSON_IDENTIFIERS = [LOCAL_PERSON_IDENTIFIER, 'id_hal_i', 'id_hal_s', 'orcid', 'idref', 'scopus_eid']
+
 
 @task(task_id="convert_spreadsheet_people")
 def convert_spreadsheet_people(source_data: list[dict[str, str]]) -> dict[
@@ -21,19 +25,20 @@ def convert_spreadsheet_people(source_data: list[dict[str, str]]) -> dict[
     task_results = {}
 
     for row in source_data:
-        task_results[f"uid={row['local_identifier']}"] = {
+        non_empty_identifiers = [
+            {'type': identifier, 'value': row[identifier]}
+            for identifier in PERSON_IDENTIFIERS if row.get(identifier) and row[identifier].strip()
+        ]
+
+        if len(non_empty_identifiers) == 0:
+            logger.warning(f"No identifiers for row: {row}")
+
+        task_results[f"uid={row[LOCAL_PERSON_IDENTIFIER]}"] = {
             'names': [
                 {'last_names': [{'value': row['last_name'], 'language': 'fr'}],
                  'first_names': [{'value': row['first_name'], 'language': 'fr'}]}
             ],
-            'identifiers': [
-                {'type': 'local', 'value': row['local_identifier']},
-                {'type': 'id_hal_i', 'value': row['id_hal_i']},
-                {'type': 'id_hal_s', 'value': row['id_hal_s']},
-                {'type': 'orcid', 'value': row['orcid']},
-                {'type': 'idref', 'value': row['idref']},
-                {'type': 'scopus_eid', 'value': row['scopus_eid']},
-            ],
+            'identifiers': non_empty_identifiers,
             'memberships': [{'entity': row['main_laboratory_identifier']}]
         }
 

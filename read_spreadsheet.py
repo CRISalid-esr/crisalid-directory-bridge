@@ -34,7 +34,7 @@ def fetch_people_from_spreadsheet():
         "first_name",
         "last_name",
         "main_laboratory_identifier",
-        "local_identifier",
+        "local",
         "id_hal_i",
         "id_hal_s",
         "orcid",
