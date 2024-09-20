@@ -31,11 +31,11 @@
         "value": "U086"
       },
       {
-        "type": "RNSR",
+        "type": "rnsr",
         "value": "123456789F"
       },
       {
-        "type": "ROR",
+        "type": "ror",
         "value": "567890123"
       }
     ]
@@ -72,12 +72,8 @@
         "value": "U082"
       },
       {
-        "type": "RNSR",
+        "type": "rnsr",
         "value": "199812919F"
-      },
-      {
-        "type": "ROR",
-        "value": ""
       }
     ]
   }

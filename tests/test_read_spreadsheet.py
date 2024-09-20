@@ -32,14 +32,14 @@ def test_fetch_structures_from_spreadsheet(monkeypatch):
     """
     monkeypatch.setenv("SPREADSHEET_STRUCTURES_PATH", "./tests/data/csv/structures.csv")
     assert os.getenv("SPREADSHEET_STRUCTURES_PATH") == "./tests/data/csv/structures.csv"
-    expected_result = [{'RNSR': '0199812919',
-                        'ROR': '01296475',
+    expected_result = [{'rnsr': '0199812919',
+                        'ror': '01296475',
                         'acronym': '',
                         'city_adress': 'Centre Meudon, 1 PLACE ARISTIDE BRIAND',
                         'city_code': "92190",
                         'city_name': 'MEUDON',
                         'description': '',
-                        'local_identifier': 'U082',
+                        'local': 'U082',
                         'name': 'Laboratoire de géographie physique Pierre Birot (UMR 8591)'}]
     result = fetch_structures_from_spreadsheet()
     assert result == expected_result

@@ -31,12 +31,8 @@
         "value": "U082"
       },
       {
-        "type": "RNSR",
+        "type": "rnsr",
         "value": "199812919F"
-      },
-      {
-        "type": "ROR",
-        "value": ""
       }
     ]
   }
