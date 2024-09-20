@@ -22,24 +22,12 @@
         "value": "jdupond"
       },
       {
-        "type": "id_hal_i",
-        "value": ""
-      },
-      {
-        "type": "id_hal_s",
-        "value": ""
-      },
-      {
         "type": "orcid",
         "value": "0000-0000-0000-0001"
       },
       {
         "type": "idref",
         "value": "12345678X"
-      },
-      {
-        "type": "scopus_eid",
-        "value": ""
       }
     ],
     "memberships": [

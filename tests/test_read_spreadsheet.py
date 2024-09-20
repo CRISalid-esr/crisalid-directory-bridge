@@ -16,7 +16,7 @@ def test_fetch_people_from_spreadsheet(monkeypatch):
                         'id_hal_s': 'jean-dupond',
                         'idref': "012345678",
                         'last_name': 'Dupond',
-                        'local_identifier': 'jdupond',
+                        'local': 'jdupond',
                         'main_laboratory_identifier': 'U01',
                         'orcid': '0000-0000-0000-0001',
                         'scopus_eid': "012345678"}]
