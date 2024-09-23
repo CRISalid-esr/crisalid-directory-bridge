@@ -8,6 +8,8 @@ from airflow.utils.task_group import TaskGroup
 from tasks.combine_batch_results import combine_batch_results
 from tasks.database import update_database, create_redis_connection
 from tasks.fetch_people_from_ldap import fetch_ldap_people
+from tasks.supann_2021.complete_identifiers import complete_identifiers
+from tasks.supann_2021.fetch_identifiers_from_spreadsheet import fetch_identifiers_from_spreadsheet
 from utils.config import get_env_variable
 from utils.dependencies import import_from_path
 
@@ -62,7 +64,13 @@ def load_ldap_people():
             converted_result = task(ldap_results=ldap_results)
             batch_results.append(converted_result)
     combined_results = combine_batch_results(batch_results)
-    redis_keys = update_database(result=combined_results, prefix=f"{entity_type}:{entity_source}:")
+    if get_env_variable("COMPLETE_LDAP_PEOPLE_IDENTIFIERS_FROM_SPREADSHEET"):
+        identifiers_from_spreadsheet = fetch_identifiers_from_spreadsheet()
+        completed_results = complete_identifiers(results=combined_results,
+                                                 identifiers=identifiers_from_spreadsheet)
+    else:
+        completed_results = combined_results
+    redis_keys = update_database(result=completed_results, prefix=f"{entity_type}:{entity_source}:")
     connexion >> redis_keys >> trigger_broadcast  # pylint: disable=pointless-statement # pylint: disable=pointless-statement
 
 

@@ -2,15 +2,36 @@ import logging
 
 from airflow.decorators import task
 
-from read_spreadsheet import fetch_people_from_spreadsheet
+from utils.config import get_env_variable
+from utils.spreadsheet import read_spreadsheet
+
 logger = logging.getLogger(__name__)
 
 
 @task
-def _fetch_people_from_spreadsheet():
+def fetch_people_from_spreadsheet():
+    """Fetch people from a spreadsheet.
+
+    Returns:
+        list: A list of rows from the people spreadsheet.
     """
-    The logic from this function has been exported to allow it to be tested.
-    """
-    rows = fetch_people_from_spreadsheet()
+
+    expected_columns = [
+        "first_name",
+        "last_name",
+        "main_laboratory_identifier",
+        "local",
+        "id_hal_i",
+        "id_hal_s",
+        "orcid",
+        "idref",
+        "scopus_eid",
+    ]
+
+    data_path = get_env_variable("SPREADSHEET_PEOPLE_PATH")
+
+    df = read_spreadsheet(data_path, expected_columns)
+
+    rows = df.to_dict(orient='records')
 
     return rows
