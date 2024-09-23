@@ -22,11 +22,11 @@
         "value": "hgerald"
       },
       {
-        "type": "idhal_i",
+        "type": "id_hal_i",
         "value": "054235"
       },
       {
-        "type": "idhal_s",
+        "type": "id_hal_s",
         "value": "henry-gerald"
       },
       {
@@ -69,26 +69,6 @@
       {
         "type": "local",
         "value": "jdupond"
-      },
-      {
-        "type": "idhal_i",
-        "value": ""
-      },
-      {
-        "type": "idhal_s",
-        "value": ""
-      },
-      {
-        "type": "orcid",
-        "value": ""
-      },
-      {
-        "type": "idref",
-        "value": ""
-      },
-      {
-        "type": "scopus_eid",
-        "value": ""
       }
     ],
     "memberships": [

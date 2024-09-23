@@ -1,8 +1,12 @@
 import logging
-from utils.config import get_env_variable
+
 from airflow.decorators import task
 
 logger = logging.getLogger(__name__)
+
+LOCAL_STRUCTURE_IDENTIFIER = 'local'
+
+STRUCTURE_IDENTIFIERS = [LOCAL_STRUCTURE_IDENTIFIER, 'rnsr', 'ror']
 
 
 @task(task_id="convert_spreadsheet_structures")
@@ -22,7 +26,13 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[
     task_results = {}
 
     for row in source_data:
-        task_results[f"struct_id={row['local_identifier']}"] = {
+        non_empty_identifiers = [
+            {'type': identifier, 'value': row[identifier]}
+            for identifier in STRUCTURE_IDENTIFIERS if row.get(identifier)
+                                                       and row[identifier].strip()
+        ]
+
+        task_results[f"struct_id={row[LOCAL_STRUCTURE_IDENTIFIER]}"] = {
             'names': [
                 {
                     'value': row['name'],
@@ -34,7 +44,7 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[
                 {
                     'value': row['description'],
                     'language': 'fr',
-                 }
+                }
             ],
             'contacts': [
                 {
@@ -48,20 +58,7 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[
                     }
                 }
             ],
-            'identifiers': [
-                {
-                    'type': 'local',
-                    'value': row['local_identifier']
-                },
-                {
-                    'type': 'RNSR',
-                    'value': row['RNSR']
-                },
-                {
-                    'type': 'ROR',
-                    'value': row['ROR']
-                },
-            ],
+            'identifiers': non_empty_identifiers,
         }
 
     return task_results

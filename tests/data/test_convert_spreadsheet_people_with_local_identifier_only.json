@@ -20,26 +20,6 @@
       {
         "type": "local",
         "value": "hgerald"
-      },
-      {
-        "type": "idhal_i",
-        "value": ""
-      },
-      {
-        "type": "idhal_s",
-        "value": ""
-      },
-      {
-        "type": "orcid",
-        "value": ""
-      },
-      {
-        "type": "idref",
-        "value": ""
-      },
-      {
-        "type": "scopus_eid",
-        "value": ""
       }
     ],
     "memberships": [

@@ -22,9 +22,9 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                         'name': 'Laboratoire de géographie physique Pierre Birot (UMR 8591)',
                         'acronym': '',
                         'description': 'Lab description',
-                        'local_identifier': 'U082',
-                        'RNSR': '199812919F',
-                        'ROR': '',
+                        'local': 'U082',
+                        'rnsr': '199812919F',
+                        'ror': '',
                         'city_name': 'MEUDON',
                         'city_code': '92190',
                         'city_adress': 'Centre Meudon, 1 PLACE ARISTIDE BRIAND',
@@ -41,9 +41,9 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                         'name': 'Laboratoire des Tests (UMR 2024)',
                         'acronym': 'TEST',
                         'description': 'Laboratoire des Tests (UMR 2024)',
-                        'local_identifier': 'U086',
-                        'RNSR': '123456789F',
-                        'ROR': '567890123',
+                        'local': 'U086',
+                        'rnsr': '123456789F',
+                        'ror': '567890123',
                         'city_name': 'MEUDON',
                         'city_code': '92190',
                         'city_adress': 'Centre Meudon, 1 PLACE ARISTIDE BRIAND',
@@ -60,9 +60,9 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                         'name': 'Laboratoire des Tests (UMR 2024)',
                         'acronym': 'TEST',
                         'description': 'Laboratoire des Tests (UMR 2024)',
-                        'local_identifier': 'U086',
-                        'RNSR': '123456789F',
-                        'ROR': '567890123',
+                        'local': 'U086',
+                        'rnsr': '123456789F',
+                        'ror': '567890123',
                         'city_name': 'MEUDON',
                         'city_code': '92190',
                         'city_adress': 'Centre Meudon, 1 PLACE ARISTIDE BRIAND',
@@ -71,9 +71,9 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                         'name': 'Laboratoire de géographie physique Pierre Birot (UMR 8591)',
                         'acronym': '',
                         'description': 'test geolab',
-                        'local_identifier': 'U082',
-                        'RNSR': '199812919F',
-                        'ROR': '',
+                        'local': 'U082',
+                        'rnsr': '199812919F',
+                        'ror': '',
                         'city_name': 'MEUDON',
                         'city_code': '92190',
                         'city_adress': 'Centre Meudon, 1 PLACE ARISTIDE BRIAND',
@@ -98,7 +98,7 @@ def test_convert_spreadsheet_structures(dag, expected_result_path, unique_execut
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
 
-    with open(expected_result_path, 'r') as f:
+    with open(expected_result_path, 'r', encoding='utf-8') as f:
         expected_result = json.load(f)
     assert ti.state == TaskInstanceState.SUCCESS
     assert ti.xcom_pull(task_ids=TEST_TASK_ID) == expected_result
