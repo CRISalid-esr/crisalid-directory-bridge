@@ -2,16 +2,16 @@
   "uid=hgerald": {
     "identifiers": [
       {
+        "type": "idref",
+        "value": "9101"
+      },
+      {
         "type": "local",
         "value": "hgerald"
       },
       {
         "type": "orcid",
         "value": "0000-0003-4567-8901"
-      },
-      {
-        "type": "idref",
-        "value": "9101"
       }
     ],
     "memberships": [
@@ -39,16 +39,16 @@
   "uid=jdupond": {
     "identifiers": [
       {
+        "type": "idref",
+        "value": "12345678X"
+      },
+      {
         "type": "local",
         "value": "jdupond"
       },
       {
         "type": "orcid",
         "value": "0000-0000-0000-0001"
-      },
-      {
-        "type": "idref",
-        "value": "12345678X"
       }
     ],
     "memberships": [

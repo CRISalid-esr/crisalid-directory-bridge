@@ -66,8 +66,10 @@ def load_ldap_people():
     combined_results = combine_batch_results(batch_results)
     if get_env_variable("COMPLETE_LDAP_PEOPLE_IDENTIFIERS_FROM_SPREADSHEET"):
         identifiers_from_spreadsheet = fetch_identifiers_from_spreadsheet()
-        completed_results = complete_identifiers(results=combined_results,
-                                                 identifiers_list=identifiers_from_spreadsheet)
+        completed_results = complete_identifiers(
+            ldap_source=combined_results,
+            identifiers_spreadsheet=identifiers_from_spreadsheet
+        )
     else:
         completed_results = combined_results
     redis_keys = update_database(result=completed_results, prefix=f"{entity_type}:{entity_source}:")

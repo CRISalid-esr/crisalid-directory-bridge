@@ -24,15 +24,15 @@ def dag_fixture(request: SubRequest) -> DAG:
     :return: The DAG object
     """
     task_name = request.param['task_name']
-    raw_results = request.param['raw_results']
-    identifiers_list = request.param['identifiers_list']
+    ldap_source = request.param['ldap_source']
+    identifiers_spreadsheet = request.param['identifiers_spreadsheet']
     with DAG(
             dag_id=TEST_DAG_ID,
             schedule="@daily",
             start_date=DATA_INTERVAL_START,
     ) as created_dag:
         convert_description_task = import_from_path(task_name)
-        convert_description_task(raw_results, identifiers_list)
+        convert_description_task(ldap_source, identifiers_spreadsheet)
     return created_dag
 
 
@@ -40,7 +40,7 @@ def dag_fixture(request: SubRequest) -> DAG:
     (
             {
                 "task_name": TESTED_TASK_NAME,
-                "raw_results": {
+                "ldap_source": {
                     "uid=jdupond": {
                         "names": [
                             {
@@ -100,18 +100,160 @@ def dag_fixture(request: SubRequest) -> DAG:
                         ]
                     }
                 },
-                "identifiers_list": [
+                "identifiers_spreadsheet": [
                     {'local': 'loc1', 'idref': '1234', 'orcid': '0000-0001-2345-6789'},
                     {'local': 'jdupond', 'idref': "12345678X", 'orcid': '0000-0000-0000-0001'},
                     {'local': 'hgerald', 'idref': '9101', 'orcid': '0000-0003-4567-8901'}
                 ]
             },
-            "./tests/data/test_complete_identifiers.json"
+            "./tests/data/test_complete_identifiers_with_two_entities.json"
+    ),
+    (
+            {
+                "task_name": TESTED_TASK_NAME,
+                "ldap_source": {
+                    "uid=jdupond": {
+                        "names": [
+                            {
+                                "last_names": [
+                                    {
+                                        "value": "Dupond",
+                                        "language": "fr"
+                                    }
+                                ],
+                                "first_names": [
+                                    {
+                                        "value": "Joe",
+                                        "language": "fr"
+                                    }
+                                ]
+                            }
+                        ],
+                        "identifiers": [
+                            {
+                                "type": "local",
+                                "value": "jdupond"
+                            }
+                        ],
+                        "memberships": [
+                            {
+                                "entity": "U01"
+                            }
+                        ]
+                    }
+                },
+                "identifiers_spreadsheet": [
+                    {'local': 'loc1', 'idref': '1234', 'orcid': '0000-0001-2345-6789'},
+                    {'local': 'jdupond', 'idref': "12345678X", 'orcid': '0000-0000-0000-0001'},
+                    {'local': 'jdupond', 'idref': "12345678X", 'orcid': '0000-0000-0000-0001'},
+                    {'local': 'hgerald', 'idref': '9101', 'orcid': '0000-0003-4567-8901'}
+                ]
+            },
+            "./tests/data/test_complete_identifiers_with_one_entity.json"
+    ),
+    (
+            {
+                "task_name": TESTED_TASK_NAME,
+                "ldap_source": {
+                    "uid=jdupond": {
+                        "names": [
+                            {
+                                "last_names": [
+                                    {
+                                        "value": "Dupond",
+                                        "language": "fr"
+                                    }
+                                ],
+                                "first_names": [
+                                    {
+                                        "value": "Joe",
+                                        "language": "fr"
+                                    }
+                                ]
+                            }
+                        ],
+                        "identifiers": [
+                            {
+                                "type": "local",
+                                "value": "jdupond"
+                            },
+                            {
+                                "type": "idref",
+                                "value": "12345678X"
+                            }
+                        ],
+                        "memberships": [
+                            {
+                                "entity": "U01"
+                            }
+                        ]
+                    },
+                },
+                "identifiers_spreadsheet": [
+                    {'local': 'loc1', 'idref': '1234', 'orcid': '0000-0001-2345-6789'},
+                    {'local': 'jdupond', 'idref': "12345678X", 'orcid': '0000-0000-0000-0001'},
+                    {'local': 'hgerald', 'idref': '9101', 'orcid': '0000-0003-4567-8901'}
+                ]
+            },
+            "./tests/data/test_complete_identifiers_with_one_entity.json"
+    ),
+    (
+            {
+                "task_name": TESTED_TASK_NAME,
+                "ldap_source": {
+                    "uid=jdupond": {
+                        "names": [
+                            {
+                                "last_names": [
+                                    {
+                                        "value": "Dupond",
+                                        "language": "fr"
+                                    }
+                                ],
+                                "first_names": [
+                                    {
+                                        "value": "Joe",
+                                        "language": "fr"
+                                    }
+                                ]
+                            }
+                        ],
+                        "identifiers": [
+                            {
+                                "type": "local",
+                                "value": "jdupond"
+                            },
+                            {
+                                "type": "idref",
+                                "value": "12345678X"
+                            },
+                            {
+                                "type": "idref",
+                                "value": "12345678X"
+                            }
+                        ],
+                        "memberships": [
+                            {
+                                "entity": "U01"
+                            }
+                        ]
+                    },
+                },
+                "identifiers_spreadsheet": [
+                    {'local': 'loc1', 'idref': '1234', 'orcid': '0000-0001-2345-6789'},
+                    {'local': 'jdupond', 'idref': "12345678X", 'orcid': '0000-0000-0000-0001'},
+                    {'local': 'hgerald', 'idref': '9101', 'orcid': '0000-0003-4567-8901'}
+                ]
+            },
+            "./tests/data/test_complete_identifiers_with_one_entity.json"
     ),
 ],
                          indirect=["dag"],
                          ids=[
-                             "test_convert_spreadsheet_people",
+                             "test_complete_identifiers_with_two_entities",
+                             "test_complete_identifiers_with_dupe_identifier_list",
+                             "test_complete_identifiers_with_known_idref",
+                             "test_complete_identifiers_with_dupe_identifier_in_ldap",
                          ]
                          )
 def test_complete_identifiers(dag, expected_result_path, unique_execution_date):

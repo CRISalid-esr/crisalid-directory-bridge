@@ -1,0 +1,39 @@
+{
+  "uid=jdupond": {
+    "identifiers": [
+      {
+        "type": "idref",
+        "value": "12345678X"
+      },
+      {
+        "type": "local",
+        "value": "jdupond"
+      },
+      {
+        "type": "orcid",
+        "value": "0000-0000-0000-0001"
+      }
+    ],
+    "memberships": [
+      {
+        "entity": "U01"
+      }
+    ],
+    "names": [
+      {
+        "first_names": [
+          {
+            "language": "fr",
+            "value": "Joe"
+          }
+        ],
+        "last_names": [
+          {
+            "language": "fr",
+            "value": "Dupond"
+          }
+        ]
+      }
+    ]
+  }
+}
