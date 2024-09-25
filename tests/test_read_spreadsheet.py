@@ -1,6 +1,7 @@
 import os
 
-from read_spreadsheet import fetch_people_from_spreadsheet, fetch_structures_from_spreadsheet
+from tasks.fetch_people_from_spreadsheet import fetch_people_from_spreadsheet
+from tasks.fetch_structures_from_spreadsheet import fetch_structures_from_spreadsheet
 
 
 def test_fetch_people_from_spreadsheet(monkeypatch):
