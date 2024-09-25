@@ -5,3 +5,12 @@ def ensure_list(a) -> list:
     :return: a list
     """
     return a if isinstance(a, list) else [a]
+
+
+def deduplicate_dict_list(list_: list[dict]) -> list[dict]:
+    """
+    Deduplicate a list of dictionaries.
+    :param list_: a list of dictionaries
+    :return: the deduplicated list
+    """
+    return [dict(t) for t in {tuple(d.items()) for d in list_}]
