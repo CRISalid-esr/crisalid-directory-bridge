@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 @task(task_id="complete_identifiers")
-def complete_identifiers(ldap_source: dict, identifiers_spreadsheet: dict) -> dict:
+def complete_identifiers(ldap_source: dict, identifiers_spreadsheet: list[dict[str, str]]) -> dict:
     """
     Complete the identifiers with the missing fields.
 
