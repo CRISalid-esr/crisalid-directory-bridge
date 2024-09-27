@@ -6,7 +6,12 @@ logger = logging.getLogger(__name__)
 
 LOCAL_PERSON_IDENTIFIER = 'local'
 
-PERSON_IDENTIFIERS = [LOCAL_PERSON_IDENTIFIER, 'id_hal_i', 'id_hal_s', 'orcid', 'idref', 'scopus_eid']
+PERSON_IDENTIFIERS = [LOCAL_PERSON_IDENTIFIER,
+                      'id_hal_i',
+                      'id_hal_s',
+                      'orcid',
+                      'idref',
+                      'scopus_eid']
 
 
 @task(task_id="convert_spreadsheet_people")
@@ -31,9 +36,9 @@ def convert_spreadsheet_people(source_data: list[dict[str, str]]) -> dict[
         ]
 
         if len(non_empty_identifiers) == 0:
-            logger.warning(f"No identifiers for row: {row}")
+            logger.warning("No identifiers for row: %s", row)
 
-        task_results[f"uid={row[LOCAL_PERSON_IDENTIFIER]}"] = {
+        task_results[f"{row[LOCAL_PERSON_IDENTIFIER]}"] = {
             'names': [
                 {'last_names': [{'value': row['last_name'], 'language': 'fr'}],
                  'first_names': [{'value': row['first_name'], 'language': 'fr'}]}

@@ -1,5 +1,5 @@
 {
-  "struct_id=U086": {
+  "U086": {
     "names": [
       {
         "value": "Laboratoire des Tests (UMR 2024)",
@@ -40,7 +40,7 @@
       }
     ]
   },
-  "struct_id=U082": {
+  "U082": {
     "names": [
       {
         "value": "Laboratoire de géographie physique Pierre Birot (UMR 8591)",

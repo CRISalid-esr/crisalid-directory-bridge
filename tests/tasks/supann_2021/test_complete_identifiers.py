@@ -41,7 +41,7 @@ def dag_fixture(request: SubRequest) -> DAG:
             {
                 "task_name": TESTED_TASK_NAME,
                 "ldap_source": {
-                    "uid=jdupond": {
+                    "jdupond": {
                         "names": [
                             {
                                 "last_names": [
@@ -66,11 +66,11 @@ def dag_fixture(request: SubRequest) -> DAG:
                         ],
                         "memberships": [
                             {
-                                "entity": "U01"
+                                "entity_id": "U01"
                             }
                         ]
                     },
-                    "uid=hgerald": {
+                    "hgerald": {
                         "names": [
                             {
                                 "last_names": [
@@ -95,7 +95,7 @@ def dag_fixture(request: SubRequest) -> DAG:
                         ],
                         "memberships": [
                             {
-                                "entity": "U01"
+                                "entity_id": "U01"
                             }
                         ]
                     }
@@ -112,7 +112,7 @@ def dag_fixture(request: SubRequest) -> DAG:
             {
                 "task_name": TESTED_TASK_NAME,
                 "ldap_source": {
-                    "uid=jdupond": {
+                    "jdupond": {
                         "names": [
                             {
                                 "last_names": [
@@ -137,7 +137,7 @@ def dag_fixture(request: SubRequest) -> DAG:
                         ],
                         "memberships": [
                             {
-                                "entity": "U01"
+                                "entity_id": "U01"
                             }
                         ]
                     }
@@ -155,7 +155,7 @@ def dag_fixture(request: SubRequest) -> DAG:
             {
                 "task_name": TESTED_TASK_NAME,
                 "ldap_source": {
-                    "uid=jdupond": {
+                    "jdupond": {
                         "names": [
                             {
                                 "last_names": [
@@ -184,7 +184,7 @@ def dag_fixture(request: SubRequest) -> DAG:
                         ],
                         "memberships": [
                             {
-                                "entity": "U01"
+                                "entity_id": "U01"
                             }
                         ]
                     },
@@ -201,7 +201,7 @@ def dag_fixture(request: SubRequest) -> DAG:
             {
                 "task_name": TESTED_TASK_NAME,
                 "ldap_source": {
-                    "uid=jdupond": {
+                    "jdupond": {
                         "names": [
                             {
                                 "last_names": [
@@ -234,7 +234,7 @@ def dag_fixture(request: SubRequest) -> DAG:
                         ],
                         "memberships": [
                             {
-                                "entity": "U01"
+                                "entity_id": "U01"
                             }
                         ]
                     },
