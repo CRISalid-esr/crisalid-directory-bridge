@@ -24,4 +24,4 @@ def fetch_structures_from_ldap():
         raise LDAPConnectionError("Unable to connect to the LDAP server") from error
     except ldap.SIZELIMIT_EXCEEDED as error:  # pylint: disable=no-member
         raise LDAPSizeLimitExceededError("The LDAP response exceeds the size limit") from error
-    return ldap_response_to_json_dict(ldap_response)
+    return ldap_response_to_json_dict(ldap_response, dict_key='supannCodeEntite')

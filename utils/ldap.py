@@ -1,6 +1,10 @@
+import logging
+
 import ldap
 
 from utils.config import get_env_variable
+
+logger = logging.getLogger(__name__)
 
 
 def connect_to_ldap() -> ldap:
@@ -17,7 +21,7 @@ def connect_to_ldap() -> ldap:
     return conn
 
 
-def ldap_response_to_json_dict(ldap_response):
+def ldap_response_to_json_dict(ldap_response, dict_key) -> dict:
     """Convert LDAP response to a JSON-serializable format.
 
     Args:
@@ -28,6 +32,14 @@ def ldap_response_to_json_dict(ldap_response):
     """
     result = {}
     for dn, entry in ldap_response:
-        result[dn] = {k: [val.decode('utf-8') if isinstance(val, bytes) else val for val in v]
-                      for k, v in entry.items()}
+        logger.debug("Processing entry %s", dn)
+        entry_key = entry.get(dict_key)
+        if entry_key:
+            entry_key = entry_key[0].decode('utf-8')
+        else:
+            logger.error("Missing uid for %s", dn)
+            continue
+        result[entry_key] = {
+            k: [val.decode('utf-8') if isinstance(val, bytes) else val for val in v]
+            for k, v in entry.items()}
     return result

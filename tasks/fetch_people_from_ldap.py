@@ -48,5 +48,5 @@ def fetch_ldap_people():
             raise LDAPSizeLimitExceededError(
                 "The LDAP response exceeds the size limit"
                 f"for people filter {people_filter}") from error
-    formatted_result = ldap_response_to_json_dict(ldap_response)
+    formatted_result = ldap_response_to_json_dict(ldap_response, dict_key='uid')
     return formatted_result
