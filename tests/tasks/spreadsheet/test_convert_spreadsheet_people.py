@@ -17,6 +17,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
     (
             {
                 "task_name": TESTED_TASK_NAME,
+                "param_names": ["raw_results"],
                 "raw_results": [
                     {
                         'first_name': 'Joe',
@@ -36,6 +37,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
     (
             {
                 "task_name": TESTED_TASK_NAME,
+                "param_names": ["raw_results"],
                 "raw_results": [
                     {
                         'first_name': 'Henry',
@@ -55,6 +57,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
     (
             {
                 "task_name": TESTED_TASK_NAME,
+                "param_names": ["raw_results"],
                 "raw_results": [
                     {
                         'first_name': 'Henry',
@@ -94,6 +97,7 @@ def test_convert_spreadsheet_people(dag, expected_result_path, unique_execution_
     """
     Test that the csv data are converted to the expected format
     """
+    # pylint: disable=duplicate-code
     dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)

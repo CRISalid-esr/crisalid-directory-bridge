@@ -15,6 +15,7 @@ TESTED_TASK_NAME = 'tasks.supann_2021.convert_ldap_people_names.convert_ldap_peo
 @pytest.mark.parametrize("dag", [
     {
         "task_name": TESTED_TASK_NAME,
+        "param_names": ["raw_results"],
         "raw_results": {
             "uid=1234,ou=people,dc=example,dc=org": {
                 "sn": ["Doe"],
@@ -49,6 +50,7 @@ def test_names_are_converted_from_ldap(dag, unique_execution_date):
 @pytest.mark.parametrize("dag", [
     {
         "task_name": TESTED_TASK_NAME,
+        "param_names": ["raw_results"],
         "raw_results": {
             "uid=1234,ou=people,dc=example,dc=org": {
                 "sn": ["Doe"],
@@ -82,6 +84,7 @@ def test_only_last_name_present(dag, unique_execution_date):
 @pytest.mark.parametrize("dag", [
     {
         "task_name": TESTED_TASK_NAME,
+        "param_names": ["raw_results"],
         "raw_results": {
             "uid=1234,ou=people,dc=example,dc=org": {
                 "givenName": ["John"],
@@ -115,6 +118,7 @@ def test_only_first_name_present(dag, unique_execution_date):
 @pytest.mark.parametrize("dag", [
     {
         "task_name": TESTED_TASK_NAME,
+        "param_names": ["raw_results"],
         "raw_results": {
             "uid=1234,ou=people,dc=example,dc=org": {
                 "sn": ["Doe"],

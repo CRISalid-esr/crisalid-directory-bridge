@@ -14,6 +14,7 @@ TEST_TASK_ID = "convert_ldap_structure_descriptions"
 @pytest.mark.parametrize("dag", [
     {
         'task_name': TESTED_TASK_NAME,
+        "param_names": ["raw_results"],
         'raw_results': {
             "uid=3456,ou=people,dc=example,dc=org": {
                 "description": ["A university in Example 1"],
