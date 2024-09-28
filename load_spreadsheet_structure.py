@@ -5,7 +5,7 @@ from airflow.decorators import dag
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 
 from tasks.database import update_database, create_redis_connection
-from tasks.fetch_structures_from_spreadsheet import fetch_structures_from_spreadsheet
+from tasks.fetch_from_spreadsheet import fetch_from_spreadsheet
 from tasks.spreadsheet.convert_spreadsheet_structures import convert_spreadsheet_structures
 
 logger = logging.getLogger(__name__)
@@ -28,11 +28,11 @@ def load_spreadsheet_structures():
     processes specific fields,
     and then combines the results into a target JSON structure.
     """
-    entity_type = "structures"
     entity_source = "spreadsheet"
+    entity_type = "structures"
 
     connexion = create_redis_connection()
-    structures_source_data = fetch_structures_from_spreadsheet()
+    structures_source_data = fetch_from_spreadsheet(entity_source,entity_type)
 
     # pylint: disable=duplicate-code
     trigger_broadcast = TriggerDagRunOperator(

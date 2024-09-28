@@ -52,15 +52,41 @@ def dag_fixture(request: SubRequest) -> DAG:
     """
     Create a DAG for testing the convert_ldap_structure_description_task
     :param request: The pytest request object
+    It is a dictionary with the following keys
+    - task_name: The name of the task to be created
+    - param_names: The names of the parameters to be passed to the task
+    - other keys: The values of the parameters to be passed to the task
     :return: The DAG object
     """
     task_name = request.param['task_name']
-    raw_results = request.param['raw_results']
+    param_names = request.param['param_names']
+    assert isinstance(param_names, list)
+    assert all(isinstance(name, str) for name in param_names)
+    args = [request.param[name] for name in param_names]
     with DAG(
             dag_id=TEST_DAG_ID,
             schedule="@daily",
             start_date=DATA_INTERVAL_START,
     ) as created_dag:
-        convert_description_task = import_from_path(task_name)
-        convert_description_task(raw_results)
+        task = import_from_path(task_name)
+        task(*args)
     return created_dag
+
+# @pytest.fixture(name="double_arg_dag")
+# def double_argument_dag_fixture(request: SubRequest) -> DAG:
+#     """
+#     Create a DAG for testing the convert_ldap_structure_description_task
+#     :param request: The pytest request object
+#     :return: The DAG object
+#     """
+#     task_name = request.param['task_name']
+#     raw_results = request.param['raw_results']
+#     identifiers_list = request.param['identifiers_list']
+#     with DAG(
+#             dag_id=TEST_DAG_ID,
+#             schedule="@daily",
+#             start_date=DATA_INTERVAL_START,
+#     ) as created_dag:
+#         convert_description_task = import_from_path(task_name)
+#         convert_description_task(raw_results, identifiers_list)
+#     return created_dag

@@ -1,0 +1,76 @@
+{
+  "hgerald": {
+    "identifiers": [
+      {
+        "type": "idref",
+        "value": "9101"
+      },
+      {
+        "type": "local",
+        "value": "hgerald"
+      },
+      {
+        "type": "orcid",
+        "value": "0000-0003-4567-8901"
+      }
+    ],
+    "memberships": [
+      {
+        "entity_id": "U01"
+      }
+    ],
+    "names": [
+      {
+        "first_names": [
+          {
+            "language": "fr",
+            "value": "Henry"
+          }
+        ],
+        "last_names": [
+          {
+            "language": "fr",
+            "value": "Gerald"
+          }
+        ]
+      }
+    ]
+  },
+  "jdupond": {
+    "identifiers": [
+      {
+        "type": "idref",
+        "value": "12345678X"
+      },
+      {
+        "type": "local",
+        "value": "jdupond"
+      },
+      {
+        "type": "orcid",
+        "value": "0000-0000-0000-0001"
+      }
+    ],
+    "memberships": [
+      {
+        "entity_id": "U01"
+      }
+    ],
+    "names": [
+      {
+        "first_names": [
+          {
+            "language": "fr",
+            "value": "Joe"
+          }
+        ],
+        "last_names": [
+          {
+            "language": "fr",
+            "value": "Dupond"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -17,6 +17,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
     (
             {
                 "task_name": TESTED_TASK_NAME,
+                "param_names": ["raw_results"],
                 "raw_results": [
                     {
                         'name': 'Laboratoire de géographie physique Pierre Birot (UMR 8591)',
@@ -36,6 +37,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
     (
             {
                 "task_name": TESTED_TASK_NAME,
+                "param_names": ["raw_results"],
                 "raw_results": [
                     {
                         'name': 'Laboratoire des Tests (UMR 2024)',
@@ -55,6 +57,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
     (
             {
                 "task_name": TESTED_TASK_NAME,
+                "param_names": ["raw_results"],
                 "raw_results": [
                     {
                         'name': 'Laboratoire des Tests (UMR 2024)',
@@ -94,10 +97,10 @@ def test_convert_spreadsheet_structures(dag, expected_result_path, unique_execut
     """
     Test that the csv data are converted to the expected format
     """
+    # pylint: disable=duplicate-code
     dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
-
     with open(expected_result_path, 'r', encoding='utf-8') as f:
         expected_result = json.load(f)
     assert ti.state == TaskInstanceState.SUCCESS

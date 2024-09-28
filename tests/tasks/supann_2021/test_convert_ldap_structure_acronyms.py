@@ -14,6 +14,7 @@ TEST_TASK_ID = "convert_ldap_structure_acronyms"
 @pytest.mark.parametrize("dag", [
     {
         'task_name': TESTED_TASK_NAME,
+        "param_names": ["raw_results"],
         'raw_results': {
             "uid=1234,ou=people,dc=example,dc=org": {
                 "acronym": ["UEX"],
@@ -42,6 +43,7 @@ def test_acronym_is_converted_from_ldap(dag, unique_execution_date) -> None:
 @pytest.mark.parametrize("dag", [
     {
         'task_name': TESTED_TASK_NAME,
+        "param_names": ["raw_results"],
         'raw_results': {
             "uid=1234,ou=people,dc=example,dc=org": {
                 "eduorglegalname": ["University of Example"],

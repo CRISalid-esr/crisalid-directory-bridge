@@ -32,7 +32,7 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[
                                                        and row[identifier].strip()
         ]
 
-        task_results[f"struct_id={row[LOCAL_STRUCTURE_IDENTIFIER]}"] = {
+        task_results[row[LOCAL_STRUCTURE_IDENTIFIER]] = {
             'names': [
                 {
                     'value': row['name'],

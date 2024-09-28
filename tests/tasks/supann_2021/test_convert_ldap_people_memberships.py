@@ -16,6 +16,7 @@ TESTED_TASK_NAME = 'tasks.supann_2021.convert_ldap_people_memberships' \
 @pytest.mark.parametrize("dag", [
     {
         "task_name": TESTED_TASK_NAME,
+        "param_names": ["raw_results"],
         "raw_results": {
             "uid=1234,ou=people,dc=example,dc=org": {
                 "supannEntiteAffectationPrincipale": ["mainEntity"],
@@ -38,9 +39,9 @@ def test_memberships_are_converted_from_ldap(dag, unique_execution_date):
     assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {
         "uid=1234,ou=people,dc=example,dc=org": {
             "memberships": [
-                {"entity": "mainEntity"},
-                {"entity": "entity1"},
-                {"entity": "entity2"}
+                {"entity_id": "mainEntity"},
+                {"entity_id": "entity1"},
+                {"entity_id": "entity2"}
             ]
         }
     }
@@ -49,6 +50,7 @@ def test_memberships_are_converted_from_ldap(dag, unique_execution_date):
 @pytest.mark.parametrize("dag", [
     {
         "task_name": TESTED_TASK_NAME,
+        "param_names": ["raw_results"],
         "raw_results": {
             "uid=1234,ou=people,dc=example,dc=org": {
                 "supannEntiteAffectation": ["entity1", "entity2"],
@@ -70,8 +72,8 @@ def test_only_supann_entite_affectation_present(dag, unique_execution_date):
     assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {
         "uid=1234,ou=people,dc=example,dc=org": {
             "memberships": [
-                {"entity": "entity1"},
-                {"entity": "entity2"}
+                {"entity_id": "entity1"},
+                {"entity_id": "entity2"}
             ]
         }
     }
@@ -80,6 +82,7 @@ def test_only_supann_entite_affectation_present(dag, unique_execution_date):
 @pytest.mark.parametrize("dag", [
     {
         "task_name": TESTED_TASK_NAME,
+        "param_names": ["raw_results"],
         "raw_results": {
             "uid=1234,ou=people,dc=example,dc=org": {
                 "supannEntiteAffectationPrincipale": ["mainEntity"],
@@ -101,7 +104,7 @@ def test_only_supann_entite_main_affectation_present(dag, unique_execution_date)
     assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {
         "uid=1234,ou=people,dc=example,dc=org": {
             "memberships": [
-                {"entity": "mainEntity"}
+                {"entity_id": "mainEntity"}
             ]
         }
     }
@@ -110,6 +113,7 @@ def test_only_supann_entite_main_affectation_present(dag, unique_execution_date)
 @pytest.mark.parametrize("dag", [
     {
         "task_name": TESTED_TASK_NAME,
+        "param_names": ["raw_results"],
         "raw_results": {
             "uid=1234,ou=people,dc=example,dc=org": {},
         },
@@ -136,6 +140,7 @@ def test_no_memberships_present(dag, unique_execution_date):
 @pytest.mark.parametrize("dag", [
     {
         "task_name": TESTED_TASK_NAME,
+        "param_names": ["raw_results"],
         "raw_results": {
             'uid=hdupont,ou=people,dc=univ-paris1,dc=fr': {
                 'uid': ['soussiat'],
@@ -179,7 +184,7 @@ def test_real_case(dag, unique_execution_date):
     assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {
         'uid=hdupont,ou=people,dc=univ-paris1,dc=fr': {
             'memberships': [
-                {'entity': 'U02'}
+                {'entity_id': 'U02'}
             ]
         }
     }
