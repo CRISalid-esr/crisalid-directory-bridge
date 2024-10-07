@@ -66,7 +66,7 @@ pip install -r requirements.txt
 
 ### Configuration
 
-- Create the dotenv files matching the specific environment you want to run the bridge in : e.g. .end.dev for
+- Create the dotenv files matching the specific environment you want to run the bridge in : e.g. .env.dev for
   development, .env.test for test, etc., by copying the `.env.example` file.
 
 ### Running the bridge

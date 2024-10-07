@@ -7,6 +7,7 @@
   <title>Overview &mdash; CRISalid directory bridge 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
       <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
 
   
@@ -19,10 +20,11 @@
         <script src="_static/documentation_options.js?v=2709fde1"></script>
         <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Deployment" href="deployment.html" />
+    <link rel="next" title="Deployment installation" href="quickstart/deployment.html" />
     <link rel="prev" title="CRISalid directory bridge documentation" href="index.html" /> 
 </head>
 
@@ -45,7 +47,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Quickstart</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#project-repository">Project repository</a></li>
@@ -54,7 +56,12 @@
 <li class="toctree-l2"><a class="reference internal" href="#functional-scope-limitations">Functional scope limitations</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart/deployment.html">Deployment installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart/development.html">Development installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Setting the app environment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
 </ul>
 
@@ -84,14 +91,29 @@
              
   <section id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p><strong>CRISalid directory bridge</strong> is a backend component of CRISalid modular CRIS (current research information system).</p>
+<p>It is intended to watch people and organization data from various institutional sources (e.g. LDAP directory, custom HR
+databases,
+Excel files, laboratory apps, etc.)
+and to convert it into a common format that can be fed into CRISalid institutional knowledge graph and other information
+system components.</p>
+<p>The bridge is designed to be modular and extensible, so that it can be easily adapted to local data sources and formats,
+especially in the case when :</p>
+<ul class="simple">
+<li><p>the institutional LDAP directory is not up-to-date but other reliable sources are available, like the National
+Research Structure Registry (RNSR)</p></li>
+<li><p>the institutional LDAP directory is not fully [Supann](<a class="reference external" href="https://services.renater.fr/documentation/supann/index">https://services.renater.fr/documentation/supann/index</a>)
+compliant or conforms to an old version of the Supann schema</p></li>
+<li><p>part of the laboratories or institution divisions have their own directories from which data can be extracted</p></li>
+<li><p>some kind of structures of singular type are not referenced in the LDAP directory but are described by other sources</p></li>
+</ul>
 <section id="project-repository">
 <h2>Project repository<a class="headerlink" href="#project-repository" title="Link to this heading"></a></h2>
 <p><a class="reference external" href="https://github.com/CRISalid-esr/crisalid-directory-bridge#readme"><img alt="GitHub repository" src="https://img.shields.io/badge/GitHub--repository-CRISalid--directory--bridge-blue?style=flat-square&amp;logo=GitHub" /></a> Source code is available on Github</p>
 </section>
 <section id="overall-operating-mode">
 <h2>Overall operating mode<a class="headerlink" href="#overall-operating-mode" title="Link to this heading"></a></h2>
-<a href="_static/ikg_rabbit_relationship.drawio.svg" target="_blank">
-<img src="_static/ikg_rabbit_relationship.drawio.svg" width="100%" alt="Relationship between the different CRISalid apps and RabbitMQ"/></a></section>
+</section>
 <section id="key-features">
 <h2>Key features<a class="headerlink" href="#key-features" title="Link to this heading"></a></h2>
 </section>
@@ -105,7 +127,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="CRISalid directory bridge documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="deployment.html" class="btn btn-neutral float-right" title="Deployment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="quickstart/deployment.html" class="btn btn-neutral float-right" title="Deployment installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
