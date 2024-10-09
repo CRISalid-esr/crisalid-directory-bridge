@@ -66,7 +66,7 @@ pip install -r requirements.txt
 
 ### Configuration
 
-- Create the dotenv files matching the specific environment you want to run the bridge in : e.g. .end.dev for
+- Create the dotenv files matching the specific environment you want to run the bridge in : e.g. .env.dev for
   development, .env.test for test, etc., by copying the `.env.example` file.
 
 ### Running the bridge
@@ -87,3 +87,18 @@ airflow standalone
 
 Note that the `standalone` command is a custom command that starts the webserver and scheduler in the same process. It
 is useful for development and testing purposes only.
+
+
+## Documentation compilation and publication
+
+The documentation is written in reStructuredText and compiled with Sphinx.
+
+### HTML publication
+
+To export the documentation to HTML, run the following command from the `docs` directory :
+
+```bash
+python -m sphinx -b html source build/html
+```
+
+Then, copy the content of the `docs/build/html` directory to the server of your choice.
