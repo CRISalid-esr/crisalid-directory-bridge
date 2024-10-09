@@ -1,0 +1,10 @@
+*
+
+!/*.py
+!docker-requirements.txt
+
+!conf/
+!tasks/
+!utils/
+
+!.env.default

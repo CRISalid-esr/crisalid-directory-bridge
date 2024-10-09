@@ -1,10 +1,19 @@
 # utils.py
+import logging
 import os
 
 from dotenv import load_dotenv
 
+logger = logging.getLogger(__name__)
+
+# Search for generic and environment-specific .env files
 APP_ENV = os.getenv("APP_ENV", "DEV")
-load_dotenv(f".env.{APP_ENV.lower()}")
+for suffix in ["", f".{APP_ENV.lower()}"]:
+    env_file_name = f".env{suffix}"
+    if not os.path.exists(env_file_name):
+        logger.warning("%s env file not found", env_file_name)
+    else:
+        load_dotenv(env_file_name, verbose=True)
 
 
 def get_env_variable(var_name: str, default_value: str = None) -> str:
