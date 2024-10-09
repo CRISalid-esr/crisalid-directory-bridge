@@ -18,3 +18,13 @@ CRISalid directory bridge documentation
 
    environment
    references
+
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: Dags
+
+   dags/broadcast_entities
+   dags/ldap_dags
+   dags/spreadsheet_dags
