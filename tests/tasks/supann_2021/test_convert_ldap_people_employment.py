@@ -85,7 +85,7 @@ def test_basic_case(dag, unique_execution_date):
         "raw_results": {
             'uid=hdupont,ou=people,dc=univ-paris1,dc=fr': {
                 'employeeType': ['Professeur des universités', 'Directeur de recherche'],
-                'supannEtablissement': ['{UAI}0753364Z', '{UAI}02584654Z'],
+                'supannEtablissement': ['{UAI}0753364Z', '{UAI}0258465Z'],
             },
         },
     }
@@ -116,7 +116,7 @@ def test_case_with_two_affectations_in_different_entities(dag, unique_execution_
                         "title": "Directeur de recherche",
                         "code": "dr"
                     },
-                    "entity_uid": "uai-02584654Z"
+                    "entity_uid": "uai-0258465Z"
                 }
             ]
         }

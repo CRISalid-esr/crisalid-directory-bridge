@@ -30,9 +30,10 @@ def convert_ldap_people_employment(ldap_results: dict[str, dict[str, str | dict]
 
         if len_establishment and len_employee_type:
             formatted_establishment = [
-                f"{match.group(1).lower()}-{item.split('}')[1]}"
+                f"uai-{match.group(1)}"
                 for item in related_establishment
-                if (match := re.search(r'\{(.*?)\}', item))
+                # Regular expression match example: {UAI}0000000Z
+                if (match := re.search(r'^\{UAI\}(\d{7}[A-Z])$', item))
             ]
             if len_establishment == len_employee_type:
                 employments = [
