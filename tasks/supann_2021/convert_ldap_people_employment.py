@@ -25,31 +25,32 @@ def convert_ldap_people_employment(ldap_results: dict[str, dict[str, str | dict]
     for dn, entry in ldap_results.items():
         related_establishment = entry.get('supannEtablissement', [])
         employee_type = entry.get('employeeType', [])
-        len_establishment = len(related_establishment)
-        len_employee_type = len(employee_type)
 
-        if len_establishment and len_employee_type:
-            formatted_establishment = [
-                f"uai-{match.group(1)}"
-                for item in related_establishment
-                # Regular expression match example: {UAI}0000000Z
-                if (match := re.search(r'^\{UAI\}(\d{7}[A-Z])$', item))
-            ]
-            if len_establishment == len_employee_type:
-                employments = [
-                    {
-                        "position": {
-                            "title": inner_dict['label'],
-                            "code": code
-                        },
-                        "entity_uid": entity_uid
-                    }
-                    for entity_uid, position_to_check in zip(formatted_establishment, employee_type)
-                    for code, inner_dict in employee_types_yaml.items()
-                    if position_to_check in inner_dict['local_values']
-                ]
-            else:
-                # Both lengths are greater than 0 but not the same
-                continue
+        if len(related_establishment) > len(employee_type):
+            employee_type += [''] * (len(related_establishment) - len(employee_type))
+
+        formatted_establishment = [
+            f"uai-{match.group(1)}"
+            for item in related_establishment
+            # Regular expression match example: {UAI}0000000Z
+            if (match := re.search(r'^\{UAI\}(\d{7}[A-Z])$', item))
+        ]
+
+        for entity_uid, position_to_check in zip(formatted_establishment, employee_type):
+            match = next(
+                ((code, inner_dict['label']) for code, inner_dict in employee_types_yaml.items()
+                  if position_to_check in inner_dict['local_values']),
+                ('', '')
+            )
+
+            employment = {
+                "position": {
+                    "title": match[1],
+                    "code": match[0]
+                },
+                "entity_uid": entity_uid
+            }
+            employments.append(employment)
+
         task_results[dn] = {"employments": employments}
     return task_results
