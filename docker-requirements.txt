@@ -1,0 +1,2 @@
+airflow-provider-rabbitmq==0.6.1
+deepdiff==7.0.1
