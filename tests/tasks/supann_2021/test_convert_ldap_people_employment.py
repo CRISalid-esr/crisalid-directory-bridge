@@ -52,9 +52,10 @@ BASE_FOR_TESTS = {
         },
     }
 ], indirect=True)
-def test_basic_case(dag, unique_execution_date):
+def test_usual_case(dag, unique_execution_date):
     """
-    Test that if supannEntiteAffectationPrincipale is present, it is converted correctly.
+    Test that the employment are converted from the LDAP entry when only employeeType and
+    supannEtablissement are known
     :param dag: The DAG object
     :param unique_execution_date: unique execution date
     :return: None
@@ -69,7 +70,7 @@ def test_basic_case(dag, unique_execution_date):
                 {
                     "position": {
                         "title": "Professeur des universités",
-                        "code": "pu"
+                        "code": "pr"
                     },
                     "entity_uid": "uai-0753364Z"
                 }
@@ -90,9 +91,10 @@ def test_basic_case(dag, unique_execution_date):
         },
     }
 ], indirect=True)
-def test_case_with_two_affectations_in_different_entities(dag, unique_execution_date):
+def test_case_with_multiple_affectations_in_different_entities(dag, unique_execution_date):
     """
-    Test that if supannEntiteAffectationPrincipale is present, it is converted correctly.
+    Test that the employment are converted from the LDAP entry when multiple employeeType and
+    supannEtablissement are known
     :param dag: The DAG object
     :param unique_execution_date: unique execution date
     :return: None
@@ -107,7 +109,7 @@ def test_case_with_two_affectations_in_different_entities(dag, unique_execution_
                 {
                     "position": {
                         "title": "Professeur des universités",
-                        "code": "pu"
+                        "code": "pr"
                     },
                     "entity_uid": "uai-0753364Z"
                 },
@@ -137,7 +139,7 @@ def test_case_with_two_affectations_in_different_entities(dag, unique_execution_
 ], indirect=True)
 def test_case_with_empty_informations(dag, unique_execution_date):
     """
-    Test that if supannEntiteAffectationPrincipale is present, it is converted correctly.
+    Test that the employment are returned empty when no datas are known
     :param dag: The DAG object
     :param unique_execution_date: unique execution date
     :return: None
@@ -167,7 +169,8 @@ def test_case_with_empty_informations(dag, unique_execution_date):
 ], indirect=True)
 def test_case_with_two_different_entities_and_one_known_affectation(dag, unique_execution_date):
     """
-    Test that if supannEntiteAffectationPrincipale is present, it is converted correctly.
+    Test that the employment are converted from the LDAP entry when one employeeType but two
+    supannEtablissement are known
     :param dag: The DAG object
     :param unique_execution_date: unique execution date
     :return: None
@@ -182,16 +185,147 @@ def test_case_with_two_different_entities_and_one_known_affectation(dag, unique_
                 {
                     "position": {
                         "title": "Professeur des universités",
-                        "code": "pu"
+                        "code": "pr"
+                    },
+                    "entity_uid": "uai-0753364Z"
+                },
+                {
+                    "position": {},
+                    "entity_uid": "uai-0258465Z"
+                }
+            ]
+        }
+    }
+
+
+@pytest.mark.parametrize("dag", [
+    {
+        "task_name": TESTED_TASK_NAME,
+        "param_names": ["raw_results"],
+        "raw_results": {
+            'uid=hdupont,ou=people,dc=univ-paris1,dc=fr': {
+                'employeeType': [
+                    "Chargé d'enseignement",
+                    'Maître de conférences'
+                ],
+                'supannEtablissement': [
+                    '{UAI}0753364Z'
+                ],
+            },
+        },
+    }
+], indirect=True)
+def test_case_with_one_entity_and_two_known_affectation(dag, unique_execution_date):
+    """
+    Test that the employment are converted from the LDAP entry when 2 employeeType are known for 1
+    supannEtablissement
+    :param dag: The DAG object
+    :param unique_execution_date: unique execution date
+    :return: None
+    """
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
+    ti.run(ignore_ti_state=True)
+    assert ti.state == TaskInstanceState.SUCCESS
+    assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {
+        'uid=hdupont,ou=people,dc=univ-paris1,dc=fr': {
+            "employments": [
+                {
+                    "position": {
+                        "title": "Chargé d'enseignement",
+                        "code": "cce"
                     },
                     "entity_uid": "uai-0753364Z"
                 },
                 {
                     "position": {
-                        "title": "",
-                        "code": ""
+                        "title": "Maître de conférences",
+                        "code": "mcf"
                     },
-                    "entity_uid": "uai-0258465Z"
+                    "entity_uid": "uai-0753364Z"
+                }
+            ]
+        }
+    }
+
+
+@pytest.mark.parametrize("dag", [
+    {
+        "task_name": TESTED_TASK_NAME,
+        "param_names": ["raw_results"],
+        "raw_results": {
+            'uid=hdupont,ou=people,dc=univ-paris1,dc=fr': {
+                'supannEmpProfil': [
+                    '[etab={UAI}0753364Z][affil=faculty][corps={NCORPS}300][typeaffect={SUPANN}S108][affect=COV1][population={SUPANN}RGPF]'
+                ]
+            },
+        },
+    }
+], indirect=True)
+def test_case_with_supannempprofil(dag, unique_execution_date):
+    """
+    Test that the employment are converted from the LDAP entry when a supannEmpProfil is available.
+    :param dag: The DAG object
+    :param unique_execution_date: unique execution date
+    :return: None
+    """
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
+    ti.run(ignore_ti_state=True)
+    assert ti.state == TaskInstanceState.SUCCESS
+    assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {
+        'uid=hdupont,ou=people,dc=univ-paris1,dc=fr': {
+            "employments": [
+                {
+                    "position": {
+                        "title": "Professeur des universités",
+                        "code": "pr"
+                    },
+                    "entity_uid": "uai-0753364Z"
+                }
+            ]
+        }
+    }
+
+
+@pytest.mark.parametrize("dag", [
+    {
+        "task_name": TESTED_TASK_NAME,
+        "param_names": ["raw_results"],
+        "raw_results": {
+            'uid=hdupont,ou=people,dc=univ-paris1,dc=fr': {
+                'supannEmpProfil': [
+                    '[etab={UAI}0753364Z][affil=teacher][typeaffect={SUPANN}S108][affect=COV1][population={SUPANN}RGIE]',
+                    '[etab={UAI}0753364Z][affil=faculty][corps={NCORPS}300][typeaffect={SUPANN}S108][affect=COV1][population={SUPANN}RGPF]'
+                ]
+            },
+        },
+    }
+], indirect=True)
+def test_case_with_two_supannempprofil(dag, unique_execution_date):
+    """
+    Test that the employment are converted from the LDAP entry when 2 supannEmpProfil are available.
+    :param dag: The DAG object
+    :param unique_execution_date: unique execution date
+    :return: None
+    """
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
+    ti.run(ignore_ti_state=True)
+    assert ti.state == TaskInstanceState.SUCCESS
+    assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {
+        'uid=hdupont,ou=people,dc=univ-paris1,dc=fr': {
+            "employments": [
+                {
+                    "position": {},
+                    "entity_uid": "uai-0753364Z"
+                },
+                {
+                    "position": {
+                        "title": "Professeur des universités",
+                        "code": "pr"
+                    },
+                    "entity_uid": "uai-0753364Z"
                 }
             ]
         }

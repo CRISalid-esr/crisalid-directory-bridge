@@ -8,3 +8,7 @@ class LDAPSizeLimitExceededError(Exception):
 
 class SpreadSheetParseError(Exception):
     """Raised when there is an issue parsing the spreadsheet."""
+
+
+class YamlParseError(Exception):
+    """Raised when there is an issue parsing the yaml file."""

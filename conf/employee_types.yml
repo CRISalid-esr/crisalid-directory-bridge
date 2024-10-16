@@ -1,4 +1,5 @@
-pu:
+pr:
+  corps: "300"
   label: "Professeur des universités"
   local_values:
     - "Professeur des universités"
