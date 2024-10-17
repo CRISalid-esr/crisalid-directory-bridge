@@ -28,7 +28,8 @@ def fetch_ldap_people():
                   "supannRefid", "description", "eduPersonORCID",
                   "supannEntiteAffectationPrincipale", "supannEntiteAffectation",
                   "eduPersonOrgUnitDN", "eduPersonPrimaryOrgUnitDN",
-                  "employeeType", "eduPersonAffiliation", "eduPersonPrimaryAffiliation",
+                  "employeeType","supannEmpCorps", "eduPersonAffiliation",
+                  "eduPersonPrimaryAffiliation","supannEmpProfil",
                   "supannEtablissement", "eduPersonOrgDN",
                   "postalAddress", "labeledURI", "eduOrgHomePageURI"]
     for people_filter in people_filters:
