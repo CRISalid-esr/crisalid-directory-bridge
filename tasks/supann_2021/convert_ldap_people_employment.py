@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 employee_types_yaml = None # pylint: disable=invalid-name
 
 def _get_employee_types_yaml():
-    global employee_types_yaml
+    global employee_types_yaml # pylint: disable=global-statement
     if employee_types_yaml is not None:
         return employee_types_yaml
     yaml_path = get_env_variable('YAML_EMPLOYEE_TYPE_PATH')
