@@ -2,5 +2,6 @@
 .env*
 !.env.example
 !.env.test
+!.env.template
 __init__.py
 etc

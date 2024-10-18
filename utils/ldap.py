@@ -37,7 +37,7 @@ def ldap_response_to_json_dict(ldap_response, dict_key) -> dict:
         if entry_key:
             entry_key = entry_key[0].decode('utf-8')
         else:
-            logger.error("Missing uid for %s", dn)
+            logger.error(f"Missing <{dict_key}> for %s", dn)
             continue
         result[entry_key] = {
             k: [val.decode('utf-8') if isinstance(val, bytes) else val for val in v]
