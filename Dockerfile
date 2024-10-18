@@ -1,5 +1,7 @@
 FROM apache/airflow
 
+ARG AIRFLOW_VERSION=2.9.3
+
 COPY docker-requirements.txt ${AIRFLOW_HOME}/requirements.txt
 RUN pip install --no-cache-dir "apache-airflow==${AIRFLOW_VERSION}" -r ${AIRFLOW_HOME}/requirements.txt
 
