@@ -51,10 +51,10 @@ def create_rabbitmq_managed_connection(session=None):
     connection = Connection(
         conn_id=get_rabbitmq_conn_id(),
         conn_type='rabbitmq',
-        host=get_env_variable("RABBITMQ_HOST"),
-        login=get_env_variable("RABBITMQ_USER"),
-        password=get_env_variable("RABBITMQ_PASSWORD"),
-        port=get_env_variable("RABBITMQ_PORT"),
+        host=get_env_variable("AMQP_HOST"),
+        login=get_env_variable("AMQP_USER"),
+        password=get_env_variable("AMQP_PASSWORD"),
+        port=get_env_variable("AMQP_PORT"),
     )
     logger.info(
         "Creating RabbitMQ connection: %s with connection id <%s>",
