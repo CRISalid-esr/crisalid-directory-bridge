@@ -47,7 +47,7 @@ def get_redis_conn_id() -> str:
     Get the Redis connection ID from the environment variables.
     :return: The Redis connection ID
     """
-    redis_conn_id = get_env_variable("REDIS_CONN_ID")
+    redis_conn_id = get_env_variable("CDB_REDIS_CONN_ID")
     assert redis_conn_id is not None, "No Redis connection ID found"
     return redis_conn_id
 
@@ -65,10 +65,10 @@ def create_redis_managed_connection(session=None) -> None:
         connection_params = {
             'conn_id': redis_conn_id,
             'conn_type': 'redis',
-            'host': get_env_variable("REDIS_HOST"),
-            'port': get_env_variable("REDIS_PORT"),
+            'host': get_env_variable("CDB_REDIS_HOST"),
+            'port': get_env_variable("CDB_REDIS_PORT"),
         }
-        redis_password = get_env_variable("REDIS_PASSWORD")
+        redis_password = get_env_variable("CDB_REDIS_PASSWORD")
         if redis_password:
             logger.info("Creating connection: with password %s", redis_password)
             connection_params['password'] = redis_password
