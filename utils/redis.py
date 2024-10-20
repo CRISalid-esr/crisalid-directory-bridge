@@ -60,14 +60,16 @@ def create_redis_managed_connection(session=None) -> None:
     redis_conn_id = get_redis_conn_id()
     try:
         logger.info("Creating connection: %s without password", redis_conn_id)
-        connection = Connection(
-            conn_id=redis_conn_id,
-            conn_type='redis',
-            host=get_env_variable("REDIS_HOST"),
-            port=get_env_variable("REDIS_PORT"),
-            password=get_env_variable("REDIS_PASSWORD") if get_env_variable("REDIS_PASSWORD")
-            else None,
-        )
+        connection_params = {
+            'conn_id': redis_conn_id,
+            'conn_type': 'redis',
+            'host': get_env_variable("REDIS_HOST"),
+            'port': get_env_variable("REDIS_PORT"),
+        }
+        redis_password = get_env_variable("REDIS_PASSWORD")
+        if redis_password:
+            connection_params['password'] = redis_password
+        connection = Connection(**connection_params)
         logger.info("Connection object: %s", connection)
         logger.info("Connection host: %s", connection.host)
         logger.info("Connection port: %s", connection.port)
@@ -78,7 +80,7 @@ def create_redis_managed_connection(session=None) -> None:
             password=connection.password
         )
         ping_result = client.ping()
-        logger.info("Ping result: %s", ping_result)
+        logger.info("Result of the ping : %s", ping_result)
         if not ping_result:
             logger.error("Failed to ping Redis server : %s", ping_result)
             raise Exception("Failed to ping Redis server")
