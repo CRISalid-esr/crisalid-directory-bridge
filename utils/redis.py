@@ -70,7 +70,7 @@ def create_redis_managed_connection(session=None) -> None:
         }
         redis_password = get_env_variable("REDIS_PASSWORD")
         if redis_password:
-            logger.info("Creating connection: %s with password", redis_conn_id)
+            logger.info("Creating connection: with password %s", redis_password)
             connection_params['password'] = redis_password
         connection = Connection(**connection_params)
         logger.info("Connection object: %s", connection)
