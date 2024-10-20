@@ -59,7 +59,7 @@ def create_redis_managed_connection(session=None) -> None:
     """
     redis_conn_id = get_redis_conn_id()
     try:
-        logger.info("Creating connection: %s", redis_conn_id)
+        logger.info("Creating connection: %s without password", redis_conn_id)
         connection = Connection(
             conn_id=redis_conn_id,
             conn_type='redis',
