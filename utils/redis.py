@@ -18,11 +18,13 @@ def get_redis_client():
     """
     connexion = get_redis_connection()
     assert connexion is not None, "Create Redis connection before using it"
-    client = redis.StrictRedis(
-        host=connexion.host,
-        port=connexion.port,
-        password=connexion.password
-    )
+    connexion_params = {
+        'host': connexion.host,
+        'port': connexion.port,
+    }
+    if connexion.password:
+        connexion_params['password'] = connexion.password
+    client = redis.StrictRedis(**connexion_params)
     return client
 
 
@@ -75,11 +77,13 @@ def create_redis_managed_connection(session=None) -> None:
         logger.info("Connection host: %s", connection.host)
         logger.info("Connection port: %s", connection.port)
         logger.info("Testing connectivity")
-        client = redis.StrictRedis(
-            host=connection.host,
-            port=connection.port,
-            password=connection.password
-        )
+        client_params = {
+            'host': connection.host,
+            'port': connection.port,
+        }
+        if redis_password:
+            client_params['password'] = redis_password
+        client = redis.StrictRedis(**client_params)
         ping_result = client.ping()
         logger.info("Result of the ping : %s", ping_result)
         if not ping_result:
