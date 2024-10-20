@@ -68,6 +68,8 @@ def create_redis_managed_connection(session=None) -> None:
             password=get_env_variable("REDIS_PASSWORD"),
         )
         logger.info("Connection object: %s", connection)
+        logger.info("Connection host: %s", connection.host)
+        logger.info("Connection port: %s", connection.port)
         logger.info("Testing connectivity")
         client = redis.StrictRedis(
             host=connection.host,
