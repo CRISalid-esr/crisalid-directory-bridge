@@ -65,7 +65,7 @@ def create_redis_managed_connection(session=None) -> None:
             conn_type='redis',
             host=get_env_variable("REDIS_HOST"),
             port=get_env_variable("REDIS_PORT"),
-            password=get_env_variable("REDIS_PASSWORD"),
+            # password=get_env_variable("REDIS_PASSWORD"),
         )
         logger.info("Connection object: %s", connection)
         logger.info("Connection host: %s", connection.host)
