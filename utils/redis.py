@@ -66,6 +66,19 @@ def create_redis_managed_connection(session=None) -> None:
             port=get_env_variable("REDIS_PORT"),
             password=get_env_variable("REDIS_PASSWORD"),
         )
+        # ping the redis server
+        client = redis.StrictRedis(
+            host=connection.host,
+            port=connection.port,
+            password=connection.password
+        )
+        ping_result = client.ping()
+        # log connexion info
+        logger.info("Redis connection: %s", connection)
+        logger.info("Ping result: %s", ping_result)
+        if ping_result != b'PONG':
+            logger.error("Failed to ping Redis server : %s", ping_result)
+            raise Exception("Failed to ping Redis server")
         session.add(connection)
         session.commit()
         logger.info("Successfully created connection: %s", redis_conn_id)
