@@ -2,6 +2,8 @@ import json
 import logging
 
 from airflow.decorators import task
+from pika import BlockingConnection
+from pika.exchange_type import ExchangeType
 
 from utils.config import get_env_variable
 from utils.rabbitmq import get_rabbitmq_hook
@@ -23,6 +25,7 @@ def send_status_messages(entities_with_statuses: list[dict], entity_type: str) -
     :param entity_type: the type of the entity
     :return: the messages sent
     """
+    _create_exchange()
     return [_send_status_message(e, entity_type) for e in entities_with_statuses]
 
 
@@ -45,3 +48,19 @@ def _send_status_message(entity_with_status: dict, entity_type: str) -> dict:
     }
     hook.publish(**message)
     return message
+
+
+def _create_exchange():
+    """
+    Create the exchange in RabbitMQ.
+    """
+    hook = get_rabbitmq_hook()
+    connection: BlockingConnection = hook.get_conn()
+    channel = connection.channel()
+    channel.exchange_declare(exchange='directory',
+                             exchange_type=ExchangeType.topic,
+                             durable=True,
+                             passive=False,
+                             auto_delete=False,
+                             internal=False)
+    logger.info("Created exchange 'directory'")

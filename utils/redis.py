@@ -18,11 +18,13 @@ def get_redis_client():
     """
     connexion = get_redis_connection()
     assert connexion is not None, "Create Redis connection before using it"
-    client = redis.StrictRedis(
-        host=connexion.host,
-        port=connexion.port,
-        password=connexion.password
-    )
+    connexion_params = {
+        'host': connexion.host,
+        'port': connexion.port,
+    }
+    if connexion.password:
+        connexion_params['password'] = connexion.password
+    client = redis.StrictRedis(**connexion_params)
     return client
 
 
@@ -45,7 +47,7 @@ def get_redis_conn_id() -> str:
     Get the Redis connection ID from the environment variables.
     :return: The Redis connection ID
     """
-    redis_conn_id = get_env_variable("REDIS_CONN_ID")
+    redis_conn_id = get_env_variable("CDB_REDIS_CONN_ID")
     assert redis_conn_id is not None, "No Redis connection ID found"
     return redis_conn_id
 
@@ -59,13 +61,33 @@ def create_redis_managed_connection(session=None) -> None:
     """
     redis_conn_id = get_redis_conn_id()
     try:
-        connection = Connection(
-            conn_id=redis_conn_id,
-            conn_type='redis',
-            host=get_env_variable("REDIS_HOST"),
-            port=get_env_variable("REDIS_PORT"),
-            password=get_env_variable("REDIS_PASSWORD"),
-        )
+        logger.info("Creating connection: %s without password", redis_conn_id)
+        connection_params = {
+            'conn_id': redis_conn_id,
+            'conn_type': 'redis',
+            'host': get_env_variable("CDB_REDIS_HOST"),
+            'port': get_env_variable("CDB_REDIS_PORT"),
+        }
+        redis_password = get_env_variable("CDB_REDIS_PASSWORD")
+        if redis_password:
+            connection_params['password'] = redis_password
+        connection = Connection(**connection_params)
+        logger.info("Connection object: %s", connection)
+        logger.info("Connection host: %s", connection.host)
+        logger.info("Connection port: %s", connection.port)
+        logger.info("Testing connectivity")
+        client_params = {
+            'host': connection.host,
+            'port': connection.port,
+        }
+        if redis_password:
+            client_params['password'] = redis_password
+        client = redis.StrictRedis(**client_params)
+        ping_result = client.ping()
+        logger.info("Result of the ping : %s", ping_result)
+        if not ping_result:
+            logger.error("Failed to ping Redis server : %s", ping_result)
+            raise Exception("Failed to ping Redis server")
         session.add(connection)
         session.commit()
         logger.info("Successfully created connection: %s", redis_conn_id)

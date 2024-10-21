@@ -85,7 +85,7 @@ def create_redis_connection() -> Connection:
     :return: the connection
     """
     connection = get_redis_connection()
-    logger.info("*** Connection ***")
+    logger.info("*** Connection id ***")
     logger.info(connection)
     if connection is None:
         create_redis_managed_connection()
