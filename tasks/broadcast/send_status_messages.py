@@ -58,7 +58,7 @@ def _create_exchange():
     connection: BlockingConnection = hook.get_conn()
     channel = connection.channel()
     channel.exchange_declare(exchange='directory',
-                             exchange_type=ExchangeType.TOPIC,
+                             exchange_type=ExchangeType.topic,
                              durable=True,
                              passive=False,
                              auto_delete=False,
