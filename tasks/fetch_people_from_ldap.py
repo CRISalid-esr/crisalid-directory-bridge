@@ -24,16 +24,14 @@ def fetch_ldap_people():
     people_filter_pattern = get_env_variable("LDAP_PEOPLE_FILTER_PATTERN")
     people_filters = people_filters_str.split(',')
     ldap_response = []
-    attributes = [
-        "uid", "cn", "displayName", "sn", "givenName", "mail",
-        "supannRefid", "description", "eduPersonORCID",
-        "supannEntiteAffectationPrincipale", "supannEntiteAffectation",
-        "eduPersonOrgUnitDN", "eduPersonPrimaryOrgUnitDN",
-        "employeeType", "eduPersonAffiliation", "eduPersonPrimaryAffiliation",
-        "supannEtablissement", "eduPersonOrgDN",
-        "postalAddress", "labeledURI", "eduOrgHomePageURI"
-    ]
-
+    attributes = ["uid", "cn", "displayName", "sn", "givenName", "mail",
+                  "supannRefid", "description", "eduPersonORCID",
+                  "supannEntiteAffectationPrincipale", "supannEntiteAffectation",
+                  "eduPersonOrgUnitDN", "eduPersonPrimaryOrgUnitDN",
+                  "employeeType","supannEmpCorps", "eduPersonAffiliation",
+                  "eduPersonPrimaryAffiliation","supannEmpProfil",
+                  "supannEtablissement", "eduPersonOrgDN",
+                  "postalAddress", "labeledURI", "eduOrgHomePageURI"]
     for people_filter in people_filters:
         people_filter = people_filter_pattern % people_filter
         try:
