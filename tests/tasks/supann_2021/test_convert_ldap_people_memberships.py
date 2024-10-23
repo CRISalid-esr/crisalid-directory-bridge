@@ -39,9 +39,9 @@ def test_memberships_are_converted_from_ldap(dag, unique_execution_date):
     assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {
         "uid=1234,ou=people,dc=example,dc=org": {
             "memberships": [
-                {"entity_id": "mainEntity"},
-                {"entity_id": "entity1"},
-                {"entity_id": "entity2"}
+                {"entity_uid": "mainEntity"},
+                {"entity_uid": "entity1"},
+                {"entity_uid": "entity2"}
             ]
         }
     }
@@ -72,8 +72,8 @@ def test_only_supann_entite_affectation_present(dag, unique_execution_date):
     assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {
         "uid=1234,ou=people,dc=example,dc=org": {
             "memberships": [
-                {"entity_id": "entity1"},
-                {"entity_id": "entity2"}
+                {"entity_uid": "entity1"},
+                {"entity_uid": "entity2"}
             ]
         }
     }
@@ -104,7 +104,7 @@ def test_only_supann_entite_main_affectation_present(dag, unique_execution_date)
     assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {
         "uid=1234,ou=people,dc=example,dc=org": {
             "memberships": [
-                {"entity_id": "mainEntity"}
+                {"entity_uid": "mainEntity"}
             ]
         }
     }
@@ -184,7 +184,7 @@ def test_real_case(dag, unique_execution_date):
     assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {
         'uid=hdupont,ou=people,dc=univ-paris1,dc=fr': {
             'memberships': [
-                {'entity_id': 'U02'}
+                {'entity_uid': 'U02'}
             ]
         }
     }
