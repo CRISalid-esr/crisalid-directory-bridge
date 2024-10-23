@@ -62,9 +62,10 @@ def update_database(result: dict, prefix: str, **kwargs) -> list[str]:
     """
     redis_keys = []
     for entry in result.values():
-        logger.debug("Updating database with entry: %s", entry)
+        logger.debug(">>> Updating database with entry: %s", entry)
         date: DateTime = kwargs.get('data_interval_start')
         timestamp = date.int_timestamp
+        logger.debug("> Timestamp: %s", timestamp)
         client = get_redis_client()
         identifier = next(
             (i['value'] for i in entry.get('identifiers', []) if i.get('type') == 'local'),
@@ -72,9 +73,12 @@ def update_database(result: dict, prefix: str, **kwargs) -> list[str]:
         )
         assert identifier is not None, f"Identifier is None in {entry}"
         redis_key = f"{prefix}{identifier}"
+        logger.debug("> Redis key: %s", redis_key)
         serialized_entry = json.dumps({"data": entry, "timestamp": timestamp})
+        client.zremrangebyscore(redis_key, timestamp, timestamp)
         client.zadd(redis_key, {serialized_entry: timestamp})
         redis_keys.append(redis_key)
+        logger.debug(">Database updated for key: %s", redis_key)
     return redis_keys
 
 
