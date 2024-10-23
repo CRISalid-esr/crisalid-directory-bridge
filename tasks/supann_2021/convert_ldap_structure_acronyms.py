@@ -16,7 +16,7 @@ def convert_ldap_structure_acronyms(ldap_results: dict[str, dict[str, str | dict
     task_results = {}
     for dn, ldap_entry in ldap_results.items():
         assert ldap_entry is not None, f"LDAP entry is None for dn: {dn}"
-        acronyms = ldap_entry.get('acronym', '')
+        acronyms = ldap_entry.get('acronym', ldap_entry.get('ou', []))
         if isinstance(acronyms, list) and len(acronyms) > 0:
             acronym = acronyms[0]
         else:
