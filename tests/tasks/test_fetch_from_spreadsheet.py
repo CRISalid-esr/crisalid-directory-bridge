@@ -33,7 +33,7 @@ def test_fetch_from_spread_sheet(dag, expected_result_path, unique_execution_dat
     """
     Test that data is fetched from a spreadsheet and returned as a list of dictionaries.
     """
-    monkeypatch.setenv("SPREADSHEET_IDENTIFIERS_PATH", "./tests/data/csv/people_identifiers.csv")
+    monkeypatch.setenv("PEOPLE_SPREADSHEET_PATH", "./tests/data/csv/people_identifiers.csv")
     dag_run = create_dag_run(dag, DATA_INTERVAL_START,
                              DATA_INTERVAL_END, unique_execution_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)

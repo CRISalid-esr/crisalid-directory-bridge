@@ -5,7 +5,7 @@ from utils.spreadsheet import read_spreadsheet
 
 FETCH_PARAMETERS = {
     "ldap_people": {
-        "path": "SPREADSHEET_IDENTIFIERS_PATH",
+        "path": "PEOPLE_SPREADSHEET_PATH",
         "columns": [
             "local",
             "id_hal_i",
@@ -20,7 +20,7 @@ FETCH_PARAMETERS = {
         "columns": []
     },
     "spreadsheet_people": {
-        "path": "SPREADSHEET_PEOPLE_PATH",
+        "path": "PEOPLE_SPREADSHEET_PATH",
         "columns": [
             "first_name",
             "last_name",
@@ -34,7 +34,7 @@ FETCH_PARAMETERS = {
         ]
     },
     "spreadsheet_structures": {
-        "path": "SPREADSHEET_STRUCTURES_PATH",
+        "path": "STRUCTURE_SPREADSHEET_PATH",
         "columns": [
             "name",
             "acronym",
