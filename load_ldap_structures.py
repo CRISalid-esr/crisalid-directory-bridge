@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 @dag(
     dag_id="load_ldap_structures",
     start_date=pendulum.datetime(2024, 7, 2, tz="UTC"),
-    schedule="@daily",
+    schedule=None,
     catchup=False,
     tags=["structures", "ldap"],
     max_active_tasks=10,
