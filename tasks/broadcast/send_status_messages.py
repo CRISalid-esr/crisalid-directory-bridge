@@ -59,7 +59,7 @@ def _create_exchange():
     channel = connection.channel()
     channel.exchange_declare(exchange='directory',
                              exchange_type=ExchangeType.topic,
-                             durable=False,
+                             durable=True,
                              passive=False,
                              auto_delete=False,
                              internal=False)
