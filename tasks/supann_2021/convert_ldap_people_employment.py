@@ -8,14 +8,13 @@ from utils.config import get_env_variable
 from utils.exceptions import YamlParseError
 
 logger = logging.getLogger(__name__)
-
+yaml_path = get_env_variable('YAML_EMPLOYEE_TYPE_PATH')
 employee_types_yaml = None # pylint: disable=invalid-name
 
 def _get_employee_types_yaml():
     global employee_types_yaml # pylint: disable=global-statement
     if employee_types_yaml is not None:
         return employee_types_yaml
-    yaml_path = get_env_variable('YAML_EMPLOYEE_TYPE_PATH')
     try:
         with open(yaml_path, 'r', encoding='UTF-8') as file:
             employee_types_yaml = yaml.safe_load(file)
@@ -37,12 +36,18 @@ def _get_position_code_and_label(
         tuple[str, str] | None: A tuple with the code and the label of the position if the
         employee type is known. Else None
     """
-
-    position = next(
-        ((code, inner_dict['label']) for code, inner_dict in _get_employee_types_yaml().items()
-         if employee_type_to_check in inner_dict[field_type]),
-        None
-    )
+    position = None
+    if employee_type_to_check is not None:
+        position = next(
+            ((code, inner_dict['label']) for code, inner_dict in _get_employee_types_yaml().items()
+             if inner_dict.get(field_type) and employee_type_to_check in inner_dict[field_type]),
+            None
+        )
+    if position is None and employee_type_to_check is not None:
+        logger.warning(
+            "Employee type '%s' from field type '%s' not found in '%s'",
+            employee_type_to_check, field_type, yaml_path
+        )
     return position
 
 
