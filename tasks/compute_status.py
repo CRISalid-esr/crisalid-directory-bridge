@@ -27,6 +27,7 @@ def _compute_entity_status(entity_with_scores: dict, timestamp: str) -> dict:
     # if we have a previous state, and data is the same, status is "unchanged"
     # if we have a previous state, and data is different, status is "updated"
     previous_state = _find_previous_state(entity_with_scores, timestamp)
+    logger.debug("Previous state: %s", previous_state)
     if timestamp in entity_with_scores:
         entity = entity_with_scores[timestamp]['data']
         if previous_state is None:
@@ -45,6 +46,8 @@ def _compute_entity_status(entity_with_scores: dict, timestamp: str) -> dict:
 
 
 def _find_previous_state(entity_with_scores: dict, timestamp: str) -> dict | None:
+    logger.debug("Entity with scores: %s", entity_with_scores)
+    logger.debug("Finding previous state for %s", timestamp)
     max_key = max(
         (int(key) for key in entity_with_scores.keys() if int(key) < int(timestamp)),
         default=0)
