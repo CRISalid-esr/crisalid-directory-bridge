@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 @dag(
     dag_id="load_spreadsheet_people",
     start_date=pendulum.datetime(2024, 7, 2, tz="UTC"),
-    schedule="@daily",
+    schedule=None,
     catchup=False,
     tags=["people", "spreadsheet"],
     max_active_tasks=10,
