@@ -1,96 +1,72 @@
-pu:
+# Employees type are based on: http://infocentre.pleiade.education.fr/bcn/index.php/workspace/viewTable/n/N_CORPS/nbElements/20
+#
+# {code}:         | Based on "LIBELLE_COURT" field, for example "pr"
+#   corps:        |Based on "CORPS" field, for example "300"
+#   label:        | Based on "LIBELLE_LONG" field, "Professeur des universités" for example
+#   local_values: | Values used by the structure, who need to be linked to the normalized employee types.
+
+
+pr:
+  corps: "300"
   label: "Professeur des universités"
   local_values:
     - "Professeur des universités"
     - "Cpj emploi tit. corps professeur"
+
+pr_asmt:
+  corps: "700"
+  label: "Professeur des universités associé mi-temps"
+  local_values:
+    - "Associé professeur mi-tps"
+
+pr_inv:
+  corps: "720"
+  label: "Professeur des universités invité"
+  local_values:
     - "Professeur invité"
 
 mcf:
-  label: "Maître de conférences"
+  corps: "301"
+  label: "Maître de conférences des universités"
   local_values:
     - "Maître de conférences"
 
-pe:
-  label: "Professeur émérite"
+mcf_asmt:
+  corps: "701"
+  label: "Maître de conférences des universités associé mi-temps"
   local_values:
-    - "Professeur émérite"
+    "Associé mcf mi-tps"
 
-dr:
-  label: "Directeur de recherche"
-  local_values:
-    - "Directeur de recherche"
-
-cr:
-  label: "Chargé de recherche"
+cr_epst:
+  corps: "270"
+  label: "Chargé de recherche des epst"
   local_values:
     - "Chargé de recherche"
 
-ater:
-  label: "Attaché temporaire d'enseignement et de recherche"
+agrege:
+  corps: "551"
+  label: "Professeur agrégé"
+  local_values:
+    - "Professeur agrégé"
+
+a.t.e.r:
+  corps: "753"
+  label: "Attaché temporaire enseignement et recherche"
   local_values:
     - "Ater"
     - "Ater mi-temps"
 
-biatss:
-  label: "BIATSS"
-  local_values:
-    - "Adj technique de recherche et formation"
-    - "Technicien de rech et formation"
-    - "Hébergé administratif catégorie a"
-    - "Magasinier des bibliothèques"
-    - "Adj. adm de l'en et de l'ens sup"
-    - "Bibliothécaire assistant specialise"
-    - "Personnel administratif ou technique"
-    - "Associé professeur mi-tps"
-    - "Associé mcf mi-tps"
-    - "Secrétaire administratif 2010"
-    - "Assistant ingénieur de rech et formation"
-    - "Bibliothécaire"
-    - "Attache d'administration de l'état"
-    - "Hébergé administratif catégorie b"
-    - "Hébergé adminsitratif catégorie c"
-    - "Professeur agrégé"
-    - "Technicien d'art"
-    - "Administrateur état"
-    - "Infirmiers enes catégorie a"
-    - "Agent biatss sur fonction non pérenne"
-    - "Agent comptable epscp"
-    - "Adjoint en gestion administrative"
-
-ige:
-  label: "Ingénieur d'études"
-  local_values:
-    - "Ingénieur d'études (rech et form)"
-    - "Ingénieur d'études epst"
-
-cce:
-  label: "Chargé d'enseignement"
+charge_ens:
+  corps: "562"
+  label: "Chargé d'enseignement hors EPS"
   local_values:
     - "Chargé d'enseignement"
 
-cii:
-  label: "Conservateur des bibliothèques"
+agt.cont:
+  corps: "864"
+  label: "Agent contractuel recherche"
   local_values:
-    - "Conservateur des bibliothèques (1992)"
-    - "Conservateur general des bibliothèques"
-
-ci:
-  label: "Chercheur invité"
-  local_values:
-    - "Chercheur invité - direval"
-    - "Visiteur étranger: professeur invité et chercheur associé"
-
-epa:
-  label: "Personnel en activité ponctuelle"
-  local_values:
-    - "Personnel en activité ponctuelle"
-
-ch:
-  label: "Chercheur associé"
-  local_values:
-    - "Chercheur associé"
-    - "Associé professeur"
-    - "Associé mcf"
+    - "Agent contractuel"
 
 ect:
   label: "Enseignant-chercheur contractuel"
@@ -99,14 +75,28 @@ ect:
     - "Contractuel enseignant chercheur lru"
     - "Enseignant"
 
+ci:
+  label: "Chercheur invité"
+  local_values:
+    - "Chercheur invité - direval"
+
+pe:
+  label: "Professeur émérite"
+  local_values:
+    - "Professeur émérite"
+
 doc:
   label: "Doctorant"
   local_values:
     - "Doctorant epes/ep recherche avec enseignement"
     - "Doctorant epes/ep recherche sans enseignement"
-    - "Doctorant sous convention"
 
-pm:
-  label: "Personnel hébergé"
+ch:
+  label: "Chercheur associé"
   local_values:
-    - "Personnel hébergé"
+    - "Chercheur associé"
+
+dr:
+  label: "Directeur de recherche"
+  local_values:
+    - "Directeur de recherche"
