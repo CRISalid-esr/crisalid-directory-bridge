@@ -21,7 +21,7 @@ pr_asmt:
 
 pr_inv:
   corps: "720"
-  label: "Prodesseur des universités invité"
+  label: "Professeur des universités invité"
   local_values:
     - "Professeur invité"
 
