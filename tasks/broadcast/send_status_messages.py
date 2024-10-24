@@ -4,6 +4,7 @@ import logging
 from airflow.decorators import task
 from pika import BlockingConnection
 from pika.exchange_type import ExchangeType
+from rabbitmq_provider.hooks.rabbitmq import RabbitMQHook
 
 from utils.config import get_env_variable
 from utils.rabbitmq import get_rabbitmq_hook
@@ -25,11 +26,12 @@ def send_status_messages(entities_with_statuses: list[dict], entity_type: str) -
     :param entity_type: the type of the entity
     :return: the messages sent
     """
-    _create_exchange()
-    return [_send_status_message(e, entity_type) for e in entities_with_statuses]
+    hook = _initialize_connection()
+    return [_send_status_message(hook, e, entity_type) for e in entities_with_statuses]
 
 
-def _send_status_message(entity_with_status: dict, entity_type: str) -> dict:
+def _send_status_message(hook: RabbitMQHook,
+                         entity_with_status: dict, entity_type: str) -> dict:
     assert entity_type in PREFIXES, f"No message prefix found for entity type {entity_type}"
     prefix = get_env_variable(PREFIXES[entity_type])
     status = entity_with_status['status']
@@ -40,17 +42,16 @@ def _send_status_message(entity_with_status: dict, entity_type: str) -> dict:
             "data": data,
         }
     }
-    hook = get_rabbitmq_hook()
-    message = {
+    params = {
         'exchange': 'directory',
         'routing_key': f"{prefix}{status}",
         'message': json.dumps(wrapper, default=str)
     }
-    hook.publish(**message)
-    return message
+    hook.publish(**params)
+    return params
 
 
-def _create_exchange():
+def _initialize_connection() -> RabbitMQHook:
     """
     Create the exchange in RabbitMQ.
     """
@@ -60,7 +61,6 @@ def _create_exchange():
     channel.exchange_declare(exchange='directory',
                              exchange_type=ExchangeType.topic,
                              durable=True,
-                             passive=False,
-                             auto_delete=False,
-                             internal=False)
-    logger.info("Created exchange 'directory'")
+                             passive=True)
+    logger.info("Exchange 'directory'")
+    return hook
