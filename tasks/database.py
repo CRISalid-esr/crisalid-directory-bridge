@@ -61,12 +61,12 @@ def update_database(result: dict, prefix: str, **kwargs) -> list[str]:
     :return:
     """
     redis_keys = []
+    client = get_redis_client()
     for entry in result.values():
         logger.debug(">>> Updating database with entry: %s", entry)
         date: DateTime = kwargs.get('data_interval_start')
         timestamp = date.int_timestamp
         logger.debug("> Timestamp: %s", timestamp)
-        client = get_redis_client()
         identifier = next(
             (i['value'] for i in entry.get('identifiers', []) if i.get('type') == 'local'),
             None
