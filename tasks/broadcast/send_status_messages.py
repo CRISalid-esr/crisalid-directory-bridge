@@ -3,8 +3,8 @@ import logging
 
 from airflow.decorators import task
 from pika import BlockingConnection
+from pika.adapters.blocking_connection import BlockingChannel
 from pika.exchange_type import ExchangeType
-from rabbitmq_provider.hooks.rabbitmq import RabbitMQHook
 
 from utils.config import get_env_variable
 from utils.rabbitmq import get_rabbitmq_hook
@@ -26,11 +26,11 @@ def send_status_messages(entities_with_statuses: list[dict], entity_type: str) -
     :param entity_type: the type of the entity
     :return: the messages sent
     """
-    hook = _initialize_connection()
-    return [_send_status_message(hook, e, entity_type) for e in entities_with_statuses]
+    channel = _initialize_connection()
+    return [_send_status_message(channel, e, entity_type) for e in entities_with_statuses]
 
 
-def _send_status_message(hook: RabbitMQHook,
+def _send_status_message(channel: BlockingChannel,
                          entity_with_status: dict, entity_type: str) -> dict:
     assert entity_type in PREFIXES, f"No message prefix found for entity type {entity_type}"
     prefix = get_env_variable(PREFIXES[entity_type])
@@ -47,11 +47,11 @@ def _send_status_message(hook: RabbitMQHook,
         'routing_key': f"{prefix}{status}",
         'message': json.dumps(wrapper, default=str)
     }
-    hook.publish(**params)
+    channel.basic_publish(**params)
     return params
 
 
-def _initialize_connection() -> RabbitMQHook:
+def _initialize_connection() -> BlockingChannel:
     """
     Create the exchange in RabbitMQ.
     """
@@ -63,4 +63,4 @@ def _initialize_connection() -> RabbitMQHook:
                              durable=True,
                              passive=True)
     logger.info("Exchange 'directory'")
-    return hook
+    return channel
