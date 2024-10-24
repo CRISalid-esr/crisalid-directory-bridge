@@ -34,7 +34,7 @@ def load_ldap_people():
     """
     entity_source = "ldap"
     entity_type = "people"
-    task_keys = ["NAME", "IDENTIFIER", "MEMBERSHIP","EMPLOYMENT"]
+    task_keys = ["NAME", "IDENTIFIER", "MEMBERSHIP"]#,"EMPLOYMENT"]
     tasks = {}
 
     for key in task_keys:
