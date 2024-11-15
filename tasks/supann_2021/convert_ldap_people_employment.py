@@ -38,12 +38,18 @@ def _get_position_code_and_label(
     """
     position = None
     if employee_type_to_check is not None:
-        position = next(
-            ((code, inner_dict['label']) for code, inner_dict in _get_employee_types_yaml().items()
-             if inner_dict.get(field_type) and employee_type_to_check in inner_dict[field_type]),
-            None
-        )
-    if position is None and employee_type_to_check is not None:
+        hceres_corps = [
+            corps
+            for status in _get_employee_types_yaml().values()
+            for category in status.values()
+            for corps in category
+        ]
+
+        for corps in hceres_corps:
+            if corps["local_values"] and employee_type_to_check in corps["local_values"]:
+                position = (corps["corps"], corps["label"])
+                return position
+
         logger.warning(
             "Employee type '%s' from field type '%s' not found in '%s'",
             employee_type_to_check, field_type, yaml_path
@@ -70,22 +76,6 @@ def _create_employment(
         "entity_uid": entity_id
     }
     return employment
-
-
-def _convert_with_supanempprofil(
-        profil_dict_list: list[dict]
-) -> list[dict]:
-    employments = []
-    for profil in profil_dict_list:
-        if isinstance(profil['etab'], str) and profil['etab'].startswith('{UAI}'):
-            entity_uid = f"uai-{profil['etab'].removeprefix('{UAI}')}"
-            position = None
-            corps = profil.get('corps', None)
-            if isinstance(corps, str) and corps.startswith('{NCORPS}'):
-                corps = profil['corps'].removeprefix('{NCORPS}')
-                position = _get_position_code_and_label(corps, 'corps')
-            employments.append(_create_employment(entity_uid, position))
-    return employments
 
 
 def _convert_with_employeetype(
@@ -134,15 +124,6 @@ def convert_ldap_people_employment(
     task_results = {}
 
     for dn, entry in ldap_results.items():
-        emp_profil = entry.get('supannEmpProfil', [])
-        profil_dict_list = [
-            dict(item.split('=') for item in profil.strip('[]').split(']['))
-            for profil in emp_profil
-        ]
-        if len(profil_dict_list) > 0:
-            employments = _convert_with_supanempprofil(profil_dict_list)
-        else:
-            employments = _convert_with_employeetype(entry)
-
+        employments = _convert_with_employeetype(entry)
         task_results[dn] = {"employments": employments}
     return task_results

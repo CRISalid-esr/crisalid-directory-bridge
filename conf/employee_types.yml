@@ -1,102 +1,256 @@
-# Employees type are based on: http://infocentre.pleiade.education.fr/bcn/index.php/workspace/viewTable/n/N_CORPS/nbElements/20
-#
-# {code}:         | Based on "LIBELLE_COURT" field, for example "pr"
-#   corps:        |Based on "CORPS" field, for example "300"
-#   label:        | Based on "LIBELLE_LONG" field, "Professeur des universités" for example
-#   local_values: | Values used by the structure, who need to be linked to the normalized employee types.
+# Employees type are based on HCERES RH nomenclature found here: https://www.hceres.fr/sites/default/files/DAE_vague-A/recherche/tableau_donnees_caracterisation_production.xlsx
 
+Enseignants-chercheurs_et_assimiles:
+  Professeurs_des_universites_et_assimiles:
+  - corps: "PR"
+    label: "Professeur"
+    local_values:
+      - "Professeur des universités"
+  - corps: "DIR"
+    label: "Directeur d'études"
+    local_values:
+  - corps: "Phys"
+    label: "Physicien"
+    local_values:
+  - corps: "Astro"
+    label: "Astronome"
+    local_values:
+  - corps: "PUPH"
+    label: "Professeur des université-Praticien hospitalier"
+    local_values:
+  - corps: "PR_AutMin"
+    label: "Professeur des établissements dépendant d'autres ministères"
+    local_values:
+  Maitres_de_conferences_et_assimiles:
+  - corps: "MCF"
+    label: "Maître de conférences"
+    local_values:
+      - "Maître de conférences"
+  - corps: "Phys_adj"
+    label: "Physicien adjoint"
+    local_values:
+  - corps: "Astro_adj"
+    label: "Astronome adjoint"
+    local_values:
+  - corps: "MCUPH"
+    label: "Maître de conférences des universités-Praticiens hospitaliers"
+    local_values:
+  - corps: "MC_AutMin"
+    label: "Maître de conférences ou Maître assistant des établissements dépendant
+      d'autres ministères"
+    local_values:
+  Enseignants-chercheurs_non_titulaires_emerites_et_autres:
+  - corps: "PREM"
+    label: "Professeur émérite"
+    local_values:
+  - corps: "MCFEM"
+    label: "Maître de conférences émérite"
+    local_values:
+  - corps: "CCA"
+    label: "Chef de clinique assistant"
+    local_values:
+  - corps: "AHU"
+    label: "Attaché hospitalier universitaire"
+    local_values:
+  - corps: "PHU"
+    label: "Praticien hospitalier universitaire"
+    local_values:
+  - corps: "ECC"
+    label: "Enseignant-chercheur contractuel (dont contrats LRU)"
+    local_values:
+  - corps: "PAST"
+    label: "Enseignant-chercheur associé (MC, PR à temps partiel ou temps plein)"
+    local_values:
+  - corps: "ChPJ"
+    label: "Chaire de professeur junior"
+    local_values:
+  - corps: "EC_CDD"
+    label: "Enseignant-chercheur en contrat à durée déterminée sans préciser la catégorie"
+    local_values:
+  - corps: "EC_CDI"
+    label: "Enseignant-chercheur en contrat à durée indéterminée sans préciser la
+      catégorie"
+    local_values:
+  - corps: "Autre_EC"
+    label: "Autre statut"
+    local_values:
 
-pr:
-  corps: "300"
-  label: "Professeur des universités"
-  local_values:
-    - "Professeur des universités"
-    - "Cpj emploi tit. corps professeur"
+Chercheurs_et_assimiles:
+  Chercheurs_des_EPST_EPIC_et_autres_organismes:
+  - corps: "DR"
+    label: "Directeur de recherche et assimilés"
+    local_values:
+      - "Directeur de recherche"
+  - corps: "CR"
+    label: "Chargé de recherche et assimilés"
+    local_values:
+  - corps: "CS-CEA"
+    label: "Cadre scientifique CEA"
+    local_values:
+  Conservateurs:
+  - corps: "CBIB"
+    label: "Conservateur des bibliothèques"
+    local_values:
+  - corps: "CPAT"
+    label: "Conservateur du patrimoine"
+    local_values:
+  Chercheurs_non_titulaires_emerites_et_autres:
+  - corps: "DREM"
+    label: "Directeur de recherche émérite"
+    local_values:
+  - corps: "CS-CEA-NP"
+    label: "Cadre scientifique CEA - non permanent"
+    local_values:
+  - corps: "CJC"
+    label: "Contrat jeune chercheur (CDD 3 / 5 ans, ATIP-Avenir)"
+    local_values:
+  - corps: "ATER"
+    label: "Attaché temporaire d'enseignement et de recherche"
+    local_values:
+  - corps: "Post-doc"
+    label: "Post-doctorant"
+    local_values:
+  - corps: "Docteur"
+    label: "Docteur en médecine, pharmacie, etc."
+    local_values:
+  - corps: "Invité"
+    label: "Visiteur : professeur invité et chercheur invité, ayant séjourné au moins 3 mois au sein de l'unité"
+    local_values:
+  - corps: "PATP"
+    label: "Personnel associé à temps partiel, doit faire l'objet d'une convention
+      d'accueil"
+    local_values:
+  - corps: "Ch_CDD"
+    label: "Chercheur en contrat à durée déterminée sans préciser la catégorie"
+    local_values:
+  - corps: "Ch_CDI"
+    label: "Chercheur en contrat à durée indéterminée sans préciser la catégorie"
+    local_values:
+  - corps: "Autre_Ch"
+    label: "Autre statut"
+    local_values:
 
-pr_asmt:
-  corps: "700"
-  label: "Professeur des universités associé mi-temps"
-  local_values:
-    - "Associé professeur mi-tps"
-
-pr_inv:
-  corps: "720"
-  label: "Professeur des universités invité"
-  local_values:
-    - "Professeur invité"
-
-mcf:
-  corps: "301"
-  label: "Maître de conférences des universités"
-  local_values:
-    - "Maître de conférences"
-
-mcf_asmt:
-  corps: "701"
-  label: "Maître de conférences des universités associé mi-temps"
-  local_values:
-    "Associé mcf mi-tps"
-
-cr_epst:
-  corps: "270"
-  label: "Chargé de recherche des epst"
-  local_values:
-    - "Chargé de recherche"
-
-agrege:
-  corps: "551"
-  label: "Professeur agrégé"
-  local_values:
-    - "Professeur agrégé"
-
-a.t.e.r:
-  corps: "753"
-  label: "Attaché temporaire enseignement et recherche"
-  local_values:
-    - "Ater"
-    - "Ater mi-temps"
-
-charge_ens:
-  corps: "562"
-  label: "Chargé d'enseignement hors EPS"
-  local_values:
-    - "Chargé d'enseignement"
-
-agt.cont:
-  corps: "864"
-  label: "Agent contractuel recherche"
-  local_values:
-    - "Agent contractuel"
-
-ect:
-  label: "Enseignant-chercheur contractuel"
-  local_values:
-    - "Contractuel chercheur lru"
-    - "Contractuel enseignant chercheur lru"
-    - "Enseignant"
-
-ci:
-  label: "Chercheur invité"
-  local_values:
-    - "Chercheur invité - direval"
-
-pe:
-  label: "Professeur émérite"
-  local_values:
-    - "Professeur émérite"
-
-doc:
-  label: "Doctorant"
-  local_values:
-    - "Doctorant epes/ep recherche avec enseignement"
-    - "Doctorant epes/ep recherche sans enseignement"
-
-ch:
-  label: "Chercheur associé"
-  local_values:
-    - "Chercheur associé"
-
-dr:
-  label: "Directeur de recherche"
-  local_values:
-    - "Directeur de recherche"
+Autres_personnels:
+  Enseignants_du_secondaire_detaches_dans_le_superieur:
+  - corps: "PRAG"
+    label: "Professeur agrégé"
+    local_values:
+  - corps: "PCAP"
+    label: "Professeur certifié"
+    local_values:
+      - "Chargé d'enseignement"
+  Personnels_techniques_et_administratifs_d_appui_a_la_recherche:
+  - corps: "IR"
+    label: "Ingénieur de recherche"
+    local_values:
+  - corps: "IE"
+    label: "Ingénieur d'études"
+    local_values:
+  - corps: "AI"
+    label: "Assistant ingénieur"
+    local_values:
+  - corps: "TECH"
+    label: "Technicien de recherche"
+    local_values:
+  - corps: "AJT"
+    label: "Adjoint technique de recherche"
+    local_values:
+  - corps: "ADMAENES"
+    label: "Administrateur de l'éducation nationale et de l'enseignement supérieur,
+      Conseiller d'administration scolaire et universitaire"
+    local_values:
+  - corps: "ADAENES"
+    label: "Attaché et Attaché principal d'administration de l'éducation nationale
+      et de l'enseignement supérieur"
+    local_values:
+  - corps: "SAENES"
+    label: "Secrétaire administratif de l'éducation nationale et de l'enseignement
+      supérieur"
+    local_values:
+  - corps: "ADJAENES"
+    label: "Adjoint d'administration de l'éducation nationale et de l'enseignement
+      supérieur"
+    local_values:
+  Personnels_d_appui_a_la_recherche_CEA:
+  - corps: "NCS-CEA"
+    label: "Non cadre scientifique CEA"
+    local_values:
+  - corps: "CA-CEA"
+    label: "Cadre administratif CEA"
+    local_values:
+  - corps: "NCA-CEA"
+    label: "Non cadre administratif CEA"
+    local_values:
+  Bibliothécaires:
+  - corps: "BIB"
+    label: "Bibliothécaire d'état"
+    local_values:
+  - corps: "BIBAS"
+    label: "Bibliothécaire assistant spécialisé"
+    local_values:
+  - corps: "ASBIB"
+    label: "Assistant des bibliothèques"
+    local_values:
+  - corps: "MABIB"
+    label: "Magasinier et magasinier principal des bibliothèques"
+    local_values:
+  Personnels hospitaliers:
+  - corps: "PH"
+    label: "Praticien hospitalier"
+    local_values:
+  - corps: "AJH"
+    label: "Adjoint administratif, technique, ouvrier, agent de service hospitaliers"
+    local_values:
+  - corps: "ASPM"
+    label: "Aide-soignant, auxiliaire de puériculture, aide médico-psychologique"
+    local_values:
+  - corps: "SEC"
+    label: "Secrétaire hospitalier"
+    local_values:
+  - corps: "TEC"
+    label: "Technicien hospitalier"
+    local_values:
+  - corps: "INF"
+    label: "Infirmier"
+    local_values:
+  - corps: "SF"
+    label: "Sage-femme"
+    local_values:
+  - corps: "ARC"
+    label: "Attaché de recherche clinique"
+    local_values:
+  - corps: "CS"
+    label: "Cadre de santé"
+    local_values:
+  - corps: "Igh"
+    label: "Ingénieur hospitalier"
+    local_values:
+  - corps: "CP"
+    label: "Chef de projet (en milieu hospitalier)"
+    local_values:
+  Personnels d'appui à la recherche non titulaires:
+  - corps: "PAR_CDD"
+    label: "Personnel d'appui à la recherche en contrat à durée déterminée sans préciser
+      la catégorie"
+    local_values:
+  - corps: "PAR_CDI"
+    label: "Personnel d'appui à la recherche en contrat à durée indéterminée sans
+      préciser la catégorie"
+    local_values:
+  - corps: "Autre_PAR"
+    label: "Autre statut"
+    local_values:
+  Personnels d'appui à la recherche CEA - non permanents:
+  - corps: "NCS-CEA_NP"
+    label: "Non cadre scientifique CEA - non permanent"
+    local_values:
+  - corps: "CA-CEA-NP"
+    label: "Cadre administratif CEA - non permanent"
+    local_values:
+  - corps: "NCA-CEA-NP"
+    label: "Non cadre administratif CEA - non permanent"
+    local_values:
+  Stagiaires:
+  - corps: "Stag"
+    label: "Stagiaire BTS, M1 ou M2 présent au moins 3 mois dans l'unité"
+    local_values:
