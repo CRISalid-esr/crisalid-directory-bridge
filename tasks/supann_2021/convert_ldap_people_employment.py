@@ -38,14 +38,14 @@ def _get_position_code_and_label(
     """
     position = None
     if employee_type_to_check is not None:
-        hceres_corps = [
+        corps_list = [
             corps
             for status in _get_employee_types_yaml().values()
             for category in status.values()
             for corps in category
         ]
 
-        for corps in hceres_corps:
+        for corps in corps_list:
             if corps["local_values"] and employee_type_to_check in corps["local_values"]:
                 position = (corps["corps"], corps["label"])
                 return position
