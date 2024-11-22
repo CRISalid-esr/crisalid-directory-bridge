@@ -1,3 +1,4 @@
+import fsspec
 import logging
 import re
 
@@ -12,14 +13,14 @@ yaml_path = get_env_variable('YAML_EMPLOYEE_TYPE_PATH')
 employee_types_yaml = None # pylint: disable=invalid-name
 
 def _get_employee_types_yaml():
-    global employee_types_yaml # pylint: disable=global-statement
+    global employee_types_yaml  # pylint: disable=global-statement
     if employee_types_yaml is not None:
         return employee_types_yaml
     try:
-        with open(yaml_path, 'r', encoding='UTF-8') as file:
+        with fsspec.open(yaml_path, 'r', encoding='UTF-8') as file:
             employee_types_yaml = yaml.safe_load(file)
     except (FileNotFoundError, ValueError, yaml.YAMLError) as error:
-        raise YamlParseError(f"Error while reading the yaml: {str(error)}") from error
+        raise YamlParseError(f"Error while reading the YAML: {str(error)}") from error
 
     return employee_types_yaml
 
