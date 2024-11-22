@@ -90,6 +90,7 @@ kombu==5.3.7
 kubernetes==30.1.0
 kubernetes_asyncio==30.1.0
 lazy-object-proxy==1.10.0
+ldap3==2.9.1
 limits==3.12.0
 linkify-it-py==2.0.3
 lockfile==0.12.2
@@ -140,7 +141,6 @@ pytest==8.2.2
 python-daemon==3.0.1
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
-ldap3==2.9.1
 python-nvd3==0.16.0
 python-slugify==8.0.4
 pytz==2024.1
