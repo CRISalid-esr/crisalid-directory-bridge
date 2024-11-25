@@ -11,7 +11,6 @@ TESTED_TASK_NAME = "tasks.supann_2021.convert_ldap_structure_acronyms" \
 TEST_TASK_ID = "convert_ldap_structure_acronyms"
 
 
-@pytest.mark.current
 @pytest.mark.parametrize("dag", [
     {
         'task_name': TESTED_TASK_NAME,
@@ -41,7 +40,6 @@ def test_acronym_is_converted_from_ldap(dag, unique_execution_date) -> None:
     }
 
 
-@pytest.mark.current
 @pytest.mark.parametrize("dag", [
     {
         'task_name': TESTED_TASK_NAME,
