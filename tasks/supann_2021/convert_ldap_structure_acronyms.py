@@ -1,5 +1,6 @@
-from airflow.decorators import task
 import re
+
+from airflow.decorators import task
 
 
 @task(task_id="convert_ldap_structure_acronyms")
@@ -18,11 +19,11 @@ def convert_ldap_structure_acronyms(ldap_results: dict[str, dict[str, str | dict
     for dn, ldap_entry in ldap_results.items():
         assert ldap_entry is not None, f"LDAP entry is None for dn: {dn}"
         acronym = None
-        acronyms = ldap_entry.get('description', [])
-        if isinstance(acronyms, list) and len(acronyms) > 0:
-            entry = acronyms[0]
-            if re.match(r"(.*)\u00a0",entry):
-                acronym = re.match(r"(.*)\u00a0",entry).group(1)
+        descriptions = ldap_entry.get('description', [])
+        if isinstance(descriptions, list) and len(descriptions) > 0:
+            match = re.match(r"(.*)\u00a0", descriptions[0])
+            if match:
+                acronym = match.group(1)
 
         task_results[dn] = {"acronym": acronym}
 
