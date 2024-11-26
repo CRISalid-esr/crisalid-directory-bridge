@@ -21,7 +21,7 @@ def convert_ldap_structure_acronyms(ldap_results: dict[str, dict[str, str | dict
         acronym = None
         descriptions = ldap_entry.get('description', [])
         if isinstance(descriptions, list) and len(descriptions) > 0:
-            match = re.match(r"(.*)\u00a0", descriptions[0])
+            match = re.match(r"(.*)\s:", descriptions[0])
             if match:
                 acronym = match.group(1)
 
