@@ -1,7 +1,7 @@
-import fsspec
 import logging
 import re
 
+import fsspec
 import yaml
 from airflow.decorators import task
 
@@ -11,6 +11,7 @@ from utils.exceptions import YamlParseError
 logger = logging.getLogger(__name__)
 yaml_path = get_env_variable('YAML_EMPLOYEE_TYPE_PATH')
 employee_types_yaml = None # pylint: disable=invalid-name
+
 
 def _get_employee_types_yaml():
     global employee_types_yaml  # pylint: disable=global-statement
