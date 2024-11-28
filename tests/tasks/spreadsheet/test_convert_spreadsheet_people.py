@@ -13,6 +13,7 @@ TEST_TASK_ID = "convert_spreadsheet_people"
 TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreadsheet_people'
 
 
+@pytest.mark.current
 @pytest.mark.parametrize("dag, expected_result_path", [
     (
             {
@@ -29,6 +30,11 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'orcid': '0000-0000-0000-0001',
                         'idref': '12345678X',
                         'scopus_eid': '',
+                        'institution_identifier': 'uai-0753364Z',
+                        'position': 'PR',
+                        'employment_start_date': '28-11-2024',
+                        'employment_departure_date': '',
+                        'hdr': ''
                     }
                 ]
             },
