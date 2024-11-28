@@ -4,7 +4,7 @@ from airflow.decorators import task
 
 logger = logging.getLogger(__name__)
 
-LOCAL_STRUCTURE_IDENTIFIER = 'local'
+LOCAL_STRUCTURE_IDENTIFIER = 'tracking_id'
 
 STRUCTURE_IDENTIFIERS = [LOCAL_STRUCTURE_IDENTIFIER, 'rnsr', 'ror']
 

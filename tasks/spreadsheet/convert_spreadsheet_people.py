@@ -4,7 +4,7 @@ from airflow.decorators import task
 
 logger = logging.getLogger(__name__)
 
-LOCAL_PERSON_IDENTIFIER = 'local'
+LOCAL_PERSON_IDENTIFIER = 'tracking_id'
 
 PERSON_IDENTIFIERS = [LOCAL_PERSON_IDENTIFIER,
                       'id_hal_i',

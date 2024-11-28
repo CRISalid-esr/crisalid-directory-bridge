@@ -7,7 +7,7 @@ FETCH_PARAMETERS = {
     "ldap_people": {
         "path": "PEOPLE_SPREADSHEET_PATH",
         "columns": [
-            "local",
+            "tracking_id",
             "id_hal_i",
             "id_hal_s",
             "orcid",
@@ -25,7 +25,7 @@ FETCH_PARAMETERS = {
             "first_name",
             "last_name",
             "main_laboratory_identifier",
-            "local",
+            "tracking_id",
             "id_hal_i",
             "id_hal_s",
             "orcid",
@@ -39,7 +39,7 @@ FETCH_PARAMETERS = {
             "name",
             "acronym",
             "description",
-            "local",
+            "tracking_id",
             "rnsr",
             "ror",
             "city_name",
