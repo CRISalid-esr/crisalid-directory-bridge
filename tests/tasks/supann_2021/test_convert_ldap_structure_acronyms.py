@@ -16,12 +16,12 @@ TEST_TASK_ID = "convert_ldap_structure_acronyms"
         'task_name': TESTED_TASK_NAME,
         "param_names": ["raw_results"],
         'raw_results': {
-            "uid=1234,ou=people,dc=example,dc=org": {
-                "acronym": ["UEX"],
-                "eduorglegalname": ["University of Example"],
-                "description": ["A university in Example"],
+            'U082': {
+                     'description': [
+                         'UEX\xa0: Laboratoire des Tests (UMR 2024)'],
+                     'ou': ['UMR 2024 - UEX'],
+                     },
             },
-        },
     },
 ], indirect=True)
 def test_acronym_is_converted_from_ldap(dag, unique_execution_date) -> None:
@@ -36,7 +36,7 @@ def test_acronym_is_converted_from_ldap(dag, unique_execution_date) -> None:
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
     assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {
-        "uid=1234,ou=people,dc=example,dc=org": {'acronym': 'UEX'}
+        "U082": {'acronym': 'UEX'}
     }
 
 
