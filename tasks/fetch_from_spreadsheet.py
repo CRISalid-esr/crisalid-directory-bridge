@@ -22,7 +22,7 @@ FETCH_PARAMETERS = {
     "spreadsheet_people": {
         "path": "PEOPLE_SPREADSHEET_PATH",
         "columns": [
-            "first_name",
+            "first_names",
             "last_name",
             "main_laboratory_identifier",
             "local",

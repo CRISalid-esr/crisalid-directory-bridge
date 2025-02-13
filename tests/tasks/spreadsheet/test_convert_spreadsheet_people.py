@@ -20,7 +20,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                 "param_names": ["raw_results"],
                 "raw_results": [
                     {
-                        'first_name': 'Joe',
+                        'first_names': 'Joe',
                         'last_name': 'Dupond',
                         'main_laboratory_identifier': 'U01',
                         'local': 'jdupond',
@@ -40,7 +40,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                 "param_names": ["raw_results"],
                 "raw_results": [
                     {
-                        'first_name': 'Henry',
+                        'first_names': 'Henry',
                         'last_name': 'Gerald',
                         'main_laboratory_identifier': 'U85',
                         'local': 'hgerald',
@@ -60,7 +60,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                 "param_names": ["raw_results"],
                 "raw_results": [
                     {
-                        'first_name': 'Henry',
+                        'first_names': 'Henry',
                         'last_name': 'Gerald',
                         'main_laboratory_identifier': 'U85',
                         'local': 'hgerald',
@@ -71,7 +71,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'scopus_eid': '5432345678X',
                     },
                     {
-                        'first_name': 'Joe',
+                        'first_names': 'Joe',
                         'last_name': 'Dupond',
                         'main_laboratory_identifier': 'U01',
                         'local': 'jdupond',

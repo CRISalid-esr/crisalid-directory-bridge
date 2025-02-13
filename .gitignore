@@ -5,3 +5,4 @@
 !.env.template
 __init__.py
 etc
+__pycache__
