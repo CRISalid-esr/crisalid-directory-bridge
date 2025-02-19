@@ -1,0 +1,55 @@
+{
+  "hgerald": {
+    "names": [
+      {
+        "last_names": [
+          {
+            "value": "Gerald",
+            "language": "fr"
+          }
+        ],
+        "first_names": [
+          {
+            "value": "Henry",
+            "language": "fr"
+          },
+          {
+            "value": "Paul",
+            "language": "fr"
+          }
+        ]
+      }
+    ],
+    "identifiers": [
+      {
+        "type": "local",
+        "value": "hgerald"
+      },
+      {
+        "type": "id_hal_i",
+        "value": "054235"
+      },
+      {
+        "type": "id_hal_s",
+        "value": "henry-gerald"
+      },
+      {
+        "type": "orcid",
+        "value": "0000-0000-0000-0001"
+      },
+      {
+        "type": "idref",
+        "value": "012345678X"
+      },
+      {
+        "type": "scopus_eid",
+        "value": "5432345678X"
+      }
+    ],
+    "memberships": [
+      {
+        "entity": "U85"
+      }
+    ]
+  }
+}
