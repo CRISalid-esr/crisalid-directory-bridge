@@ -20,7 +20,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                 "param_names": ["raw_results"],
                 "raw_results": [
                     {
-                        'first_name': 'Joe',
+                        'first_names': 'Joe',
                         'last_name': 'Dupond',
                         'main_laboratory_identifier': 'U01',
                         'local': 'jdupond',
@@ -40,7 +40,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                 "param_names": ["raw_results"],
                 "raw_results": [
                     {
-                        'first_name': 'Henry',
+                        'first_names': 'Henry',
                         'last_name': 'Gerald',
                         'main_laboratory_identifier': 'U85',
                         'local': 'hgerald',
@@ -60,7 +60,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                 "param_names": ["raw_results"],
                 "raw_results": [
                     {
-                        'first_name': 'Henry',
+                        'first_names': 'Henry',
                         'last_name': 'Gerald',
                         'main_laboratory_identifier': 'U85',
                         'local': 'hgerald',
@@ -71,7 +71,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'scopus_eid': '5432345678X',
                     },
                     {
-                        'first_name': 'Joe',
+                        'first_names': 'Joe',
                         'last_name': 'Dupond',
                         'main_laboratory_identifier': 'U01',
                         'local': 'jdupond',
@@ -84,6 +84,25 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                 ]
             },
             "./tests/data/test_convert_spreadsheet_with_two_people.json"
+    ),(
+            {
+                "task_name": TESTED_TASK_NAME,
+                "param_names": ["raw_results"],
+                "raw_results": [
+                    {
+                        'first_names': 'Henry,Paul',
+                        'last_name': 'Gerald',
+                        'main_laboratory_identifier': 'U85',
+                        'local': 'hgerald',
+                        'id_hal_i': '054235',
+                        'id_hal_s': 'henry-gerald',
+                        'orcid': '0000-0000-0000-0001',
+                        'idref': '012345678X',
+                        'scopus_eid': '5432345678X',
+                    }
+                ]
+            },
+            "./tests/data/test_convert_spreadsheet_with_two_firstnames.json"
     ),
 ],
                          indirect=["dag"],
@@ -91,6 +110,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                              "test_convert_spreadsheet_people",
                              "test_convert_spreadsheet_people_with_local_identifier_only",
                              "test_convert_spreadsheet_with_two_people",
+                             "test_convert_spreadsheet_with_two_first_names",
                          ]
                          )
 def test_convert_spreadsheet_people(dag, expected_result_path, unique_execution_date):

@@ -41,7 +41,10 @@ def convert_spreadsheet_people(source_data: list[dict[str, str]]) -> dict[
         task_results[f"{row[LOCAL_PERSON_IDENTIFIER]}"] = {
             'names': [
                 {'last_names': [{'value': row['last_name'], 'language': 'fr'}],
-                 'first_names': [{'value': row['first_name'], 'language': 'fr'}]}
+                 'first_names': [
+                     {'value': first_name, 'language': 'fr'}
+                     for first_name in row.get('first_names', '').split(',')
+                 ]}
             ],
             'identifiers': non_empty_identifiers,
             'memberships': [{'entity': row['main_laboratory_identifier']}]
