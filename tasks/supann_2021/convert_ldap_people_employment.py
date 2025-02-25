@@ -27,34 +27,32 @@ def _get_employee_types_yaml():
 
 
 def _get_position_code_and_label(
-        employee_type_to_check: str | None,
-        field_type: str
+        employee_type_to_check: str | None
 ) -> tuple[str, str] | None:
     """
     Args:
         employee_type_to_check(str): An employee type value who come from LDAP
-        field_type(str): The type of field to compare with employee_type_to_check
     Returns:
         tuple[str, str] | None: A tuple with the code and the label of the position if the
         employee type is known. Else None
     """
     position = None
     if employee_type_to_check is not None:
-        corps_list = [
-            corps
+        bodies_list = [
+            body
             for status in _get_employee_types_yaml().values()
             for category in status.values()
-            for corps in category
+            for body in category
         ]
 
-        for corps in corps_list:
-            if corps["local_values"] and employee_type_to_check in corps["local_values"]:
-                position = (corps["corps"], corps["label"])
+        for bodies in bodies_list:
+            if bodies["local_values"] and employee_type_to_check in bodies["local_values"]:
+                position = (bodies["corps"], bodies["label"])
                 return position
 
         logger.warning(
-            "Employee type '%s' from field type '%s' not found in '%s'",
-            employee_type_to_check, field_type, yaml_path
+            "Employee type '%s' not found in '%s'",
+            employee_type_to_check, yaml_path
         )
     return position
 
@@ -75,40 +73,43 @@ def _create_employment(
             "title": position[1],
             "code": position[0]
         },
-        "entity_uid": entity_id
+        "entity_uid": entity_id,
+        "entity_uid_type": "UAI"
     }
     return employment
 
 
-def _convert_with_employeetype(
+def _convert_with_employee_type(
         employee_entry: dict[(str, list[str]), (str, list[str])]
 ) -> list[dict]:
     employments = []
-    establishments = employee_entry.get('supannEtablissement', [])
-    establishment_count = len(establishments)
-    if establishment_count == 0:
+    institutions = employee_entry.get('supannEtablissement', [])
+    institution_count = len(institutions)
+    if institution_count == 0:
         return employments
     employee_types = employee_entry.get('employeeType', [])
     employee_type_count = len(employee_types)
 
-    if establishment_count > employee_type_count:
-        employee_types += [None] * (establishment_count - employee_type_count)
+    # Fill the missing employee types with None
+    if institution_count > employee_type_count:
+        employee_types += [None] * (institution_count - employee_type_count)
 
-    if establishment_count < employee_type_count:
-        if establishment_count == 1:
-            establishments.extend(
-                [establishments[0]] * (employee_type_count - establishment_count))
+    # Fill the missing institutions with the first one
+    if institution_count < employee_type_count:
+        if institution_count == 1:
+            institutions.extend(
+                [institutions[0]] * (employee_type_count - institution_count))
         else:
-            employee_types = [None] * establishment_count
+            employee_types = [None] * institution_count
 
-    formatted_establishment = [
-        f"uai-{match.group(1)}"
-        for item in establishments
+    formatted_institution = [
+        f"{match.group(1)}"
+        for item in institutions
         # Regular expression match example: {UAI}0000000Z
         if (match := re.search(r'^\{UAI\}(\d{7}[A-Z])$', item))
     ]
-    for entity_uid, employee_type_to_check in zip(formatted_establishment, employee_types):
-        position = _get_position_code_and_label(employee_type_to_check, 'local_values')
+    for entity_uid, employee_type_to_check in zip(formatted_institution, employee_types):
+        position = _get_position_code_and_label(employee_type_to_check )
         employments.append(_create_employment(entity_uid, position))
     return employments
 
@@ -126,6 +127,6 @@ def convert_ldap_people_employment(
     task_results = {}
 
     for dn, entry in ldap_results.items():
-        employments = _convert_with_employeetype(entry)
+        employments = _convert_with_employee_type(entry)
         task_results[dn] = {"employments": employments}
     return task_results
