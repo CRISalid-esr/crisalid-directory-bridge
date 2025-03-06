@@ -73,8 +73,7 @@ def _create_employment(
             "title": position[1],
             "code": position[0]
         },
-        "entity_uid": entity_id,
-        "entity_uid_type": "UAI"
+        "entity_uid": f"UAI-{entity_id}",
     }
     return employment
 
@@ -109,7 +108,7 @@ def _convert_with_employee_type(
         if (match := re.search(r'^\{UAI\}(\d{7}[A-Z])$', item))
     ]
     for entity_uid, employee_type_to_check in zip(formatted_institution, employee_types):
-        position = _get_position_code_and_label(employee_type_to_check )
+        position = _get_position_code_and_label(employee_type_to_check)
         employments.append(_create_employment(entity_uid, position))
     return employments
 

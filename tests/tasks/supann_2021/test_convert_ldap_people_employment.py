@@ -44,8 +44,7 @@ def test_usual_case(dag, unique_execution_date):
                         "title": "Professeur",
                         "code": "PR"
                     },
-                    "entity_uid": "0753364Z",
-                    'entity_uid_type': 'UAI',
+                    "entity_uid": "UAI-0753364Z",
                 }
             ]
         }
@@ -84,16 +83,14 @@ def test_case_with_multiple_affectations_in_different_entities(dag, unique_execu
                         "title": "Professeur",
                         "code": "PR"
                     },
-                    "entity_uid": "0753364Z",
-                    'entity_uid_type': 'UAI',
+                    "entity_uid": "UAI-0753364Z",
                 },
                 {
                     "position": {
                         "title": "Directeur de recherche et assimilés",
                         "code": "DR"
                     },
-                    "entity_uid": "0258465Z",
-                    'entity_uid_type': 'UAI',
+                    "entity_uid": "UAI-0258465Z",
                 }
             ]
         }
@@ -162,13 +159,11 @@ def test_case_with_two_different_entities_and_one_known_affectation(dag, unique_
                         "title": "Professeur",
                         "code": "PR"
                     },
-                    "entity_uid": "0753364Z",
-                    'entity_uid_type': 'UAI',
+                    "entity_uid": "UAI-0753364Z",
                 },
                 {
                     "position": {},
-                    "entity_uid": "0258465Z",
-                    'entity_uid_type': 'UAI',
+                    "entity_uid": "UAI-0258465Z",
                 }
             ]
         }
@@ -212,16 +207,14 @@ def test_case_with_one_entity_and_two_known_affectation(dag, unique_execution_da
                         "title": "Professeur certifié",
                         "code": "PCAP"
                     },
-                    "entity_uid": "0753364Z",
-                    'entity_uid_type': 'UAI',
+                    "entity_uid": "UAI-0753364Z",
                 },
                 {
                     "position": {
                         "title": "Maître de conférences",
                         "code": "MCF"
                     },
-                    "entity_uid": "0753364Z",
-                    'entity_uid_type': 'UAI',
+                    "entity_uid": "UAI-0753364Z",
                 }
             ]
         }
@@ -264,13 +257,11 @@ def test_case_with_multiples_entities_and_more_known_affectation(dag, unique_exe
             "employments": [
                 {
                     "position": {},
-                    "entity_uid": "0753364Z",
-                    'entity_uid_type': 'UAI',
+                    "entity_uid": "UAI-0753364Z",
                 },
                 {
                     "position": {},
-                    "entity_uid": "0258465Z",
-                    'entity_uid_type': 'UAI',
+                    "entity_uid": "UAI-0258465Z",
                 }
             ]
         }
