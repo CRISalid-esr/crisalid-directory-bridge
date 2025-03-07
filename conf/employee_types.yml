@@ -43,6 +43,7 @@ Enseignants-chercheurs_et_assimiles:
   - corps: "PREM"
     label: "Professeur émérite"
     local_values:
+      - "Professeur émérite"
   - corps: "MCFEM"
     label: "Maître de conférences émérite"
     local_values:
@@ -58,9 +59,14 @@ Enseignants-chercheurs_et_assimiles:
   - corps: "ECC"
     label: "Enseignant-chercheur contractuel (dont contrats LRU)"
     local_values:
+      - "Contractuel chercheur lru"
+      - "Contractuel enseignant chercheur lru"
   - corps: "PAST"
     label: "Enseignant-chercheur associé (MC, PR à temps partiel ou temps plein)"
     local_values:
+      - "Associé professeur mi-tps"
+      - "Associé mcf mi-tps"
+      - "Chercheur associé"
   - corps: "ChPJ"
     label: "Chaire de professeur junior"
     local_values:
@@ -84,6 +90,7 @@ Chercheurs_et_assimiles:
   - corps: "CR"
     label: "Chargé de recherche et assimilés"
     local_values:
+      - "Chargé de recherche"
   - corps: "CS-CEA"
     label: "Cadre scientifique CEA"
     local_values:
@@ -91,6 +98,8 @@ Chercheurs_et_assimiles:
   - corps: "CBIB"
     label: "Conservateur des bibliothèques"
     local_values:
+      - "Conservateur des bibliothèques (1992)"
+      - "Conservateur general des bibliothèques"
   - corps: "CPAT"
     label: "Conservateur du patrimoine"
     local_values:
@@ -107,15 +116,20 @@ Chercheurs_et_assimiles:
   - corps: "ATER"
     label: "Attaché temporaire d'enseignement et de recherche"
     local_values:
+      - "Ater"
+      - "Ater mi-temps"
   - corps: "Post-doc"
     label: "Post-doctorant"
     local_values:
+      - "Contrat post-doctoral droit public code rech"
   - corps: "Docteur"
     label: "Docteur en médecine, pharmacie, etc."
     local_values:
   - corps: "Invité"
     label: "Visiteur : professeur invité et chercheur invité, ayant séjourné au moins 3 mois au sein de l'unité"
     local_values:
+      - "Chercheur invité - direval"
+      - "Professeur invité"
   - corps: "PATP"
     label: "Personnel associé à temps partiel, doit faire l'objet d'une convention
       d'accueil"
@@ -135,6 +149,7 @@ Autres_personnels:
   - corps: "PRAG"
     label: "Professeur agrégé"
     local_values:
+      - "Professeur agrégé"
   - corps: "PCAP"
     label: "Professeur certifié"
     local_values:
@@ -143,18 +158,23 @@ Autres_personnels:
   - corps: "IR"
     label: "Ingénieur de recherche"
     local_values:
+      - "Ingénieur de recherche rf"
   - corps: "IE"
     label: "Ingénieur d'études"
     local_values:
+      - "Ingénieur d'études (rech et form)"
   - corps: "AI"
     label: "Assistant ingénieur"
     local_values:
+      - "Assistant ingénieur de rech et formation"
   - corps: "TECH"
     label: "Technicien de recherche"
     local_values:
+      - "Technicien de rech et formation"
   - corps: "AJT"
     label: "Adjoint technique de recherche"
     local_values:
+      - "Adj technique de recherche et formation"
   - corps: "ADMAENES"
     label: "Administrateur de l'éducation nationale et de l'enseignement supérieur,
       Conseiller d'administration scolaire et universitaire"
@@ -163,6 +183,7 @@ Autres_personnels:
     label: "Attaché et Attaché principal d'administration de l'éducation nationale
       et de l'enseignement supérieur"
     local_values:
+      - "Attache d'administration de l'état"
   - corps: "SAENES"
     label: "Secrétaire administratif de l'éducation nationale et de l'enseignement
       supérieur"
@@ -171,6 +192,7 @@ Autres_personnels:
     label: "Adjoint d'administration de l'éducation nationale et de l'enseignement
       supérieur"
     local_values:
+      - "Adj. adm de l'en et de l'ens sup"
   Personnels_d_appui_a_la_recherche_CEA:
   - corps: "NCS-CEA"
     label: "Non cadre scientifique CEA"
@@ -185,15 +207,18 @@ Autres_personnels:
   - corps: "BIB"
     label: "Bibliothécaire d'état"
     local_values:
+      - "Bibliothécaire"
   - corps: "BIBAS"
     label: "Bibliothécaire assistant spécialisé"
     local_values:
+      - "Bibliothécaire assistant specialise"
   - corps: "ASBIB"
     label: "Assistant des bibliothèques"
     local_values:
   - corps: "MABIB"
     label: "Magasinier et magasinier principal des bibliothèques"
     local_values:
+      - "Magasinier des bibliothèques"
   Personnels hospitaliers:
   - corps: "PH"
     label: "Praticien hospitalier"
