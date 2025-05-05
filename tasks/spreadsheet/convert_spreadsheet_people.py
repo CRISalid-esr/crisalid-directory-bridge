@@ -38,6 +38,8 @@ def convert_spreadsheet_people(source_data: list[dict[str, str]]) -> dict[
         if len(non_empty_identifiers) == 0:
             logger.warning("No identifiers for row: %s", row)
 
+        entity_uid = row.get('main_laboratory_identifier', '').strip()
+
         task_results[f"{row[LOCAL_PERSON_IDENTIFIER]}"] = {
             'names': [
                 {'last_names': [{'value': row['last_name'], 'language': 'fr'}],
@@ -47,7 +49,7 @@ def convert_spreadsheet_people(source_data: list[dict[str, str]]) -> dict[
                  ]}
             ],
             'identifiers': non_empty_identifiers,
-            'memberships': [{'entity': row['main_laboratory_identifier']}]
+            'memberships': [{'entity_uid': entity_uid}] if entity_uid else []
         }
 
     return task_results

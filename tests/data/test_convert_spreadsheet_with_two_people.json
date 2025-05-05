@@ -44,7 +44,7 @@
     ],
     "memberships": [
       {
-        "entity": "U85"
+        "entity_uid": "U85"
       }
     ]
   },
@@ -73,7 +73,7 @@
     ],
     "memberships": [
       {
-        "entity": "U01"
+        "entity_uid": "U01"
       }
     ]
   }
