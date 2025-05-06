@@ -4,7 +4,7 @@ from airflow.decorators import task
 
 logger = logging.getLogger(__name__)
 
-LOCAL_STRUCTURE_IDENTIFIER = 'local'
+LOCAL_STRUCTURE_IDENTIFIER = 'tracking_id'
 
 STRUCTURE_IDENTIFIERS = [LOCAL_STRUCTURE_IDENTIFIER, 'rnsr', 'ror']
 
@@ -27,7 +27,10 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[
 
     for row in source_data:
         non_empty_identifiers = [
-            {'type': identifier, 'value': row[identifier]}
+            {
+                'type': 'local' if identifier == 'tracking_id' else identifier,
+                'value': row[identifier]
+            }
             for identifier in STRUCTURE_IDENTIFIERS if row.get(identifier)
                                                        and row[identifier].strip()
         ]

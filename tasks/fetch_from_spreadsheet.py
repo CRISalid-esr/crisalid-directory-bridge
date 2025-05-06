@@ -39,7 +39,7 @@ FETCH_PARAMETERS = {
             "name",
             "acronym",
             "description",
-            "local",
+            "tracking_id",
             "rnsr",
             "ror",
             "city_name",
