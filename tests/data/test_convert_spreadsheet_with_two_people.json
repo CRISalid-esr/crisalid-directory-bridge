@@ -21,6 +21,10 @@
         "type": "local",
         "value": "hgerald"
       },
+       {
+        "type": "eppn",
+        "value": "hgerald@univ-exemple.fr"
+      },
       {
         "type": "id_hal_i",
         "value": "054235"

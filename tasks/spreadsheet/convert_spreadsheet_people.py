@@ -4,15 +4,21 @@ from airflow.decorators import task
 
 logger = logging.getLogger(__name__)
 
-LOCAL_PERSON_IDENTIFIER = 'local'
+LOCAL_PERSON_IDENTIFIER = 'tracking_id'
 
 PERSON_IDENTIFIERS = [LOCAL_PERSON_IDENTIFIER,
-                      'id_hal_i',
-                      'id_hal_s',
+                      'eppn',
+                      'idhal_i',
+                      'idhal_s',
                       'orcid',
                       'idref',
                       'scopus_eid']
 
+IDENTIFIER_TYPE_MAP = {
+    'tracking_id': 'local',
+    'idhal_i':'id_hal_i',
+    'idhal_s':'id_hal_s',
+}
 
 @task(task_id="convert_spreadsheet_people")
 def convert_spreadsheet_people(source_data: list[dict[str, str]]) -> dict[
@@ -31,7 +37,10 @@ def convert_spreadsheet_people(source_data: list[dict[str, str]]) -> dict[
 
     for row in source_data:
         non_empty_identifiers = [
-            {'type': identifier, 'value': row[identifier]}
+            {
+                'type': IDENTIFIER_TYPE_MAP.get(identifier, identifier),
+                'value': row[identifier]
+            }
             for identifier in PERSON_IDENTIFIERS if row.get(identifier) and row[identifier].strip()
         ]
 

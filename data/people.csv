@@ -1,2 +1,2 @@
-first_names,last_name,main_laboratory_identifier,local,id_hal_s,id_hal_i,orcid,idref,scopus_eid
-Joe,Dupond,U01,jdupond,0000-0000-0000-0001,123456,,,
+first_names,last_name,main_laboratory_identifier,tracking_id,eppn,idhal_s,idhal_i,orcid,idref,scopus_eid
+Joe,Dupond,U01,jdupond,jdupond@univ-exemple.fr,0000-0000-0000-0001,123456,,,
