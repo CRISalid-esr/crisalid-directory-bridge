@@ -22,6 +22,10 @@
         "value": "jdupond"
       },
       {
+        "type": "eppn",
+        "value": "jdupond@univ-exemple.fr"
+      },
+      {
         "type": "orcid",
         "value": "0000-0000-0000-0001"
       },
