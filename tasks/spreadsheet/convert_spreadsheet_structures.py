@@ -8,6 +8,11 @@ LOCAL_STRUCTURE_IDENTIFIER = 'tracking_id'
 
 STRUCTURE_IDENTIFIERS = [LOCAL_STRUCTURE_IDENTIFIER, 'rnsr', 'ror']
 
+# Mapping of identifiers to their standardized type names
+IDENTIFIER_TYPE_MAP = {
+    'tracking_id': 'local',
+}
+
 
 @task(task_id="convert_spreadsheet_structures")
 def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[
@@ -28,7 +33,7 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[
     for row in source_data:
         non_empty_identifiers = [
             {
-                'type': 'local' if identifier == 'tracking_id' else identifier,
+                'type': IDENTIFIER_TYPE_MAP.get(identifier, identifier),
                 'value': row[identifier]
             }
             for identifier in STRUCTURE_IDENTIFIERS if row.get(identifier)
