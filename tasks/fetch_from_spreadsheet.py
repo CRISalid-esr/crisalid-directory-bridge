@@ -41,11 +41,13 @@ FETCH_PARAMETERS = {
             "acronym",
             "description",
             "tracking_id",
-            "rnsr",
+            "nns",
             "ror",
             "city_name",
             "city_code",
             "city_adress",
+            "scopus_id",
+            "collection_hal"
         ]
     }
 }
