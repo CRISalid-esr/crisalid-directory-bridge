@@ -47,7 +47,7 @@ FETCH_PARAMETERS = {
             "city_code",
             "city_adress",
             "scopus_id",
-            "collection_hal"
+            "hal_collection"
         ]
     }
 }
