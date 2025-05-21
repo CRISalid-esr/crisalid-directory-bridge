@@ -6,11 +6,12 @@ logger = logging.getLogger(__name__)
 
 LOCAL_STRUCTURE_IDENTIFIER = 'tracking_id'
 
-STRUCTURE_IDENTIFIERS = [LOCAL_STRUCTURE_IDENTIFIER, 'rnsr', 'ror']
+STRUCTURE_IDENTIFIERS = [LOCAL_STRUCTURE_IDENTIFIER, 'nns', 'ror', 'scopus_id', 'hal_collection']
 
 # Mapping of identifiers to their standardized type names
 IDENTIFIER_TYPE_MAP = {
     'tracking_id': 'local',
+    'hal_collection': 'hal'
 }
 
 

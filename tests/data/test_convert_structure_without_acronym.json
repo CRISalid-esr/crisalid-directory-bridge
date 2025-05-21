@@ -31,8 +31,16 @@
         "value": "U082"
       },
       {
-        "type": "rnsr",
+        "type": "nns",
         "value": "199812919F"
+      },
+       {
+        "type": "scopus_id",
+        "value": "60112301"
+      },
+       {
+        "type": "hal",
+        "value": "https://paris1.hal.science/LGP"
       }
     ]
   }
