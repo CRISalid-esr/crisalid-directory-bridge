@@ -22,7 +22,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                     {
                         'first_names': 'Joe',
                         'last_name': 'Dupond',
-                        'main_laboratory_identifier': 'U01',
+                        'main_research_structure': 'U01',
                         'tracking_id': 'jdupond',
                         "eppn": 'jdupond@univ-exemple.fr',
                         'idhal_i': '',
@@ -43,7 +43,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                     {
                         'first_names': 'Henry',
                         'last_name': 'Gerald',
-                        'main_laboratory_identifier': 'U85',
+                        'main_research_structure': 'U85',
                         'tracking_id': 'hgerald',
                         'eppn': '',
                         'idhal_i': '',
@@ -64,7 +64,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                     {
                         'first_names': 'Henry',
                         'last_name': 'Gerald',
-                        'main_laboratory_identifier': 'U85',
+                        'main_research_structure': 'U85',
                         'tracking_id': 'hgerald',
                         'eppn': 'hgerald@univ-exemple.fr',
                         'idhal_i': '054235',
@@ -76,7 +76,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                     {
                         'first_names': 'Joe',
                         'last_name': 'Dupond',
-                        'main_laboratory_identifier': 'U01',
+                        'main_research_structure': 'U01',
                         'tracking_id': 'jdupond',
                         'eppn': '',
                         'idhal_i': '',
@@ -96,7 +96,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                     {
                         'first_names': 'Henry,Paul',
                         'last_name': 'Gerald',
-                        'main_laboratory_identifier': 'U85',
+                        'main_research_structure': 'U85',
                         'tracking_id': 'hgerald',
                         "eppn": 'hgerald@univ-exemple.fr',
                         'idhal_i': '054235',
@@ -117,7 +117,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                     {
                         'first_names': 'Joe',
                         'last_name': 'Dupond',
-                        'main_laboratory_identifier': '',
+                        'main_research_structure': '',
                         'tracking_id': 'jdupond',
                         "eppn": 'jdupond@univ-exemple.fr',
                         'idhal_i': '',

@@ -24,7 +24,7 @@ FETCH_PARAMETERS = {
         "columns": [
             "first_names",
             "last_name",
-            "main_laboratory_identifier",
+            "main_research_structure",
             "tracking_id",
             "eppn",
             "idhal_i",

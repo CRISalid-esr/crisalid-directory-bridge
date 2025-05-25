@@ -47,7 +47,7 @@ def convert_spreadsheet_people(source_data: list[dict[str, str]]) -> dict[
         if len(non_empty_identifiers) == 0:
             logger.warning("No identifiers for row: %s", row)
 
-        entity_uid = row.get('main_laboratory_identifier', '').strip()
+        entity_uid = row.get('main_research_structure', '').strip()
 
         task_results[f"{row[LOCAL_PERSON_IDENTIFIER]}"] = {
             'names': [
