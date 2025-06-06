@@ -36,11 +36,13 @@
     ],
     "employments": [
       {
-        "institution_identifier" :  "1234567X",
-        "institution_id_nomenclature" : "UAI",
-        "position" : "MCF",
-        "employment_start_date" : "2010-04-18",
-        "employment_departure_date" : "2021-06-20"
+        "position": {
+          "title": "Maître de conférences",
+          "code": "MCF"
+        },
+        "entity_uid": "UAI-1234567X",
+        "start_date" : "2010-04-18",
+        "end_date" : "2021-06-20"
       }
     ],
     "memberships": [
