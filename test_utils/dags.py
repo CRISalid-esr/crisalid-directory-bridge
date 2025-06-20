@@ -4,7 +4,7 @@ import pendulum
 from airflow import DAG
 from airflow.models import DagRun, TaskInstance
 from airflow.utils.state import DagRunState
-from airflow.utils.types import DagRunType
+from airflow.utils.types import DagRunType, DagRunTriggeredByType
 
 TEST_DAG_ID = "fixture_dag_id"
 DATA_INTERVAL_START = pendulum.datetime(2024, 1, 1, tz="UTC")
@@ -27,7 +27,7 @@ def assert_dag_dict_equal(structure: dict, dag: DAG) -> None:
 
 
 def create_dag_run(dag: DAG, data_interval_start: datetime, data_interval_end: datetime,
-                   execution_date: datetime) -> DagRun:
+                   logical_date: datetime) -> DagRun:
     """
     Create a DAG run for the given DAG
     :param dag: The DAG object
@@ -37,10 +37,13 @@ def create_dag_run(dag: DAG, data_interval_start: datetime, data_interval_end: d
     """
     dag_run = dag.create_dagrun(
         state=DagRunState.RUNNING,
-        execution_date=execution_date,
+        logical_date=logical_date,
+        run_id=f"manual__{logical_date.isoformat()}",
         data_interval=(data_interval_start, data_interval_end),
         start_date=data_interval_end,
         run_type=DagRunType.MANUAL,
+        run_after=datetime.datetime.now(tz=pendulum.UTC),
+        triggered_by=DagRunTriggeredByType.TEST
     )
     return dag_run
 

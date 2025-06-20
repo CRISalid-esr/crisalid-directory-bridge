@@ -24,15 +24,15 @@ TESTED_TASK_NAME = "tasks.supann_2021.convert_ldap_people_employment.convert_lda
         },
     }
 ], indirect=True)
-def test_usual_case(dag, unique_execution_date):
+def test_usual_case(dag, unique_logical_date):
     """
     Test that the employment are converted from the LDAP entry when only employeeType and
     supannEtablissement are known
     :param dag: The DAG object
-    :param unique_execution_date: unique execution date
+    :param unique_logical_date: unique execution date
     :return: None
     """
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
@@ -63,15 +63,15 @@ def test_usual_case(dag, unique_execution_date):
         },
     }
 ], indirect=True)
-def test_case_with_multiple_affectations_in_different_entities(dag, unique_execution_date):
+def test_case_with_multiple_affectations_in_different_entities(dag, unique_logical_date):
     """
     Test that the employment are converted from the LDAP entry when multiple employeeType and
     supannEtablissement are known
     :param dag: The DAG object
-    :param unique_execution_date: unique execution date
+    :param unique_logical_date: unique execution date
     :return: None
     """
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
@@ -109,14 +109,14 @@ def test_case_with_multiple_affectations_in_different_entities(dag, unique_execu
         },
     }
 ], indirect=True)
-def test_case_with_empty_informations(dag, unique_execution_date):
+def test_case_with_empty_informations(dag, unique_logical_date):
     """
     Test that the employment are returned empty when no datas are known
     :param dag: The DAG object
-    :param unique_execution_date: unique execution date
+    :param unique_logical_date: unique execution date
     :return: None
     """
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
@@ -139,15 +139,15 @@ def test_case_with_empty_informations(dag, unique_execution_date):
         },
     }
 ], indirect=True)
-def test_case_with_two_different_entities_and_one_known_affectation(dag, unique_execution_date):
+def test_case_with_two_different_entities_and_one_known_affectation(dag, unique_logical_date):
     """
     Test that the employment are converted from the LDAP entry when one employeeType but two
     supannEtablissement are known
     :param dag: The DAG object
-    :param unique_execution_date: unique execution date
+    :param unique_logical_date: unique execution date
     :return: None
     """
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
@@ -187,15 +187,15 @@ def test_case_with_two_different_entities_and_one_known_affectation(dag, unique_
         },
     }
 ], indirect=True)
-def test_case_with_one_entity_and_two_known_affectation(dag, unique_execution_date):
+def test_case_with_one_entity_and_two_known_affectation(dag, unique_logical_date):
     """
     Test that the employment are converted from the LDAP entry when 2 employeeType are known for 1
     supannEtablissement
     :param dag: The DAG object
-    :param unique_execution_date: unique execution date
+    :param unique_logical_date: unique execution date
     :return: None
     """
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
@@ -240,15 +240,15 @@ def test_case_with_one_entity_and_two_known_affectation(dag, unique_execution_da
         },
     }
 ], indirect=True)
-def test_case_with_multiples_entities_and_more_known_affectation(dag, unique_execution_date):
+def test_case_with_multiples_entities_and_more_known_affectation(dag, unique_logical_date):
     """
     Test that the employment are converted from the LDAP entry when 2 employeeType are known for 1
     supannEtablissement
     :param dag: The DAG object
-    :param unique_execution_date: unique execution date
+    :param unique_logical_date: unique execution date
     :return: None
     """
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS

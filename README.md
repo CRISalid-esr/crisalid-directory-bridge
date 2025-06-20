@@ -87,3 +87,7 @@ airflow standalone
 
 Note that the `standalone` command is a custom command that starts the webserver and scheduler in the same process. It
 is useful for development and testing purposes only.
+
+## Upgrading to Airflow 3.0
+
+For upgrading from Airflow 2.9 to Airflow 3.0, please refer to the [Airflow 2.9 to 3.0 upgrade guide](airflow2.9-to-3.0-upgrade.md).

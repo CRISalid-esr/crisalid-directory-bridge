@@ -2,7 +2,7 @@ import logging
 
 import pendulum
 from airflow.decorators import dag
-from airflow.operators.trigger_dagrun import TriggerDagRunOperator
+from airflow.providers.standard.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.utils.task_group import TaskGroup
 
 from tasks.combine_batch_results import combine_batch_results
@@ -34,7 +34,7 @@ def load_ldap_people():
     """
     entity_source = "ldap"
     entity_type = "people"
-    task_keys = ["NAME", "IDENTIFIER", "MEMBERSHIP","EMPLOYMENT"]
+    task_keys = ["NAME", "IDENTIFIER", "MEMBERSHIP", "EMPLOYMENT"]
     tasks = {}
 
     for key in task_keys:
@@ -47,10 +47,10 @@ def load_ldap_people():
     trigger_broadcast = TriggerDagRunOperator(
         task_id='trigger_broadcast',
         trigger_dag_id='broadcast_entities',
-        execution_date="{{ execution_date + macros.timedelta(seconds=20) }}",
-        trigger_run_id='ldap_people_run_{{ execution_date.int_timestamp }}',
+        logical_date="{{ logical_date + macros.timedelta(seconds=20) }}",
+        trigger_run_id='ldap_people_run_{{ logical_date.int_timestamp }}',
         conf={
-            "timestamp": "{{ execution_date.int_timestamp }}",
+            "timestamp": "{{ logical_date.int_timestamp }}",
             "entity_type": entity_type,
             "entity_source": entity_source,
         },
@@ -65,7 +65,7 @@ def load_ldap_people():
             batch_results.append(converted_result)
     combined_results = combine_batch_results(batch_results)
     if get_env_variable("COMPLETE_LDAP_PEOPLE_IDENTIFIERS_FROM_SPREADSHEET"):
-        identifiers_from_spreadsheet = fetch_from_spreadsheet(entity_source,entity_type)
+        identifiers_from_spreadsheet = fetch_from_spreadsheet(entity_source, entity_type)
         completed_results = complete_identifiers(
             ldap_source=combined_results,
             identifiers_spreadsheet=identifiers_from_spreadsheet

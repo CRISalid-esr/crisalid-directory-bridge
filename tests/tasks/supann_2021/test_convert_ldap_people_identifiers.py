@@ -24,14 +24,14 @@ TESTED_TASK_NAME = 'tasks.supann_2021.convert_ldap_people_identifiers' \
         },
     }
 ], indirect=True)
-def test_identifier_is_converted_from_ldap(dag, unique_execution_date):
+def test_identifier_is_converted_from_ldap(dag, unique_logical_date):
     """
     Test that the identifier is converted from LDAP data
     :param dag:
-    :param unique_execution_date:
+    :param unique_logical_date:
     :return:
     """
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
@@ -56,14 +56,14 @@ def test_identifier_is_converted_from_ldap(dag, unique_execution_date):
         },
     }
 ], indirect=True)
-def test_missing_identifier(dag, unique_execution_date):
+def test_missing_identifier(dag, unique_logical_date):
     """
     Test that if the identifier is not present, the value is None.
     :param dag: The DAG object
-    :param unique_execution_date: unique execution date
+    :param unique_logical_date: unique execution date
     :return: None
     """
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
