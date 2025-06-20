@@ -13,8 +13,8 @@ command:
 pip install -r requirements.txt
 ```
 
-
 ### 2. Upgrade `airflow.cfg`
+
 Use the following commands to upgrade your configuration:
 
 ```bash
@@ -25,11 +25,11 @@ airflow config update
 airflow config update --fix
 ```
 
-If you want to keep the same authentication manager (recommended):
+Comment the following line to switch to the new default authentication manager:
 
 ```ini
 [core]
-auth_manager = airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
+# auth_manager = airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
 ```
 
 Append the following lines to the end of `airflow.cfg`:
@@ -64,7 +64,6 @@ The web_server_ssl_key option in [webserver] has been moved to the ssl_key optio
 ```
 
 Update your `airflow.cfg` accordingly to avoid these warnings.
-
 
 ### 5. Start Airflow 3
 
