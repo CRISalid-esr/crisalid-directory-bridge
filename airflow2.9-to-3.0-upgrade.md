@@ -4,9 +4,9 @@
 
 - Airflow 3 upgrade guide: https://airflow.apache.org/docs/apache-airflow/stable/installation/upgrading_to_airflow3.html
 
-## 1. Install Airflow 3.0.0
+## 1. Install Airflow 3.0
 
-`requirements.txt` has been updated with new Airflow versions, so you can install Airflow 3.0.0 with the following
+`requirements.txt` has been updated with new Airflow versions, so you can install Airflow 3.0 with the following
 command:
 
 ```bash
