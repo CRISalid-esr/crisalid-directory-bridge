@@ -7,8 +7,7 @@ from pendulum import DateTime
 
 from utils.redis import get_redis_client, \
     get_redis_conn_id, \
-    get_redis_connection, \
-    create_redis_managed_connection
+    get_redis_managed_connection
 
 logger = logging.getLogger(__name__)
 
@@ -83,14 +82,17 @@ def update_database(result: dict, prefix: str, **kwargs) -> list[str]:
 
 
 @task
-def create_redis_connection() -> Connection:
+def get_redis_connection() -> Connection:
     """
     Create an Airflow managed Redis connection.
     :return: the connection
     """
-    connection = get_redis_connection()
-    logger.info("*** Connection id ***")
-    logger.info(connection)
+    logger.info("Trying to get existing Redis connection")
+    connection = get_redis_managed_connection()
+    logger.info("Existing connection: %s", connection)
     if connection is None:
-        create_redis_managed_connection()
+        logger.error("No existing redis connection found, check your "
+                     "AIRFLOW_CONN_DATA_VERSIONING_REDIS environment variable")
+        raise ConnectionError("No existing Redis connection found.")
+
     return {"conn_id": get_redis_conn_id()}

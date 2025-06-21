@@ -13,6 +13,7 @@ for suffix in ["", f".{APP_ENV.lower()}"]:
     if not os.path.exists(env_file_name):
         logger.warning("%s env file not found", env_file_name)
     else:
+        logger.info("Loading env file: %s", env_file_name)
         load_dotenv(env_file_name, verbose=True)
 
 

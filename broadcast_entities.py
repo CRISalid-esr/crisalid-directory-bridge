@@ -5,7 +5,7 @@ from airflow.decorators import dag, task
 
 from tasks.broadcast.send_status_messages import send_status_messages
 from tasks.compute_status import compute_entity_statuses
-from tasks.database import read_entity_keys_from_redis, create_redis_connection, \
+from tasks.database import read_entity_keys_from_redis, get_redis_connection, \
     read_entities_with_scores_from_redis
 from tasks.rabbitmq import create_rabbitmq_connection
 
@@ -45,7 +45,7 @@ def broadcast_entities():
     entity_type = read_entity_type()
     entity_source = read_entity_source()
 
-    redis_connection = create_redis_connection()
+    redis_connection = get_redis_connection()
 
     entity_keys = read_entity_keys_from_redis(entity_type=entity_type, entity_source=entity_source)
 

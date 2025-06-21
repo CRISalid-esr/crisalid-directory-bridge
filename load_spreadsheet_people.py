@@ -4,7 +4,7 @@ import pendulum
 from airflow.decorators import dag
 from airflow.providers.standard.operators.trigger_dagrun import TriggerDagRunOperator
 
-from tasks.database import update_database, create_redis_connection
+from tasks.database import update_database, get_redis_connection
 from tasks.fetch_from_spreadsheet import fetch_from_spreadsheet
 from tasks.spreadsheet.convert_spreadsheet_people import convert_spreadsheet_people
 
@@ -31,7 +31,7 @@ def load_spreadsheet_people():
     entity_source = "spreadsheet"
     entity_type = "people"
 
-    connexion = create_redis_connection()
+    connexion = get_redis_connection()
     people_source_data = fetch_from_spreadsheet(entity_source, entity_type)
     # pylint: disable=duplicate-code
     trigger_broadcast = TriggerDagRunOperator(
