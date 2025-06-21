@@ -7,7 +7,7 @@ from tasks.broadcast.send_status_messages import send_status_messages
 from tasks.compute_status import compute_entity_statuses
 from tasks.database import read_entity_keys_from_redis, get_redis_connection, \
     read_entities_with_scores_from_redis
-from tasks.rabbitmq import create_rabbitmq_connection
+from tasks.rabbitmq import get_rabbitmq_connection
 
 logger = logging.getLogger(__name__)
 
@@ -55,7 +55,7 @@ def broadcast_entities():
     entities_with_statuses = compute_entity_statuses(
         entities_with_scores=entities_with_scores, timestamp=timestamp)
 
-    rabbitmq_connection = create_rabbitmq_connection()
+    rabbitmq_connection = get_rabbitmq_connection()
 
     status_messages = send_status_messages(
         entities_with_statuses=entities_with_statuses, entity_type=entity_type)
