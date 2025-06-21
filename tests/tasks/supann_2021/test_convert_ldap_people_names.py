@@ -24,14 +24,14 @@ TESTED_TASK_NAME = 'tasks.supann_2021.convert_ldap_people_names.convert_ldap_peo
         },
     }
 ], indirect=True)
-def test_names_are_converted_from_ldap(dag, unique_execution_date):
+def test_names_are_converted_from_ldap(dag, unique_logical_date):
     """
     Test that the first and last names are converted from LDAP data
     :param dag:
-    :param unique_execution_date:
+    :param unique_logical_date:
     :return:
     """
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
@@ -58,14 +58,14 @@ def test_names_are_converted_from_ldap(dag, unique_execution_date):
         },
     }
 ], indirect=True)
-def test_only_last_name_present(dag, unique_execution_date):
+def test_only_last_name_present(dag, unique_logical_date):
     """
     Test that if only the last name is present, it is converted correctly.
     :param dag: The DAG object
-    :param unique_execution_date: unique execution date
+    :param unique_logical_date: unique execution date
     :return: None
     """
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
@@ -92,14 +92,14 @@ def test_only_last_name_present(dag, unique_execution_date):
         },
     }
 ], indirect=True)
-def test_only_first_name_present(dag, unique_execution_date):
+def test_only_first_name_present(dag, unique_logical_date):
     """
     Test that if only the first name is present, it is converted correctly.
     :param dag: The DAG object
-    :param unique_execution_date: unique execution date
+    :param unique_logical_date: unique execution date
     :return: None
     """
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
@@ -127,17 +127,17 @@ def test_only_first_name_present(dag, unique_execution_date):
         },
     }
 ], indirect=True)
-def test_language_is_set_to_en(dag, unique_execution_date, monkeypatch):
+def test_language_is_set_to_en(dag, unique_logical_date, monkeypatch):
     """
     Test that if the LDAP_DEFAULT_LANGUAGE environment variable is set to 'en',
     the language is set to 'en'.
     :param dag: The DAG object
-    :param unique_execution_date:
+    :param unique_logical_date:
     :param monkeypatch: The monkeypatch fixture
     :return: None
     """
     monkeypatch.setenv("LDAP_DEFAULT_LANGUAGE", "en")
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS

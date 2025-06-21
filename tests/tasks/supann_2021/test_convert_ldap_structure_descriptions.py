@@ -26,14 +26,14 @@ TEST_TASK_ID = "convert_ldap_structure_descriptions"
         }
     }
 ], indirect=True)
-def test_description_is_converted_from_ldap(dag, unique_execution_date) -> None:
+def test_description_is_converted_from_ldap(dag, unique_logical_date) -> None:
     """
     Test that the description is converted from the LDAP entry
     :param dag: The DAG object
-    :param unique_execution_date: Unique execution date
+    :param unique_logical_date: Unique execution date
     :return: None
     """
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     expected_results = {

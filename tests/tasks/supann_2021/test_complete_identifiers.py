@@ -237,13 +237,13 @@ TESTED_TASK_NAME = 'tasks.supann_2021.complete_identifiers.complete_identifiers'
                              "test_complete_identifiers_with_dupe_identifier_in_ldap",
                          ]
                          )
-def test_complete_identifiers(dag, expected_result_path, unique_execution_date):
+def test_complete_identifiers(dag, expected_result_path, unique_logical_date):
     """
     Test that the identifiers from ldap are completed with the spreadsheet data
     """
     # pylint: disable=duplicate-code
     dag_run = create_dag_run(dag, DATA_INTERVAL_START,
-                             DATA_INTERVAL_END, unique_execution_date)
+                             DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     with open(expected_result_path, 'r', encoding='utf-8') as f:

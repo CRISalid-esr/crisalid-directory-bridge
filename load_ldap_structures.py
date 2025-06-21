@@ -2,7 +2,7 @@ import logging
 
 import pendulum
 from airflow.decorators import dag
-from airflow.operators.trigger_dagrun import TriggerDagRunOperator
+from airflow.providers.standard.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.utils.task_group import TaskGroup
 
 from tasks.combine_batch_results import combine_batch_results
@@ -44,10 +44,10 @@ def load_ldap_structures():
     trigger_broadcast = TriggerDagRunOperator(
         task_id='trigger_broadcast',
         trigger_dag_id='broadcast_entities',
-        execution_date="{{ execution_date + macros.timedelta(seconds=10) }}",
-        trigger_run_id='ldap_structures_run_{{ execution_date.int_timestamp }}',
+        logical_date="{{ logical_date + macros.timedelta(seconds=10) }}",
+        trigger_run_id='ldap_structures_run_{{ logical_date.int_timestamp }}',
         conf={
-            "timestamp": "{{ execution_date.int_timestamp }}",
+            "timestamp": "{{ logical_date.int_timestamp }}",
             "entity_type": entity_type,
             "entity_source": entity_source,
         },

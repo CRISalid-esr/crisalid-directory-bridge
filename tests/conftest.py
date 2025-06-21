@@ -14,8 +14,8 @@ from utils.dependencies import import_from_path
 environ["APP_ENV"] = "TEST"
 
 
-@pytest.fixture(name="unique_execution_date")
-def unique_execution_date() -> pendulum.DateTime:
+@pytest.fixture(name="unique_logical_date")
+def unique_logical_date() -> pendulum.DateTime:
     """
     Get a unique execution date to avoid conflicts between tests
     :return: The unique execution date

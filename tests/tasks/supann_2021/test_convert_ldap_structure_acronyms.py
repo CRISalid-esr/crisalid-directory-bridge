@@ -24,14 +24,14 @@ TEST_TASK_ID = "convert_ldap_structure_acronyms"
             },
     },
 ], indirect=True)
-def test_acronym_is_converted_from_ldap(dag, unique_execution_date) -> None:
+def test_acronym_is_converted_from_ldap(dag, unique_logical_date) -> None:
     """
     Test that the acronym is converted from the LDAP entry
     :param dag: The DAG object
-    :param unique_execution_date: unique execution date
+    :param unique_logical_date: unique execution date
     :return: None
     """
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
@@ -52,14 +52,14 @@ def test_acronym_is_converted_from_ldap(dag, unique_execution_date) -> None:
         },
     },
 ], indirect=True)
-def test_acronym_is_empty_if_not_present(dag, unique_execution_date) -> None:
+def test_acronym_is_empty_if_not_present(dag, unique_logical_date) -> None:
     """
     Test that the acronym is empty if not present in the LDAP entry
     :param dag: The DAG object
-    :param unique_execution_date: unique execution date
+    :param unique_logical_date: unique execution date
     :return: None
     """
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
