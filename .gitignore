@@ -3,6 +3,8 @@
 !.env.example
 !.env.test
 !.env.template
+data/*
+!data/*.sample.csv
 __init__.py
 etc
 __pycache__
