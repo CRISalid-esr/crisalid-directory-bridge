@@ -23,11 +23,6 @@ IDENTIFIER_TYPE_MAP = {
     'idhal_s': 'id_hal_s',
 }
 
-EMPLOYMENTS_DATE_MAP = {
-    'employment_start_date': 'start_date',
-    'employment_end_date': 'end_date'
-}
-
 
 def load_valid_positions_from_yml(filepath: str) -> set[str]:
     """
