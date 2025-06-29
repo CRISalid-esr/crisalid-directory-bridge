@@ -150,7 +150,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'institution_id_nomenclature': 'UAI',
                         'position': 'MCF',
                         'employment_start_date': '2010-04-18',
-                        'employment_departure_date': '2021-06-20'
+                        'employment_end_date': '2021-06-20'
                     }
                 ]
             },

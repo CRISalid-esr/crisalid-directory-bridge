@@ -1,9 +1,8 @@
 import logging
-
+import re
 from datetime import datetime
 
 import yaml
-
 from airflow.decorators import task
 
 logger = logging.getLogger(__name__)
@@ -20,14 +19,15 @@ PERSON_IDENTIFIERS = [LOCAL_PERSON_IDENTIFIER,
 
 IDENTIFIER_TYPE_MAP = {
     'tracking_id': 'local',
-    'idhal_i':'id_hal_i',
-    'idhal_s':'id_hal_s',
+    'idhal_i': 'id_hal_i',
+    'idhal_s': 'id_hal_s',
 }
 
 EMPLOYMENTS_DATE_MAP = {
     'employment_start_date': 'start_date',
-    'employment_departure_date': 'end_date'
+    'employment_end_date': 'end_date'
 }
+
 
 def load_valid_positions_from_yml(filepath: str) -> set[str]:
     """
@@ -59,7 +59,9 @@ def load_valid_positions_from_yml(filepath: str) -> set[str]:
     recurse_extract_corps(data)
     return valid_codes
 
+
 VALID_POSITION_CODES = load_valid_positions_from_yml('conf/employee_types.yml')
+
 
 def get_position_dict_from_yaml(code: str) -> tuple[str, str] | None:
     """
@@ -85,6 +87,7 @@ def is_valid_iso_date(date_str: str) -> bool:
     except ValueError:
         return False
 
+
 @task(task_id="convert_spreadsheet_people")
 def convert_spreadsheet_people(source_data: list[dict[str, str]]) -> dict[
     str, dict[str, str | dict]
@@ -99,9 +102,7 @@ def convert_spreadsheet_people(source_data: list[dict[str, str]]) -> dict[
         dict: A dict of converted results with the "identifiers" field populated
     """
 
-
     task_results = {}
-
 
     for row in source_data:
         non_empty_identifiers = [
@@ -122,7 +123,7 @@ def convert_spreadsheet_people(source_data: list[dict[str, str]]) -> dict[
         if institution_identifier:
             employment['institution_identifier'] = institution_identifier
 
-        #Strict HCERES nomenclature position validation
+        # Strict HCERES nomenclature position validation
         position_code = row.get(
             'position', ''
         ).strip()
@@ -172,22 +173,23 @@ def convert_spreadsheet_people(source_data: list[dict[str, str]]) -> dict[
                 }
 
         # Strict ISO 8601 date validation
-        for original_key, new_key in EMPLOYMENTS_DATE_MAP.items():
-            date_value = row.get(original_key, '').strip()
+        for key in ["employment_start_date", "employment_end_date"]:
+            date_value = row.get(key, '').strip()
             if date_value:
                 if is_valid_iso_date(date_value):
+                    new_key = re.sub(r"^employment_", "", key)
                     employment[new_key] = date_value
                 else:
                     person_id = row.get(LOCAL_PERSON_IDENTIFIER, '<unknown>')
                     logger.error(
                         "Invalid date format in field '%s': '%s' (person ID: %s). "
                         "Please fix the source file.",
-                        original_key,
+                        key,
                         date_value,
                         person_id
                     )
                     raise ValueError(
-                        f"Invalid date detected in field '{original_key}' "
+                        f"Invalid date detected in field '{key}' "
                         f"for person '{person_id}': "
                         f"'{date_value}'. "
                         "Please correct the source file before re-running the task."

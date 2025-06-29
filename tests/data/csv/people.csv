@@ -1,2 +1,2 @@
-first_names,last_name,main_research_structure,tracking_id,eppn,idhal_i,idhal_s,orcid,idref,scopus_eid,institution_identifier,institution_id_nomenclature,position,employment_start_date,employment_departure_date,hdr
+first_names,last_name,main_research_structure,tracking_id,eppn,idhal_i,idhal_s,orcid,idref,scopus_eid,institution_identifier,institution_id_nomenclature,position,employment_start_date,employment_end_date,hdr
 Joe,Dupond,U01,jdupond,jdupond@univ-exemple.fr,012345678,jean-dupond,0000-0000-0000-0001,012345678,012345678,1234567X,UAI,MCF,2010-04-18,2021-06-20,OUI
