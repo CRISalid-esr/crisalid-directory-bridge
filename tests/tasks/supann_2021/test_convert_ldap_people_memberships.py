@@ -25,14 +25,14 @@ TESTED_TASK_NAME = 'tasks.supann_2021.convert_ldap_people_memberships' \
         },
     }
 ], indirect=True)
-def test_memberships_are_converted_from_ldap(dag, unique_execution_date):
+def test_memberships_are_converted_from_ldap(dag, unique_logical_date):
     """
     Test that the memberships are converted from LDAP data
     :param dag:
-    :param unique_execution_date:
+    :param unique_logical_date:
     :return:
     """
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
@@ -58,14 +58,14 @@ def test_memberships_are_converted_from_ldap(dag, unique_execution_date):
         },
     }
 ], indirect=True)
-def test_only_supann_entite_affectation_present(dag, unique_execution_date):
+def test_only_supann_entite_affectation_present(dag, unique_logical_date):
     """
     Test that if only supannEntiteAffectation is present, it is converted correctly.
     :param dag: The DAG object
-    :param unique_execution_date: unique execution date
+    :param unique_logical_date: unique execution date
     :return: None
     """
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
@@ -90,14 +90,14 @@ def test_only_supann_entite_affectation_present(dag, unique_execution_date):
         },
     }
 ], indirect=True)
-def test_only_supann_entite_main_affectation_present(dag, unique_execution_date):
+def test_only_supann_entite_main_affectation_present(dag, unique_logical_date):
     """
     Test that if only supannEntiteAffectationPrincipale is present, it is converted correctly.
     :param dag: The DAG object
-    :param unique_execution_date: unique execution date
+    :param unique_logical_date: unique execution date
     :return: None
     """
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
@@ -119,14 +119,14 @@ def test_only_supann_entite_main_affectation_present(dag, unique_execution_date)
         },
     }
 ], indirect=True)
-def test_no_memberships_present(dag, unique_execution_date):
+def test_no_memberships_present(dag, unique_logical_date):
     """
     Test that if no memberships are present, the memberships field is empty.
     :param dag: The DAG object
-    :param unique_execution_date: unique execution date
+    :param unique_logical_date: unique execution date
     :return: None
     """
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
@@ -170,14 +170,14 @@ def test_no_memberships_present(dag, unique_execution_date):
         },
     }
 ], indirect=True)
-def test_real_case(dag, unique_execution_date):
+def test_real_case(dag, unique_logical_date):
     """
     Test that if supannEntiteAffectationPrincipale is present, it is converted correctly.
     :param dag: The DAG object
-    :param unique_execution_date: unique execution date
+    :param unique_logical_date: unique execution date
     :return: None
     """
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS

@@ -2,7 +2,7 @@ import logging
 
 import pendulum
 from airflow.decorators import dag
-from airflow.operators.trigger_dagrun import TriggerDagRunOperator
+from airflow.providers.standard.operators.trigger_dagrun import TriggerDagRunOperator
 
 from tasks.database import update_database, create_redis_connection
 from tasks.fetch_from_spreadsheet import fetch_from_spreadsheet
@@ -37,10 +37,10 @@ def load_spreadsheet_people():
     trigger_broadcast = TriggerDagRunOperator(
         task_id='trigger_broadcast',
         trigger_dag_id='broadcast_entities',
-        execution_date="{{ execution_date + macros.timedelta(seconds=30) }}",
-        trigger_run_id='spreadsheet_people_run_{{ execution_date.int_timestamp }}',
+        logical_date="{{ logical_date + macros.timedelta(seconds=30) }}",
+        trigger_run_id='spreadsheet_people_run_{{ logical_date.int_timestamp }}',
         conf={
-            "timestamp": "{{ execution_date.int_timestamp }}",
+            "timestamp": "{{ logical_date.int_timestamp }}",
             "entity_type": entity_type,
             "entity_source": entity_source,
         },

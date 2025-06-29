@@ -54,15 +54,15 @@ CRISalid directory bridge is a set of configurable pipelines implemented as Airf
 
 ### Prerequisites
 
-- Install [Apache Airflow](https://airflow.apache.org/docs/apache-airflow/stable/start/local.html) and its dependencies.
-- Configure Airflow to use a database backend supporting concurrent access (e.g. PostgreSQL) and make the "dags_folder"
-  point to the directory of the CRISalid directory bridge repository.(i.e. the directory containing the
-  present `README.md` file).
+- You can browse [Apache Airflow documentation](https://airflow.apache.org/docs/apache-airflow/stable/start/local.html)
+  but don't install AirFlow as it will be automatically downloded by the pip installation process !
 - Install the Python dependencies listed in the `requirements.txt` file.
-
 ```shell
 pip install -r requirements.txt
 ```
+- Configure Airflow to use a database backend supporting concurrent access (e.g. PostgreSQL) and make the "dags_folder"
+  point to the directory of the CRISalid directory bridge repository.(i.e. the directory containing the
+  present `README.md` file).
 
 ### Configuration
 
@@ -87,3 +87,7 @@ airflow standalone
 
 Note that the `standalone` command is a custom command that starts the webserver and scheduler in the same process. It
 is useful for development and testing purposes only.
+
+## Upgrading to Airflow 3.0
+
+For upgrading from Airflow 2.9 to Airflow 3.0, please refer to the [Airflow 2.9 to 3.0 upgrade guide](airflow2.9-to-3.0-upgrade.md).

@@ -101,12 +101,12 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                              "test_convert_with_two_structures"
                          ]
                          )
-def test_convert_spreadsheet_structures(dag, expected_result_path, unique_execution_date):
+def test_convert_spreadsheet_structures(dag, expected_result_path, unique_logical_date):
     """
     Test that the csv data are converted to the expected format
     """
     # pylint: disable=duplicate-code
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_execution_date)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
     with open(expected_result_path, 'r', encoding='utf-8') as f:
