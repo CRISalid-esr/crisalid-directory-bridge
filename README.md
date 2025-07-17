@@ -4,7 +4,7 @@
 
 ### Main use case
 
-CRISalid directory bridge is a backend component of CRISalid modular CRIS (current research information system).
+CRISalid directory bridge is a backend component of CRISalid modular CRIS (Current Research Information System).
 
 It is intended to watch people and organization data from various institutional sources (e.g. LDAP directory, custom HR
 databases,
