@@ -58,8 +58,9 @@ def load_ldap_people():
     )
 
     batch_results = []
-    # pylint: disable=duplicate-code
-    with TaskGroup("people_fields_conversion_tasks"):
+    # pylint: disable=duplicate-code, unexpected-keyword-arg
+    with TaskGroup(group_id="people_fields_conversion_tasks",
+                   group_display_name="People fields conversion tasks"):
         for key, task in tasks.items():
             converted_result = task(ldap_results=ldap_results)
             batch_results.append(converted_result)
