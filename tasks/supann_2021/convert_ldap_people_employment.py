@@ -1,60 +1,11 @@
 import logging
 import re
 
-import fsspec
-import yaml
 from airflow.decorators import task
 
-from utils.config import get_env_variable
-from utils.exceptions import YamlParseError
+from utils.yaml_loader import get_position_by_local_value
 
 logger = logging.getLogger(__name__)
-yaml_path = get_env_variable('YAML_EMPLOYEE_TYPE_PATH')
-employee_types_yaml = None # pylint: disable=invalid-name
-
-
-def _get_employee_types_yaml():
-    global employee_types_yaml  # pylint: disable=global-statement
-    if employee_types_yaml is not None:
-        return employee_types_yaml
-    try:
-        with fsspec.open(yaml_path, 'r', encoding='UTF-8') as file:
-            employee_types_yaml = yaml.safe_load(file)
-    except (FileNotFoundError, ValueError, yaml.YAMLError) as error:
-        raise YamlParseError(f"Error while reading the YAML: {str(error)}") from error
-
-    return employee_types_yaml
-
-
-def _get_position_code_and_label(
-        employee_type_to_check: str | None
-) -> tuple[str, str] | None:
-    """
-    Args:
-        employee_type_to_check(str): An employee type value who come from LDAP
-    Returns:
-        tuple[str, str] | None: A tuple with the code and the label of the position if the
-        employee type is known. Else None
-    """
-    position = None
-    if employee_type_to_check is not None:
-        bodies_list = [
-            body
-            for status in _get_employee_types_yaml().values()
-            for category in status.values()
-            for body in category
-        ]
-
-        for bodies in bodies_list:
-            if bodies["local_values"] and employee_type_to_check in bodies["local_values"]:
-                position = (bodies["corps"], bodies["label"])
-                return position
-
-        logger.warning(
-            "Employee type '%s' not found in '%s'",
-            employee_type_to_check, yaml_path
-        )
-    return position
 
 
 def _create_employment(
@@ -86,6 +37,7 @@ def _convert_with_employee_type(
     institution_count = len(institutions)
     if institution_count == 0:
         return employments
+
     employee_types = employee_entry.get('employeeType', [])
     employee_type_count = len(employee_types)
 
@@ -108,8 +60,18 @@ def _convert_with_employee_type(
         if (match := re.search(r'^\{UAI\}(\d{7}[A-Z])$', item))
     ]
     for entity_uid, employee_type_to_check in zip(formatted_institution, employee_types):
-        position = _get_position_code_and_label(employee_type_to_check)
+
+        position = None
+        if employee_type_to_check:
+            position = get_position_by_local_value(employee_type_to_check)
+            if not position:
+                logger.warning(
+                    "Employee type '%s' not found in YAML local_values",
+                    employee_type_to_check
+                )
+
         employments.append(_create_employment(entity_uid, position))
+
     return employments
 
 
