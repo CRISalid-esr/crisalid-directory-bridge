@@ -55,8 +55,9 @@ def load_ldap_structures():
     )
 
     batch_results = []
-    # pylint: disable=duplicate-code
-    with TaskGroup("structure_fields_conversion_tasks"):
+    # pylint: disable=duplicate-code,unexpected-keyword-arg
+    with TaskGroup(group_id="structure_fields_conversion_tasks",
+                   group_display_name="Structure fields conversion tasks"):
         for key, task in tasks.items():
             converted_result = task(ldap_results=ldap_results)
             batch_results.append(converted_result)
