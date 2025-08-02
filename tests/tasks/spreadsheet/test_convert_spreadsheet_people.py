@@ -17,7 +17,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
     (
             {
                 "task_name": TESTED_TASK_NAME,
-                "param_names": ["raw_results"],
+                "param_names": ["raw_results", "bodies_position_dict"],
                 "raw_results": [
                     {
                         'first_names': 'Joe',
@@ -31,14 +31,15 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'idref': '12345678X',
                         'scopus_eid': '',
                     }
-                ]
+                ],
+                "bodies_position_dict": {}
             },
             "./tests/data/test_convert_spreadsheet_people.json"
     ),
     (
             {
                 "task_name": TESTED_TASK_NAME,
-                "param_names": ["raw_results"],
+                "param_names": ["raw_results", "bodies_position_dict"],
                 "raw_results": [
                     {
                         'first_names': 'Henry',
@@ -52,14 +53,15 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'idref': '',
                         'scopus_eid': '',
                     }
-                ]
+                ],
+                "bodies_position_dict": {}
             },
             "./tests/data/test_convert_spreadsheet_people_with_local_identifier_only.json"
     ),
     (
             {
                 "task_name": TESTED_TASK_NAME,
-                "param_names": ["raw_results"],
+                "param_names": ["raw_results", "bodies_position_dict"],
                 "raw_results": [
                     {
                         'first_names': 'Henry',
@@ -85,13 +87,14 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'idref': '',
                         'scopus_eid': '',
                     }
-                ]
+                ],
+                "bodies_position_dict": {}
             },
             "./tests/data/test_convert_spreadsheet_with_two_people.json"
-    ),(
+    ), (
             {
                 "task_name": TESTED_TASK_NAME,
-                "param_names": ["raw_results"],
+                "param_names": ["raw_results", "bodies_position_dict"],
                 "raw_results": [
                     {
                         'first_names': 'Henry,Paul',
@@ -105,14 +108,15 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'idref': '012345678X',
                         'scopus_eid': '5432345678X',
                     }
-                ]
+                ],
+                "bodies_position_dict": {}
             },
             "./tests/data/test_convert_spreadsheet_with_two_firstnames.json"
     ),
     (
             {
                 "task_name": TESTED_TASK_NAME,
-                "param_names": ["raw_results"],
+                "param_names": ["raw_results", "bodies_position_dict"],
                 "raw_results": [
                     {
                         'first_names': 'Joe',
@@ -126,14 +130,15 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'idref': '12345678X',
                         'scopus_eid': '',
                     }
-                ]
+                ],
+                "bodies_position_dict": {}
             },
             "./tests/data/test_convert_spreadsheet_people_with_empty_laboratory.json"
     ),
     (
             {
                 "task_name": TESTED_TASK_NAME,
-                "param_names": ["raw_results"],
+                "param_names": ["raw_results", "bodies_position_dict"],
                 "raw_results": [
                     {
                         'first_names': 'Joe',
@@ -152,7 +157,11 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'employment_start_date': '2010-04-18',
                         'employment_end_date': '2021-06-20'
                     }
-                ]
+                ],
+                "bodies_position_dict": {
+                    "MCF": ("MCF", "Maître de conférences"),
+                    "PU": ("PU", "Professeur des universités")
+                }
             },
             "./tests/data/test_convert_spreadsheet_with_employment.json"
     ),

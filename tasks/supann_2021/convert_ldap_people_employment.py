@@ -3,21 +3,27 @@ import re
 
 from airflow.decorators import task
 
-from utils.yaml_loader import get_position_by_local_value
-
 logger = logging.getLogger(__name__)
-
 
 def _create_employment(
         entity_id: str,
         position: tuple[str, str] | None
 ) -> dict[str, dict[str, str] | dict]:
     """
+    Build an employment record for a given entity and position.
+
     Args:
-        entity_id(str): The entity where the employee is located
-        position(tuple[str, str] | None): A tuple with the code and the label of the position
+        entity_id (str): The unique identifier of the entity where the employee works.
+        position (tuple[str, str] | None): A tuple containing the position code (str)
+            and label (str). If None, no position information is included.
+
     Returns:
-        A dict containing the position code and label of the employee in the corresponding entity
+        dict: A dictionary containing the entity UID and the employee's position data.
+            Example:
+            {
+                "position": {"title": "<label>", "code": "<code>"},
+                "entity_uid": "UAI-<entity_id>"
+            }
     """
     employment = {
         "position": {} if not position else {
@@ -30,8 +36,24 @@ def _create_employment(
 
 
 def _convert_with_employee_type(
-        employee_entry: dict[(str, list[str]), (str, list[str])]
+        employee_entry: dict[(str, list[str]), (str, list[str])],
+        local_value_position_dict: dict[str, tuple[str, str]],
 ) -> list[dict]:
+    """
+    Convert LDAP employee entry data into a list of employment records.
+
+    This function maps LDAP fields (employee type and institution) to structured
+    employment dictionaries, using a local mapping of employee types to position data.
+
+    Args:
+        employee_entry (dict): A dictionary containing LDAP employee attributes,
+            typically including 'supannEtablissement' (institutions) and 'employeeType'.
+        local_value_position_dict (dict): A mapping of employee type codes (str) to
+            tuples of (position_code, position_label).
+
+    Returns:
+        list[dict]: A list of employment records formatted for further processing.
+    """
     employments = []
     institutions = employee_entry.get('supannEtablissement', [])
     institution_count = len(institutions)
@@ -41,11 +63,11 @@ def _convert_with_employee_type(
     employee_types = employee_entry.get('employeeType', [])
     employee_type_count = len(employee_types)
 
-    # Fill the missing employee types with None
+    # Fill missing employee types with None
     if institution_count > employee_type_count:
         employee_types += [None] * (institution_count - employee_type_count)
 
-    # Fill the missing institutions with the first one
+    # Adjust if there are more employee types than institutions
     if institution_count < employee_type_count:
         if institution_count == 1:
             institutions.extend(
@@ -62,8 +84,8 @@ def _convert_with_employee_type(
     for entity_uid, employee_type_to_check in zip(formatted_institution, employee_types):
 
         position = None
-        if employee_type_to_check:
-            position = get_position_by_local_value(employee_type_to_check)
+        if employee_type_to_check is not None:
+            position = local_value_position_dict.get(employee_type_to_check or "")
             if not position:
                 logger.warning(
                     "Employee type '%s' not found in YAML local_values",
@@ -77,17 +99,35 @@ def _convert_with_employee_type(
 
 @task(task_id="convert_ldap_people_employment")
 def convert_ldap_people_employment(
-        ldap_results: dict[str, dict[str, str | dict]]
+        ldap_results: dict[str, dict[str, str | dict]],
+        local_value_position_dict: dict[str, tuple[str, str]],
 ) -> dict[str, dict[str, list[dict]]]:
     """
+    Convert LDAP results into a dictionary of employment information.
+
+    This Airflow task processes LDAP entries, extracts institution and employee
+    type data, and formats them into a structured "employments" field.
+
     Args:
-        ldap_results (dict): A dict of ldap results with dn as key and entry as value
+        ldap_results (dict): A dictionary of LDAP entries keyed by DN (distinguished name),
+            where each value is another dictionary of attributes.
+        local_value_position_dict (dict): A mapping of employee type codes to tuples
+            of (position_code, position_label).
+
     Returns:
-        dict: A dict of converted results with the "memberships" field populated
+        dict: A dictionary keyed by DN, where each value contains an "employments" list.
+            Example:
+            {
+                "uid=jdoe,ou=people,dc=example,dc=com": {
+                    "employments": [
+                        {"position": {"title": "...", "code": "..."}, "entity_uid": "UAI-XXXXXXX"}
+                    ]
+                }
+            }
     """
     task_results = {}
 
     for dn, entry in ldap_results.items():
-        employments = _convert_with_employee_type(entry)
+        employments = _convert_with_employee_type(entry, local_value_position_dict)
         task_results[dn] = {"employments": employments}
     return task_results

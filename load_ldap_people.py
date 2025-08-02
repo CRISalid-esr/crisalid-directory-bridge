@@ -10,12 +10,16 @@ from tasks.database import update_database, create_redis_connection
 from tasks.fetch_from_spreadsheet import fetch_from_spreadsheet
 from tasks.fetch_people_from_ldap import fetch_ldap_people
 from tasks.supann_2021.complete_identifiers import complete_identifiers
+from tasks.fetch_from_employee_types import (
+    convert_employee_types_local_value,
+    fetch_from_employee_types,
+)
 from utils.config import get_env_variable
 from utils.dependencies import import_from_path
 
 logger = logging.getLogger(__name__)
 
-
+# pylint: disable=too-many-locals
 @dag(
     dag_id="load_ldap_people",
     start_date=pendulum.datetime(2024, 7, 2, tz="UTC"),
@@ -42,6 +46,8 @@ def load_ldap_people():
 
     connexion = create_redis_connection()
     ldap_results = fetch_ldap_people()
+    employee_types = fetch_from_employee_types(get_env_variable("YAML_EMPLOYEE_TYPE_PATH"))
+    local_value_position = convert_employee_types_local_value(employee_types)
 
     # pylint: disable=duplicate-code
     trigger_broadcast = TriggerDagRunOperator(
@@ -59,10 +65,20 @@ def load_ldap_people():
 
     batch_results = []
     # pylint: disable=duplicate-code
+    # pylint: disable=too-many-function-args
     with TaskGroup("people_fields_conversion_tasks"):
         for key, task in tasks.items():
-            converted_result = task(ldap_results=ldap_results)
+            if key == "EMPLOYMENT":
+                converted_result = task(
+                    ldap_results=ldap_results,
+                    local_value_position_dict=local_value_position
+                )
+            else:
+                converted_result = task(
+                    ldap_results=ldap_results
+                )
             batch_results.append(converted_result)
+
     combined_results = combine_batch_results(batch_results)
     if get_env_variable("COMPLETE_LDAP_PEOPLE_IDENTIFIERS_FROM_SPREADSHEET"):
         identifiers_from_spreadsheet = fetch_from_spreadsheet(entity_source, entity_type)
