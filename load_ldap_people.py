@@ -7,17 +7,18 @@ from airflow.utils.task_group import TaskGroup
 
 from tasks.combine_batch_results import combine_batch_results
 from tasks.database import update_database, create_redis_connection
+from tasks.fetch_from_employee_types import (
+    employee_types_by_local_values,
+)
 from tasks.fetch_from_spreadsheet import fetch_from_spreadsheet
 from tasks.fetch_people_from_ldap import fetch_ldap_people
 from tasks.supann_2021.complete_identifiers import complete_identifiers
-from tasks.fetch_from_employee_types import (
-    convert_employee_types_local_value,
-    fetch_from_employee_types,
-)
 from utils.config import get_env_variable
 from utils.dependencies import import_from_path
+from utils.yaml_loader import load_yaml
 
 logger = logging.getLogger(__name__)
+
 
 # pylint: disable=too-many-locals
 @dag(
@@ -46,8 +47,8 @@ def load_ldap_people():
 
     connexion = create_redis_connection()
     ldap_results = fetch_ldap_people()
-    employee_types = fetch_from_employee_types(get_env_variable("YAML_EMPLOYEE_TYPE_PATH"))
-    local_value_position = convert_employee_types_local_value(employee_types)
+    employee_types = load_yaml(get_env_variable("YAML_EMPLOYEE_TYPE_PATH"))
+    local_value_position = employee_types_by_local_values(employee_types)
 
     # pylint: disable=duplicate-code
     trigger_broadcast = TriggerDagRunOperator(
@@ -69,15 +70,10 @@ def load_ldap_people():
     with TaskGroup(group_id="people_fields_conversion_tasks",
                    group_display_name="People fields conversion tasks"):
         for key, task in tasks.items():
-            if key == "EMPLOYMENT":
-                converted_result = task(
-                    ldap_results=ldap_results,
-                    local_value_position_dict=local_value_position
-                )
-            else:
-                converted_result = task(
-                    ldap_results=ldap_results
-                )
+            converted_result = task(
+                ldap_results=ldap_results,
+                config=local_value_position
+            )
             batch_results.append(converted_result)
 
     combined_results = combine_batch_results(batch_results)

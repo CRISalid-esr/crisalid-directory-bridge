@@ -8,10 +8,10 @@ from tasks.database import update_database, create_redis_connection
 from tasks.fetch_from_spreadsheet import fetch_from_spreadsheet
 from tasks.spreadsheet.convert_spreadsheet_people import convert_spreadsheet_people
 from tasks.fetch_from_employee_types import (
-    convert_employee_types_bodies,
-    fetch_from_employee_types,
+    employee_type_labels_by_codes,
 )
 from utils.config import get_env_variable
+from utils.yaml_loader import load_yaml
 
 logger = logging.getLogger(__name__)
 
@@ -38,8 +38,8 @@ def load_spreadsheet_people():
 
     connexion = create_redis_connection()
     people_source_data = fetch_from_spreadsheet(entity_source, entity_type)
-    employee_types = fetch_from_employee_types(get_env_variable("YAML_EMPLOYEE_TYPE_PATH"))
-    bodies_position = convert_employee_types_bodies(employee_types)
+    employee_types = load_yaml(get_env_variable("YAML_EMPLOYEE_TYPE_PATH"))
+    bodies_position = employee_type_labels_by_codes(employee_types)
 
     # pylint: disable=duplicate-code
     trigger_broadcast = TriggerDagRunOperator(
@@ -56,7 +56,7 @@ def load_spreadsheet_people():
     )
 
     converted_result = convert_spreadsheet_people(source_data=people_source_data,
-                                                  bodies_position_dict=bodies_position)
+                                                  config=bodies_position)
     redis_keys = update_database(result=converted_result, prefix=f"{entity_type}:{entity_source}:")
     connexion >> redis_keys >> trigger_broadcast  # pylint: disable=pointless-statement
 

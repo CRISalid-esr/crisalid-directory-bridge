@@ -100,7 +100,7 @@ def _convert_with_employee_type(
 @task(task_id="convert_ldap_people_employment")
 def convert_ldap_people_employment(
         ldap_results: dict[str, dict[str, str | dict]],
-        local_value_position_dict: dict[str, tuple[str, str]],
+        config: dict[str, tuple[str, str]] = None,
 ) -> dict[str, dict[str, list[dict]]]:
     """
     Convert LDAP results into a dictionary of employment information.
@@ -111,7 +111,7 @@ def convert_ldap_people_employment(
     Args:
         ldap_results (dict): A dictionary of LDAP entries keyed by DN (distinguished name),
             where each value is another dictionary of attributes.
-        local_value_position_dict (dict): A mapping of employee type codes to tuples
+        config (dict): A mapping of employee type codes to tuples
             of (position_code, position_label).
 
     Returns:
@@ -128,6 +128,6 @@ def convert_ldap_people_employment(
     task_results = {}
 
     for dn, entry in ldap_results.items():
-        employments = _convert_with_employee_type(entry, local_value_position_dict)
+        employments = _convert_with_employee_type(entry, config)
         task_results[dn] = {"employments": employments}
     return task_results

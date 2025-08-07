@@ -41,9 +41,9 @@
           "code": "MCF"
         },
         "entity_uid": "UAI-1234567X",
-        "start_date" : "2010-04-18",
-        "end_date" : "2021-06-20",
-        "hdr" : "non"
+        "start_date": "2010-04-18",
+        "end_date": "2021-06-20",
+        "hdr": false
       }
     ],
     "memberships": [

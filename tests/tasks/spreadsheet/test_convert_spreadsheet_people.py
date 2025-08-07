@@ -159,8 +159,8 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                     }
                 ],
                 "bodies_position_dict": {
-                    "MCF": ("MCF", "Maître de conférences"),
-                    "PU": ("PU", "Professeur des universités")
+                    "MCF": "Maître de conférences",
+                    "PU": "Professeur des universités"
                 }
             },
             "./tests/data/test_convert_spreadsheet_with_employment.json"

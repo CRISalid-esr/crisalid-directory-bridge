@@ -6,7 +6,10 @@ logger = logging.getLogger(__name__)
 
 
 @task(task_id="convert_ldap_people_identifiers")
-def convert_ldap_people_identifiers(ldap_results: dict[str, dict[str, str | dict]]) -> dict[
+def convert_ldap_people_identifiers(
+        ldap_results: dict[str, dict[str, str | dict]],
+        config: dict[str, tuple[str, str]] = None
+) -> dict[
     str, dict[str, str | dict]
 ]:
     """
@@ -14,10 +17,13 @@ def convert_ldap_people_identifiers(ldap_results: dict[str, dict[str, str | dict
 
     Args:
         ldap_results (dict): A dict of ldap results with dn as key and entry as value
+        config (dict): A configuration dict,
+            not used in this function but required by the task signature
 
     Returns:
         dict: A dict of converted results with the "identifiers" field populated
     """
+    _ = config
     task_results = {}
     for dn, entry in ldap_results.items():
         identifiers = entry.get('uid')

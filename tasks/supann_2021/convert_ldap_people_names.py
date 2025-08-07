@@ -8,16 +8,20 @@ logger = logging.getLogger(__name__)
 
 
 @task(task_id="convert_ldap_people_names")
-def convert_ldap_people_names(ldap_results: dict[str, dict[str, str | dict]]) \
+def convert_ldap_people_names(ldap_results: dict[str, dict[str, str | dict]],
+                              config: dict[str, tuple[str, str]] = None) \
         -> dict[str, dict[str, str | dict]]:
     """Extract the 'name' field from an LDAP entry.
 
     Args:
         ldap_results (dict): A dict of ldap results with dn as key and entry as value
+        config (dict): A configuration dict,
+            not used in this function but required by the task signature
 
     Returns:
         dict: A dict of converted results with the "names" field populated
     """
+    _ = config
     task_results = {}
     language = get_env_variable("LDAP_DEFAULT_LANGUAGE")
     for dn, entry in ldap_results.items():
