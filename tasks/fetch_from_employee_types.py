@@ -25,7 +25,7 @@ def _get_bodies_list(employee_types: dict) -> list[dict]:
 
 
 @task(task_id='employee_type_labels_by_codes')
-def employee_type_labels_by_codes(employee_types: dict) -> dict[str, tuple[str, str]]:
+def employee_type_labels_by_codes(employee_types: dict) -> dict[str, str]:
     """
     Convert employee types into a mapping of corps codes to labels.
 

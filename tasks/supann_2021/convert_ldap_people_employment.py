@@ -36,7 +36,7 @@ def _create_employment(
 
 
 def _convert_with_employee_type(
-        employee_entry: dict[(str, list[str]), (str, list[str])],
+        employee_entry: dict[str, list[str]],
         local_value_position_dict: dict[str, tuple[str, str]],
 ) -> list[dict]:
     """
@@ -79,7 +79,7 @@ def _convert_with_employee_type(
         f"{match.group(1)}"
         for item in institutions
         # Regular expression match example: {UAI}0000000Z
-        if (match := re.search(r'^\{UAI\}(\d{7}[A-Z])$', item))
+        if (match := re.search(r'^{UAI}(\d{7}[A-Z])$', item))
     ]
     for entity_uid, employee_type_to_check in zip(formatted_institution, employee_types):
 
