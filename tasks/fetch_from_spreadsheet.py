@@ -32,6 +32,11 @@ FETCH_PARAMETERS = {
             "orcid",
             "idref",
             "scopus_eid",
+            "institution_identifier",
+            "institution_id_nomenclature",
+            "position",
+            "employment_start_date",
+            "employment_end_date"
         ]
     },
     "spreadsheet_structures": {

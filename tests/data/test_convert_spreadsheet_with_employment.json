@@ -1,0 +1,55 @@
+{
+  "jdupond": {
+    "names": [
+      {
+        "last_names": [
+          {
+            "value": "Dupond",
+            "language": "fr"
+          }
+        ],
+        "first_names": [
+          {
+            "value": "Joe",
+            "language": "fr"
+          }
+        ]
+      }
+    ],
+    "identifiers": [
+      {
+        "type": "local",
+        "value": "jdupond"
+      },
+      {
+        "type": "eppn",
+        "value": "jdupond@univ-exemple.fr"
+      },
+      {
+        "type": "orcid",
+        "value": "0000-0000-0000-0001"
+      },
+      {
+        "type": "idref",
+        "value": "12345678X"
+      }
+    ],
+    "employments": [
+      {
+        "position": {
+          "title": "Maître de conférences",
+          "code": "MCF"
+        },
+        "entity_uid": "UAI-1234567X",
+        "start_date": "2010-04-18",
+        "end_date": "2021-06-20",
+        "hdr": false
+      }
+    ],
+    "memberships": [
+      {
+        "entity_uid": "U01"
+      }
+    ]
+  }
+}

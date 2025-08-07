@@ -7,6 +7,11 @@ from airflow.providers.standard.operators.trigger_dagrun import TriggerDagRunOpe
 from tasks.database import update_database, create_redis_connection
 from tasks.fetch_from_spreadsheet import fetch_from_spreadsheet
 from tasks.spreadsheet.convert_spreadsheet_people import convert_spreadsheet_people
+from tasks.fetch_from_employee_types import (
+    employee_type_labels_by_codes,
+)
+from utils.config import get_env_variable
+from utils.yaml_loader import load_yaml
 
 logger = logging.getLogger(__name__)
 
@@ -33,6 +38,9 @@ def load_spreadsheet_people():
 
     connexion = create_redis_connection()
     people_source_data = fetch_from_spreadsheet(entity_source, entity_type)
+    employee_types = load_yaml(get_env_variable("YAML_EMPLOYEE_TYPE_PATH"))
+    bodies_position = employee_type_labels_by_codes(employee_types)
+
     # pylint: disable=duplicate-code
     trigger_broadcast = TriggerDagRunOperator(
         task_id='trigger_broadcast',
@@ -47,7 +55,8 @@ def load_spreadsheet_people():
         wait_for_completion=False,
     )
 
-    converted_result = convert_spreadsheet_people(source_data=people_source_data)
+    converted_result = convert_spreadsheet_people(source_data=people_source_data,
+                                                  config=bodies_position)
     redis_keys = update_database(result=converted_result, prefix=f"{entity_type}:{entity_source}:")
     connexion >> redis_keys >> trigger_broadcast  # pylint: disable=pointless-statement
 

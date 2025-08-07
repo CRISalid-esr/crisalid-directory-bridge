@@ -8,16 +8,20 @@ logger = logging.getLogger(__name__)
 
 
 @task(task_id="convert_ldap_people_memberships")
-def convert_ldap_people_memberships(ldap_results: dict[str, dict[str, str | dict]]) \
+def convert_ldap_people_memberships(ldap_results: dict[str, dict[str, str | dict]],
+        config: dict[str, tuple[str, str]] = None) \
         -> dict[str, dict[str, str | dict]]:
     """Extract the 'supannentiteaffectation' field from an LDAP entry and process all affectations.
 
     Args:
         ldap_results (dict): A dict of ldap results with dn as key and entry as value
+        config (dict): A configuration dict,
+            not used in this function but required by the task signature
 
     Returns:
         dict: A dict of converted results with the "memberships" field populated
     """
+    _ = config
     task_results = {}
     for dn, entry in ldap_results.items():
         affectations = []
