@@ -34,7 +34,7 @@ def convert_ldap_structure_identifiers(ldap_results: dict[str, dict[str, str | d
             ref_ids = []
         for ref_id in ref_ids:
             if ref_id.startswith('{RNSR}'):
-                identifiers.append({"type": "RNSR", "value": ref_id[6:]})
+                identifiers.append({"type": "nns", "value": ref_id[6:]})
         task_results[dn] = {"identifiers": identifiers}
 
     return task_results
