@@ -44,7 +44,7 @@ TESTED_TASK_NAME = 'tasks.supann_2021.complete_identifiers.complete_identifiers'
                         ],
                         "memberships": [
                             {
-                                "entity_uid": "U01"
+                                "main_research_structure": "U01"
                             }
                         ]
                     },
@@ -73,7 +73,7 @@ TESTED_TASK_NAME = 'tasks.supann_2021.complete_identifiers.complete_identifiers'
                         ],
                         "memberships": [
                             {
-                                "entity_uid": "U01"
+                                "main_research_structure": "U01"
                             }
                         ]
                     }
@@ -116,7 +116,7 @@ TESTED_TASK_NAME = 'tasks.supann_2021.complete_identifiers.complete_identifiers'
                         ],
                         "memberships": [
                             {
-                                "entity_uid": "U01"
+                                "main_research_structure": "U01"
                             }
                         ]
                     }
@@ -164,7 +164,7 @@ TESTED_TASK_NAME = 'tasks.supann_2021.complete_identifiers.complete_identifiers'
                         ],
                         "memberships": [
                             {
-                                "entity_uid": "U01"
+                                "main_research_structure": "U01"
                             }
                         ]
                     },
@@ -215,7 +215,7 @@ TESTED_TASK_NAME = 'tasks.supann_2021.complete_identifiers.complete_identifiers'
                         ],
                         "memberships": [
                             {
-                                "entity_uid": "U01"
+                                "main_research_structure": "U01"
                             }
                         ]
                     },

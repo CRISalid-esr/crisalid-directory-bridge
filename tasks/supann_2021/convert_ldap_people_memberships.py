@@ -34,6 +34,6 @@ def convert_ldap_people_memberships(ldap_results: dict[str, dict[str, str | dict
                 continue
             affectations.append(affectation)
         task_results[dn] = {"memberships": [{
-            "entity_uid": affectation
+            "main_research_structure": affectation
         } for affectation in affectations]}
     return task_results

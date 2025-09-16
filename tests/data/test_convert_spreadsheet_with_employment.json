@@ -40,7 +40,7 @@
           "title": "Maître de conférences",
           "code": "MCF"
         },
-        "entity_uid": "UAI-1234567X",
+        "main_research_structure": "UAI-1234567X",
         "start_date": "2010-04-18",
         "end_date": "2021-06-20",
         "hdr": false
@@ -48,7 +48,7 @@
     ],
     "memberships": [
       {
-        "entity_uid": "U01"
+        "main_research_structure": "U01"
       }
     ]
   }

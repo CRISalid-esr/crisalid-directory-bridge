@@ -22,7 +22,7 @@ def _create_employment(
             Example:
             {
                 "position": {"title": "<label>", "code": "<code>"},
-                "entity_uid": "UAI-<entity_id>"
+                "main_research_structure": "UAI-<entity_id>"
             }
     """
     employment = {
@@ -30,7 +30,7 @@ def _create_employment(
             "title": position[1],
             "code": position[0]
         },
-        "entity_uid": f"UAI-{entity_id}",
+        "main_research_structure": f"UAI-{entity_id}",
     }
     return employment
 
@@ -81,7 +81,7 @@ def _convert_with_employee_type(
         # Regular expression match example: {UAI}0000000Z
         if (match := re.search(r'^{UAI}(\d{7}[A-Z])$', item))
     ]
-    for entity_uid, employee_type_to_check in zip(formatted_institution, employee_types):
+    for research_structure, employee_type_to_check in zip(formatted_institution, employee_types):
 
         position = None
         if employee_type_to_check is not None:
@@ -92,7 +92,7 @@ def _convert_with_employee_type(
                     employee_type_to_check
                 )
 
-        employments.append(_create_employment(entity_uid, position))
+        employments.append(_create_employment(research_structure, position))
 
     return employments
 
@@ -120,7 +120,8 @@ def convert_ldap_people_employment(
             {
                 "uid=jdoe,ou=people,dc=example,dc=com": {
                     "employments": [
-                        {"position": {"title": "...", "code": "..."}, "entity_uid": "UAI-XXXXXXX"}
+                        {"position": {"title": "...", "code": "..."},
+                        "main_research_structure": "UAI-XXXXXXX"}
                     ]
                 }
             }

@@ -186,7 +186,7 @@ def _build_employment(entry: dict[str, str],
     position = extract_employment_position(entry, bodies_labels_dict, person_id)
 
     employment: dict[str, str | dict] = {
-        "entity_uid": f"UAI-{institution_id}",
+        "main_research_structure": f"UAI-{institution_id}",
         "hdr": extract_employment_hdr(entry, person_id)
     }
 
@@ -232,7 +232,11 @@ def convert_spreadsheet_people(
         if not non_empty_identifiers:
             logger.warning("No identifiers for row: %s", entry)
 
-        entity_uid = entry.get('main_research_structure', '').strip()
+        research_structure = entry.get('main_research_structure', '').strip()
+        memberships = (
+            [{'main_research_structure': research_structure}]
+            if research_structure else []
+        )
 
         result_entry = {
             'names': [
@@ -245,7 +249,7 @@ def convert_spreadsheet_people(
                 }
             ],
             'identifiers': non_empty_identifiers,
-            'memberships': [{'entity_uid': entity_uid}] if entity_uid else [],
+            'memberships': memberships,
         }
 
         employment = _build_employment(entry, config)
