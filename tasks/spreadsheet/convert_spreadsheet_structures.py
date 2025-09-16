@@ -65,7 +65,7 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[
                 })
             else:
                 logger.warning(
-                    "Website address failed validation: %r (entry dn=%s). "
+                    "Website address failed validation: %r (entry tracking_id=%s). "
                     "Expected format: http(s)://...",
                     web_address,
                     row.get(LOCAL_STRUCTURE_IDENTIFIER)

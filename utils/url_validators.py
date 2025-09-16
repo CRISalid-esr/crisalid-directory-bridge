@@ -1,4 +1,3 @@
-# utils/validators.py
 import re
 
 URL_WEBSITE_PATTERN = re.compile(
