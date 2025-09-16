@@ -18,6 +18,7 @@ TEST_TASK_ID = "convert_ldap_structure_contacts"
         'raw_results': {
             "uid=1234,ou=people,dc=example,dc=org": {
                 "postalAddress": ["Center Meudon$1 PLACE ARISTIDE BRIAND$92190 MEUDON$France"],
+                "labeledURI": ["https://www.lgp.cnrs.fr/"],
                 "eduorglegalname": ["University of Example"],
             },
             "uid=5678,ou=people,dc=example,dc=org": {
@@ -51,6 +52,11 @@ def test_contacts_are_converted_from_ldap(dag, unique_logical_date) -> None:
                 'zip_code': '92190',
                 'country': 'France'
             }
+        },
+        {
+            'type': 'electronical_address',
+            'format': 'website_address',
+            'value': {'uri': 'https://www.lgp.cnrs.fr/'}
         }]},
         "uid=5678,ou=people,dc=example,dc=org": {"contacts": [{
             'type': 'postal_address',

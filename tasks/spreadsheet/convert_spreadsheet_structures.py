@@ -1,6 +1,7 @@
 import logging
 
 from airflow.decorators import task
+from utils.url_validators import is_valid_website_url
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +42,35 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[
                                                        and row[identifier].strip()
         ]
 
+        contacts = [
+            {
+                'type': 'postal_address',
+                'format': 'structured_physical_address',
+                'value': {
+                    'country': 'France',
+                    'zip_code': row['city_code'],
+                    'city': row['city_name'],
+                    'street': row['city_adress']
+                }
+            }
+        ]
+
+        web_address = row.get('web', '').strip()
+        if web_address:
+            if is_valid_website_url(web_address):
+                contacts.append({
+                    'type': 'electronical_address',
+                    'format': 'website_address',
+                    'value': {'uri': web_address}
+                })
+            else:
+                logger.warning(
+                    "Website address failed validation: %r (entry dn=%s). "
+                    "Expected format: http(s)://...",
+                    web_address,
+                    row.get(LOCAL_STRUCTURE_IDENTIFIER)
+                )
+
         task_results[row[LOCAL_STRUCTURE_IDENTIFIER]] = {
             'names': [
                 {
@@ -55,18 +85,7 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[
                     'language': 'fr',
                 }
             ],
-            'contacts': [
-                {
-                    'type': 'postal_address',
-                    'format': 'structured_physical_address',
-                    'value': {
-                        'country': 'France',
-                        'zip_code': row['city_code'],
-                        'city': row['city_name'],
-                        'street': row['city_adress']
-                    }
-                }
-            ],
+            'contacts': contacts,
             'identifiers': non_empty_identifiers,
         }
 

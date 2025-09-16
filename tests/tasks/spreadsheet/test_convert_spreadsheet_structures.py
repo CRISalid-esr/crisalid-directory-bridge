@@ -31,6 +31,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                         'city_name': 'MEUDON',
                         'city_code': '92190',
                         'city_adress': 'Centre Meudon, 1 PLACE ARISTIDE BRIAND',
+                        'web': 'https://www.lgp.cnrs.fr/'
                     }
                 ]
             },
@@ -53,6 +54,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                         'city_name': 'MEUDON',
                         'city_code': '92190',
                         'city_adress': 'Centre Meudon, 1 PLACE ARISTIDE BRIAND',
+                        'web': 'https://www.lgp.cnrs.fr/'
                     }
                 ]
             },
@@ -75,6 +77,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                         'city_name': 'MEUDON',
                         'city_code': '92190',
                         'city_adress': 'Centre Meudon, 1 PLACE ARISTIDE BRIAND',
+                        'web': 'https://www.lgp.cnrs.fr/'
                     },
                     {
                         'name': 'Laboratoire de géographie physique Pierre Birot (UMR 8591)',
@@ -88,6 +91,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                         'city_name': 'MEUDON',
                         'city_code': '92190',
                         'city_adress': 'Centre Meudon, 1 PLACE ARISTIDE BRIAND',
+                        'web': 'https://www.lgp.cnrs.fr/'
                     }
                 ]
             },
