@@ -44,7 +44,7 @@ def test_identifiers_are_converted_from_ldap(dag, unique_logical_date):
     expected_results = {
         "uid=1234,ou=people,dc=example,dc=org": {
             "identifiers": [{"type": "local", "value": "123456"},
-                            {"type": "RNSR", "value": "654321"}]},
+                            {"type": "nns", "value": "654321"}]},
         "uid=5678,ou=people,dc=example,dc=org": {
             "identifiers": [{"type": "local", "value": "789012"}]}
     }
