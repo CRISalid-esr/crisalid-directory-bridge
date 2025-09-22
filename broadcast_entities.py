@@ -55,7 +55,7 @@ def broadcast_entities():
     entities_with_statuses = compute_entity_statuses(
         entities_with_scores=entities_with_scores, timestamp=timestamp)
 
-    rabbitmq_ready = ensure_rabbitmq_connection()  # <— new
+    rabbitmq_ready = ensure_rabbitmq_connection()
 
     status_messages = send_status_messages(
         entities_with_statuses=entities_with_statuses, entity_type=entity_type)
