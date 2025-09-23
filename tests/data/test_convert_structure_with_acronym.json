@@ -23,6 +23,13 @@
           "city": "MEUDON",
           "street": "Centre Meudon, 1 PLACE ARISTIDE BRIAND"
         }
+      },
+      {
+        "type": "electronical_address",
+        "format": "website_address",
+        "value": {
+          "uri": "https://www.lgp.cnrs.fr/"
+        }
       }
     ],
     "identifiers": [

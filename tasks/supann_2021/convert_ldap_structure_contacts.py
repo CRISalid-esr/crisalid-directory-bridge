@@ -1,4 +1,8 @@
+import logging
 from airflow.decorators import task
+from utils.url_validators import is_valid_website_url
+
+logger = logging.getLogger(__name__)
 
 
 @task(task_id="convert_ldap_structure_contacts")
@@ -18,26 +22,47 @@ def convert_ldap_structure_contacts(ldap_results: dict[str, dict[str, str | dict
     for dn, ldap_entry in ldap_results.items():
         assert ldap_entry is not None, f"LDAP entry is None for dn: {dn}"
 
-        postal_addresses = ldap_entry.get('postalAddress', '')
-        if not isinstance(postal_addresses, list) or not postal_addresses:
-            task_results[dn] = {"contacts": []}
-            continue
-        postal_address = postal_addresses[0]
-        lines = postal_address.split('$')
-        try:
-            address_dict = _parse_address_lines(lines)
+        contacts: list[dict] = []
 
-            task_results[dn] = {"contacts": [{
-                'type': 'postal_address',
-                'format': 'structured_physical_address',
-                'value': address_dict
-            }]}
-        except (ValueError, IndexError):
-            task_results[dn] = {"contacts": [{
-                'type': 'postal_address',
-                'format': 'simple_physical_address',
-                'value': {'address': postal_address.replace('$', '\n')}
-            }]}
+        postal_addresses = ldap_entry.get('postalAddress', '')
+        if isinstance(postal_addresses, list) and postal_addresses:
+            postal_address = postal_addresses[0]
+            lines = postal_address.split('$')
+
+            try:
+                address_dict = _parse_address_lines(lines)
+
+                contacts.append({
+                    'type': 'postal_address',
+                    'format': 'structured_physical_address',
+                    'value': address_dict
+                })
+            except (ValueError, IndexError):
+                contacts.append({
+                    'type': 'postal_address',
+                    'format': 'simple_physical_address',
+                    'value': {'address': postal_address.replace('$', '\n')}
+                })
+
+        electronical_addresses = ldap_entry.get('labeledURI', '')
+        if isinstance(electronical_addresses, list) and electronical_addresses:
+            electronical_address = electronical_addresses[0].strip()
+
+            if is_valid_website_url(electronical_address):
+                contacts.append({
+                    'type': 'electronical_address',
+                    'format': 'website_address',
+                    'value': {'uri': electronical_address}
+                })
+            else:
+                logger.warning(
+                    "Website address failed validation: %r (entry dn=%s). "
+                    "Expected format: http(s)://...",
+                    electronical_address,
+                    dn
+                )
+
+        task_results[dn] = {"contacts": contacts}
 
     return task_results
 
