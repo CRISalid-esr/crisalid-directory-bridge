@@ -165,7 +165,8 @@ def test_no_memberships_present(dag, unique_logical_date):
                 'eduPersonPrimaryAffiliation': ['faculty'],
                 'postalAddress': ['8 bis rue de la Croix Jarry$75644 PARIS cedex 13$France'],
                 'mail': ['sylvain.soussiat@univ-paris1.fr'],
-                'labeledURI': ['http://perso.univ-paris1.fr/soussiat']
+                'labeledURI': ['http://perso.univ-paris1.fr/soussiat'],
+                'eduPersonPrincipalName': ['soussiat@univ-paris1.fr'],
             },
         },
     }

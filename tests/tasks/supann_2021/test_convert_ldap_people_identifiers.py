@@ -20,6 +20,7 @@ TESTED_TASK_NAME = 'tasks.supann_2021.convert_ldap_people_identifiers' \
         "raw_results": {
             "uid=1234,ou=people,dc=example,dc=org": {
                 "uid": ["1234"],
+                "eduPersonPrincipalName": ["1234@example.org"]
             },
         },
     }
@@ -41,8 +42,12 @@ def test_identifier_is_converted_from_ldap(dag, unique_logical_date):
                 {
                     "type": "local",
                     "value": "1234"
-                }
-            ]
+                },
+                {
+                    "type": "eduPersonPrincipalName",
+                    "value": "1234@example.org"
+                },
+            ],
         }
     }
 
