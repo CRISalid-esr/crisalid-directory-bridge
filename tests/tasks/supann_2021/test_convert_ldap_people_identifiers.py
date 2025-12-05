@@ -1,4 +1,5 @@
 # pylint: disable=duplicate-code
+import logging
 import pytest
 from airflow.utils.state import TaskInstanceState
 
@@ -95,13 +96,15 @@ def test_missing_identifier(dag, unique_logical_date):
         },
     }
 ], indirect=True)
-def test_invalid_eppn_format(dag, unique_logical_date):
+def test_invalid_eppn_format(dag, unique_logical_date,caplog):
     """
     Test that an invalid eduPersonPrincipalName format results in its exclusion.
     :param dag: The DAG object
     :param unique_logical_date: unique execution date
     :return: None
     """
+    caplog.set_level(logging.WARNING)
+
     dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
@@ -116,6 +119,8 @@ def test_invalid_eppn_format(dag, unique_logical_date):
             ],
         }
     }
+    warnings = [rec.message for rec in caplog.records if rec.levelno == logging.WARNING]
+    assert any("Invalid eduPersonPrincipalName format" in msg for msg in warnings)
 
 @pytest.mark.parametrize("dag", [
     {
@@ -229,13 +234,15 @@ def test_eppn_with_double_at_symbol(dag, unique_logical_date):
         },
     }
 ], indirect=True)
-def test_eppn_with_invalid_type(dag, unique_logical_date):
+def test_eppn_with_invalid_type(dag, unique_logical_date, caplog):
     """
     Test that an eduPersonPrincipalName with invalid type is excluded.
     :param dag: The DAG object
     :param unique_logical_date: unique execution date
     :return: None
     """
+    caplog.set_level(logging.WARNING)
+
     dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
@@ -250,3 +257,6 @@ def test_eppn_with_invalid_type(dag, unique_logical_date):
             ],
         }
     }
+
+    warnings = [rec.message for rec in caplog.records if rec.levelno == logging.WARNING]
+    assert any("Invalid eduPersonPrincipalName type" in msg for msg in warnings)

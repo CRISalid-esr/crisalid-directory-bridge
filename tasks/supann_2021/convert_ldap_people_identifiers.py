@@ -32,10 +32,10 @@ def extract_valid_eppn(entry: dict[str, list[str]]) -> str | None:
         return None
     eppn = eppn_values[0]
     if not isinstance(eppn, str):
-        logger.error("Invalid eduPersonPrincipalName type: %r", eppn)
+        logger.warning("Invalid eduPersonPrincipalName type: %r", eppn)
         return None
     if not EPPN_PATTERN.fullmatch(eppn):
-        logger.error("Invalid eduPersonPrincipalName format: %s", eppn)
+        logger.warning("Invalid eduPersonPrincipalName format: %s", eppn)
         return None
     return eppn
 
