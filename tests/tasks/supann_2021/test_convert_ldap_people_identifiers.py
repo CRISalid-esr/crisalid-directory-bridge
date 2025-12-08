@@ -45,7 +45,7 @@ def test_identifier_is_converted_from_ldap(dag, unique_logical_date):
                     "value": "1234"
                 },
                 {
-                    "type": "eduPersonPrincipalName",
+                    "type": "eppn",
                     "value": "1234@example.org"
                 },
             ],

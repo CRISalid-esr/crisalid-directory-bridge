@@ -72,7 +72,7 @@ def convert_ldap_people_identifiers(
 
         eppn = extract_valid_eppn(entry)
         if eppn is not None:
-            identifiers_list.append({'type': 'eduPersonPrincipalName', 'value': eppn})
+            identifiers_list.append({'type': 'eppn', 'value': eppn})
         task_results[dn] = {"identifiers": identifiers_list}
 
     return task_results
