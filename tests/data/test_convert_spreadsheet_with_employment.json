@@ -50,6 +50,14 @@
       {
         "entity_uid": "U01"
       }
+    ],
+    "contacts": [
+      {
+        "type": "electronical_address",
+        "format": "email_address",
+        "value": "joe.dupond@univ-exemple.fr",
+        "subtype": "email"
+      }
     ]
   }
 }

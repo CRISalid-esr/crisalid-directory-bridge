@@ -54,6 +54,14 @@
       {
         "entity_uid": "U85"
       }
+    ],
+    "contacts": [
+      {
+        "type": "electronical_address",
+        "format": "email_address",
+        "value": "henry.gerald@univ-exemple.fr",
+        "subtype": "email"
+      }
     ]
   }
 }

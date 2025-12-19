@@ -24,12 +24,15 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'last_name': 'Dupond',
                         'main_research_structure': 'U01',
                         'tracking_id': 'jdupond',
-                        "eppn": 'jdupond@univ-exemple.fr',
+                        'eppn': 'jdupond@univ-exemple.fr',
                         'idhal_i': '',
                         'idhal_s': '',
                         'orcid': '0000-0000-0000-0001',
                         'idref': '12345678X',
                         'scopus_eid': '',
+                        'email': 'joe.dupond@univ-exemple.fr',
+                        'other_email': 'joe.dupond@cnrs.fr|joe.dupond@labex.org',
+                        'personal_email': 'joe.dupond@perso.fr|joedupond.alt@gmail.com',
                     }
                 ],
                 "bodies_position_dict": {}
@@ -52,6 +55,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'orcid': '',
                         'idref': '',
                         'scopus_eid': '',
+                        'email': '',
                     }
                 ],
                 "bodies_position_dict": {}
@@ -74,6 +78,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'orcid': '0000-0000-0000-0001',
                         'idref': '012345678X',
                         'scopus_eid': '5432345678X',
+                        'email': 'henry.gerald@univ-exemple.fr',
                     },
                     {
                         'first_names': 'Joe',
@@ -86,6 +91,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'orcid': '',
                         'idref': '',
                         'scopus_eid': '',
+                        'email': 'joe.dupond@univ-exemple.fr',
                     }
                 ],
                 "bodies_position_dict": {}
@@ -101,12 +107,13 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'last_name': 'Gerald',
                         'main_research_structure': 'U85',
                         'tracking_id': 'hgerald',
-                        "eppn": 'hgerald@univ-exemple.fr',
+                        'eppn': 'hgerald@univ-exemple.fr',
                         'idhal_i': '054235',
                         'idhal_s': 'henry-gerald',
                         'orcid': '0000-0000-0000-0001',
                         'idref': '012345678X',
                         'scopus_eid': '5432345678X',
+                        'email': 'henry.gerald@univ-exemple.fr',
                     }
                 ],
                 "bodies_position_dict": {}
@@ -123,12 +130,13 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'last_name': 'Dupond',
                         'main_research_structure': '',
                         'tracking_id': 'jdupond',
-                        "eppn": 'jdupond@univ-exemple.fr',
+                        'eppn': 'jdupond@univ-exemple.fr',
                         'idhal_i': '',
                         'idhal_s': '',
                         'orcid': '0000-0000-0000-0001',
                         'idref': '12345678X',
                         'scopus_eid': '',
+                        'email': 'joe.dupond@univ-exemple.fr',
                     }
                 ],
                 "bodies_position_dict": {}
@@ -145,7 +153,7 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'last_name': 'Dupond',
                         'main_research_structure': 'U01',
                         'tracking_id': 'jdupond',
-                        "eppn": 'jdupond@univ-exemple.fr',
+                        'eppn': 'jdupond@univ-exemple.fr',
                         'idhal_i': '',
                         'idhal_s': '',
                         'orcid': '0000-0000-0000-0001',
@@ -155,7 +163,8 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                         'institution_id_nomenclature': 'UAI',
                         'position': 'MCF',
                         'employment_start_date': '2010-04-18',
-                        'employment_end_date': '2021-06-20'
+                        'employment_end_date': '2021-06-20',
+                        'email': 'joe.dupond@univ-exemple.fr',
                     }
                 ],
                 "bodies_position_dict": {
@@ -165,6 +174,30 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
             },
             "./tests/data/test_convert_spreadsheet_with_employment.json"
     ),
+    (
+            {
+                "task_name": TESTED_TASK_NAME,
+                "param_names": ["raw_results", "bodies_position_dict"],
+                "raw_results": [
+                    {
+                        'first_names': 'Joe',
+                        'last_name': 'Dupond',
+                        'main_research_structure': 'U01',
+                        'tracking_id': 'jdupond',
+                        'eppn': '',
+                        'idhal_i': '',
+                        'idhal_s': '',
+                        'orcid': '',
+                        'idref': '',
+                        'scopus_eid': '',
+                        'email': '',
+                        'personal_email': 'joe.dupond@perso.fr|joedupond.alt@gmail.com',
+                    }
+                ],
+                "bodies_position_dict": {}
+            },
+            "./tests/data/test_convert_spreadsheet_people_with_empty_email.json"
+    )
 ],
                          indirect=["dag"],
                          ids=[
@@ -173,7 +206,8 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                              "test_convert_spreadsheet_with_two_people",
                              "test_convert_spreadsheet_with_two_first_names",
                              "test_convert_spreadsheet_with_empty_laboratory",
-                             "test_convert_spreadsheet_with_employment"
+                             "test_convert_spreadsheet_with_employment",
+                             "test_convert_spreadsheet_people_with_empty_email"
                          ]
                          )
 def test_convert_spreadsheet_people(dag, expected_result_path, unique_logical_date):

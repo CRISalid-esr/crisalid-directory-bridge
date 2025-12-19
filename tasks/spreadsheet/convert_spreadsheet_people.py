@@ -2,6 +2,7 @@ import logging
 
 from airflow.decorators import task
 
+from email_validator import validate_email, EmailNotValidError
 from utils.dates import is_valid_iso_date
 
 logger = logging.getLogger(__name__)
@@ -200,11 +201,115 @@ def _build_employment(entry: dict[str, str],
     return employment
 
 
+def email_is_valid(email: str) -> bool:
+    """
+    Simple email validation function.
+
+    Args:
+        email (str): The email address to validate.
+
+    Returns:
+        bool: True if the email is valid, False otherwise.
+    """
+    try:
+        validate_email(email, check_deliverability=False)
+        return True
+    except EmailNotValidError:
+        return False
+
+
+def validate_email_address(person_id: str, raw_email: str | None) -> str | None:
+    """
+    Validate an email address and log a warning if invalid.
+
+    Args:
+        raw_email (str): The email address to validate.
+        person_id (str): Identifier of the person.
+
+    Returns:
+        str: The valid email address or an empty string if invalid.
+    """
+    email = (raw_email or '').strip()
+
+    if not email:
+        return None
+
+    if email_is_valid(email):
+        return email
+
+    logger.warning("Invalid email '%s' for person %s", email, person_id)
+    return None
+
+
+def _extract_multi_emails(person_id: str, raw_emails: str | None) -> list[str]:
+    """Extract multiple emails from a pipe-separated string."""
+    emails = []
+    for single_email in (raw_emails or '').split('|'):
+        validated_email = validate_email_address(person_id, single_email)
+        if validated_email:
+            emails.append(validated_email)
+    return emails
+
+
+def extract_email_contact(
+        entry: dict[str, str],
+        person_id: str
+) -> dict[str, str | None | list[str]]:
+    """
+    Extract and validate contact and personal emails.
+    """
+    if not (entry.get('email') or '').strip():
+        logger.warning("Missing email for person %s", person_id)
+
+    return {
+        "email": validate_email_address(person_id, entry.get('email')),
+        "other_email": _extract_multi_emails(person_id, entry.get('other_email')),
+        "personal_email": _extract_multi_emails(person_id, entry.get('personal_email')),
+    }
+
+
+def _build_contacts(
+        entry: dict[str, str],
+        person_id: str
+) -> list[dict[str, str | dict]]:
+    emails_validated = extract_email_contact(entry, person_id)
+
+    contacts = []
+
+    contacts.append({
+        'type': 'electronical_address',
+        'format': 'email_address',
+        'value': emails_validated.get('email'),
+        'subtype': 'email',
+    })
+
+    for email_type in ['other_email', 'personal_email']:
+        for email_value in emails_validated.get(email_type, []):
+            contacts.append({
+                'type': 'electronical_address',
+                'format': 'email_address',
+                'value': email_value,
+                'subtype': email_type,
+            })
+
+    return contacts
+
+
 @task(task_id="convert_spreadsheet_people")
 def convert_spreadsheet_people(
         source_data: list[dict[str, str]],
         config: dict[str, str]
-) -> dict[str, dict[str, str | dict]]:
+) -> dict[str, dict[
+    str,
+    list[
+        dict[str,
+        list[dict[str, str]]  # names: last_names / first_names
+        ]
+    ]
+    | list[dict[str, str]]  # identifiers / memberships
+    | list[dict[str, str | dict[str, str]]]  # contacts
+    | list[dict[str, str | list[str] | None]]  # employments
+]]:
     """
     Convert raw spreadsheet rows into structured person records.
 
@@ -228,6 +333,8 @@ def convert_spreadsheet_people(
             if not entry.get(field):
                 raise ValueError(f"Missing required field '{field}' in row: {entry}")
 
+        person_id = entry[LOCAL_PERSON_IDENTIFIER]
+
         non_empty_identifiers = extract_identifiers(entry)
         if not non_empty_identifiers:
             logger.warning("No identifiers for row: %s", entry)
@@ -246,6 +353,7 @@ def convert_spreadsheet_people(
             ],
             'identifiers': non_empty_identifiers,
             'memberships': [{'entity_uid': entity_uid}] if entity_uid else [],
+            'contacts': _build_contacts(entry, person_id),
         }
 
         employment = _build_employment(entry, config)

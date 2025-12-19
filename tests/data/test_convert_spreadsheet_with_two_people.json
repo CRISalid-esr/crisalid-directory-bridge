@@ -21,7 +21,7 @@
         "type": "local",
         "value": "hgerald"
       },
-       {
+      {
         "type": "eppn",
         "value": "hgerald@univ-exemple.fr"
       },
@@ -49,6 +49,14 @@
     "memberships": [
       {
         "entity_uid": "U85"
+      }
+    ],
+    "contacts": [
+      {
+        "type": "electronical_address",
+        "format": "email_address",
+        "value": "henry.gerald@univ-exemple.fr",
+        "subtype": "email"
       }
     ]
   },
@@ -78,6 +86,14 @@
     "memberships": [
       {
         "entity_uid": "U01"
+      }
+    ],
+    "contacts": [
+      {
+        "type": "electronical_address",
+        "format": "email_address",
+        "value": "joe.dupond@univ-exemple.fr",
+        "subtype": "email"
       }
     ]
   }

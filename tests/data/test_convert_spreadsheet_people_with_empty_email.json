@@ -20,27 +20,31 @@
       {
         "type": "local",
         "value": "jdupond"
-      },
-      {
-        "type": "eppn",
-        "value": "jdupond@univ-exemple.fr"
-      },
-      {
-        "type": "orcid",
-        "value": "0000-0000-0000-0001"
-      },
-      {
-        "type": "idref",
-        "value": "12345678X"
       }
     ],
-    "memberships": [],
+    "memberships": [
+      {
+        "entity_uid": "U01"
+      }
+    ],
     "contacts": [
       {
         "type": "electronical_address",
         "format": "email_address",
-        "value": "joe.dupond@univ-exemple.fr",
+        "value": null,
         "subtype": "email"
+      },
+      {
+        "type": "electronical_address",
+        "format": "email_address",
+        "value": "joe.dupond@perso.fr",
+        "subtype": "personal_email"
+      },
+      {
+        "type": "electronical_address",
+        "format": "email_address",
+        "value": "joedupond.alt@gmail.com",
+        "subtype": "personal_email"
       }
     ]
   }

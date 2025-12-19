@@ -38,6 +38,38 @@
       {
         "entity_uid": "U01"
       }
+    ],
+    "contacts": [
+      {
+        "type": "electronical_address",
+        "format": "email_address",
+        "value": "joe.dupond@univ-exemple.fr",
+        "subtype": "email"
+      },
+      {
+        "type": "electronical_address",
+        "format": "email_address",
+        "value": "joe.dupond@cnrs.fr",
+        "subtype": "other_email"
+      },
+      {
+        "type": "electronical_address",
+        "format": "email_address",
+        "value": "joe.dupond@labex.org",
+        "subtype": "other_email"
+      },
+      {
+        "type": "electronical_address",
+        "format": "email_address",
+        "value": "joe.dupond@perso.fr",
+        "subtype": "personal_email"
+      },
+      {
+        "type": "electronical_address",
+        "format": "email_address",
+        "value": "joedupond.alt@gmail.com",
+        "subtype": "personal_email"
+      }
     ]
   }
 }

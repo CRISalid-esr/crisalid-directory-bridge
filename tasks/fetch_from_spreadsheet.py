@@ -36,7 +36,10 @@ FETCH_PARAMETERS = {
             "institution_id_nomenclature",
             "position",
             "employment_start_date",
-            "employment_end_date"
+            "employment_end_date",
+            "email",
+            "other_email",
+            "personal_email"
         ]
     },
     "spreadsheet_structures": {
