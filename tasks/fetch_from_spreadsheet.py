@@ -8,11 +8,11 @@ FETCH_PARAMETERS = {
         "path": "PEOPLE_SPREADSHEET_PATH",
         "columns": [
             "local",
-            "id_hal_i",
-            "id_hal_s",
+            "idhali",
+            "idhals",
             "orcid",
             "idref",
-            "scopus_eid",
+            "scopus",
         ]
     },
     "ldap_structures": {
@@ -27,11 +27,11 @@ FETCH_PARAMETERS = {
             "main_research_structure",
             "tracking_id",
             "eppn",
-            "idhal_i",
-            "idhal_s",
+            "idhali",
+            "idhals",
             "orcid",
             "idref",
-            "scopus_eid",
+            "scopus",
             "institution_identifier",
             "institution_id_nomenclature",
             "position",
@@ -51,7 +51,7 @@ FETCH_PARAMETERS = {
             "city_name",
             "city_code",
             "city_adress",
-            "scopus_id",
+            "scopus",
             "hal_collection",
             "web"
         ]
