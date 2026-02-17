@@ -30,7 +30,7 @@ def _create_employment(
             "title": position[1],
             "code": position[0]
         },
-        "entity_uid": f"UAI-{entity_id}",
+        "entity_uid": f"uai-{entity_id}",
     }
     return employment
 

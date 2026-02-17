@@ -182,11 +182,14 @@ def _build_employment(entry: dict[str, str],
             f"Invalid institution_id_nomenclature '{institution_id_nomenclature}' "
             f"for person {person_id}. Must be 'UAI' or 'ROR'.")
 
+    # TODO use institution_id_nomenclature to determine the correct prefix
+    # (e.g., "uai-" or "ror-") when building the entity_uid
+
     dates = extract_employment_dates(entry, person_id)
     position = extract_employment_position(entry, bodies_labels_dict, person_id)
 
     employment: dict[str, str | dict] = {
-        "entity_uid": f"UAI-{institution_id}",
+        "entity_uid": f"uai-{institution_id}",
         "hdr": extract_employment_hdr(entry, person_id)
     }
 
