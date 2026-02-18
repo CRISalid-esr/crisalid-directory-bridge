@@ -26,11 +26,11 @@
         "value": "hgerald@univ-exemple.fr"
       },
       {
-        "type": "id_hal_i",
+        "type": "idhali",
         "value": "054235"
       },
       {
-        "type": "id_hal_s",
+        "type": "idhals",
         "value": "henry-gerald"
       },
       {
@@ -42,7 +42,7 @@
         "value": "012345678X"
       },
       {
-        "type": "scopus_eid",
+        "type": "scopus",
         "value": "5432345678X"
       }
     ],

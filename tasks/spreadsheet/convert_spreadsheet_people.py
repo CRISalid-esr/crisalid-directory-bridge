@@ -11,17 +11,17 @@ LOCAL_PERSON_IDENTIFIER = 'tracking_id'
 PERSON_IDENTIFIERS = [
     LOCAL_PERSON_IDENTIFIER,
     'eppn',
-    'idhal_i',
-    'idhal_s',
+    'idhali',
+    'idhals',
     'orcid',
     'idref',
-    'scopus_eid'
+    'scopus'
 ]
 
 IDENTIFIER_TYPE_MAP = {
     'tracking_id': 'local',
-    'idhal_i': 'id_hal_i',
-    'idhal_s': 'id_hal_s',
+    'idhali': 'idhali',
+    'idhals': 'idhals',
 }
 
 

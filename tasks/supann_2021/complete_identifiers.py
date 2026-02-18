@@ -4,7 +4,7 @@ from airflow.decorators import task
 
 from utils.list import deduplicate_dict_list
 
-COMPLETING_IDENTIFIERS = ['id_hal_i', 'id_hal_s', 'orcid', 'idref', 'scopus_eid']
+COMPLETING_IDENTIFIERS = ['idhali', 'idhals', 'orcid', 'idref', 'scopus']
 
 logger = logging.getLogger(__name__)
 
