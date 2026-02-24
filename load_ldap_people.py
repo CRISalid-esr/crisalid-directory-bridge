@@ -1,9 +1,8 @@
 import logging
 
 import pendulum
-from airflow.sdk import dag
+from airflow.sdk import dag, TaskGroup
 from airflow.providers.standard.operators.trigger_dagrun import TriggerDagRunOperator
-from airflow.utils.task_group import TaskGroup
 
 from tasks.combine_batch_results import combine_batch_results
 from tasks.database import update_database, create_redis_connection
