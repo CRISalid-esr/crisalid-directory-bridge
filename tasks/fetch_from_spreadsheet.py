@@ -1,4 +1,4 @@
-from airflow.decorators import task
+from airflow.sdk import task
 
 from utils.config import get_env_variable
 from utils.spreadsheet import read_spreadsheet

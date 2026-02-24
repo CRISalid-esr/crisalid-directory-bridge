@@ -1,7 +1,7 @@
 import logging
 from collections import defaultdict
 
-from airflow.decorators import task
+from airflow.sdk import task
 
 logger = logging.getLogger(__name__)
 

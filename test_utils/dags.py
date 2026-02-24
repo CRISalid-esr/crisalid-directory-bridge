@@ -1,11 +1,22 @@
 import datetime
+from typing import Any
 
 import pendulum
 from airflow import DAG
-from airflow.models import DagRun, TaskInstance
+from airflow.models import DagRun, DagModel
+from airflow.models import TaskInstance
+from airflow.models.dag_version import DagVersion
+from airflow.models.dagbundle import DagBundleModel
+from airflow.models.serialized_dag import SerializedDagModel
+from airflow.serialization.serialized_objects import LazyDeserializedDAG
+from airflow.timetables.base import DataInterval
+from airflow.utils.session import provide_session
 from airflow.utils.state import DagRunState
 from airflow.utils.types import DagRunType, DagRunTriggeredByType
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
+BUNDLE_NAME = "tests"
 TEST_DAG_ID = "fixture_dag_id"
 DATA_INTERVAL_START = pendulum.datetime(2024, 1, 1, tz="UTC")
 DATA_INTERVAL_END = DATA_INTERVAL_START + datetime.timedelta(days=1)
@@ -26,37 +37,96 @@ def assert_dag_dict_equal(structure: dict, dag: DAG) -> None:
         assert task.downstream_task_ids == set(downstream_list)
 
 
-def create_dag_run(dag: DAG, data_interval_start: datetime, data_interval_end: datetime,
-                   logical_date: datetime) -> DagRun:
-    """
-    Create a DAG run for the given DAG
-    :param dag: The DAG object
-    :param data_interval_start: datetime object representing the start of the data interval
-    :param data_interval_end: datetime object representing the end of the data interval
-    :return: The created DAG run
-    """
-    dag_run = dag.create_dagrun(
-        state=DagRunState.RUNNING,
-        logical_date=logical_date,
-        run_id=f"manual__{logical_date.isoformat()}",
-        data_interval=(data_interval_start, data_interval_end),
-        start_date=data_interval_end,
+@provide_session
+def create_dag_run(
+        dag,
+        data_interval_start,
+        data_interval_end,
+        logical_date,
+        *,
+        run_id: str | None = None,
+        conf: Any | None = None,
+        state: DagRunState = DagRunState.RUNNING,
+        session: Session,
+) -> DagRun:
+    if run_id is None:
+        run_id = f"manual__{logical_date.isoformat()}"
+
+    # Ensure DagBundle exists
+    bundle = session.scalar(select(DagBundleModel).where(DagBundleModel.name == BUNDLE_NAME))
+    if bundle is None:
+        bundle = DagBundleModel(
+            name=BUNDLE_NAME,
+        )
+        session.add(bundle)
+        session.flush()
+
+    # Ensure DagModel exists
+    dm = session.scalar(select(DagModel).where(DagModel.dag_id == dag.dag_id))
+    if dm is None:
+        dm = DagModel(dag_id=dag.dag_id, bundle_name=BUNDLE_NAME)
+        dm.is_active = True
+        dm.is_paused = False
+        session.add(dm)
+        session.flush()
+    elif dm.bundle_name != BUNDLE_NAME:
+        dm.bundle_name = BUNDLE_NAME
+        session.flush()
+
+    # Serialize DAG to DB
+    lazy = LazyDeserializedDAG.from_dag(dag)
+    SerializedDagModel.write_dag(dag=lazy, bundle_name=BUNDLE_NAME, session=session)
+    session.flush()
+
+    # Get latest dag version
+    dag_version = DagVersion.get_latest_version(dag.dag_id, session=session)
+    if not dag_version:
+        raise RuntimeError(f"No DagVersion found for {dag.dag_id} after serialization")
+
+    # Create DagRun
+    dr = DagRun(
+        dag_id=dag.dag_id,
+        run_id=run_id,
         run_type=DagRunType.MANUAL,
-        run_after=datetime.datetime.now(tz=pendulum.UTC),
-        triggered_by=DagRunTriggeredByType.TEST
+        triggered_by=DagRunTriggeredByType.TEST,
+        logical_date=logical_date,
+        data_interval=DataInterval(start=data_interval_start, end=data_interval_end),
+        start_date=data_interval_end,
+        run_after=pendulum.now("UTC"),
+        state=state,
+        conf=conf or {},
+        bundle_version=dag_version.bundle_version,
     )
-    return dag_run
+    session.add(dr)
+    session.flush()
+    return dr
 
 
-def create_task_instance(dag: DAG, dag_run: DagRun, task_id: str) -> TaskInstance:
+@provide_session
+def create_task_instance(
+        dag: DAG,
+        dag_run: DagRun,
+        task_id: str,
+        *,
+        session: Session,
+) -> TaskInstance:
     """
-    Create a task instance for the given task_id
-    :param dag: The DAG object
-    :param dag_run: The DAG run object
-    :param task_id: The task_id to create the task instance for
-    :return: The created task instance
+    Create (and persist) a TaskInstance for task_id for the given dag_run.
     """
-    ti = dag_run.get_task_instance(task_id=task_id)
-    ti.task = dag.get_task(task_id=task_id)
-    ti.run(ignore_ti_state=True)
+
+    task = dag.get_task(task_id=task_id)
+    serialized = SerializedDagModel.get(dag.dag_id)
+    if not serialized:
+        raise RuntimeError(f"No SerializedDagModel found for {dag.dag_id}")
+
+    ti = TaskInstance(
+        task=task,
+        run_id=dag_run.run_id,
+        dag_version_id=serialized.dag_version_id
+    )
+
+    # Persist so ti.run() can find it cleanly
+    session.add(ti)
+    session.flush()
+
     return ti

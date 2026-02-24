@@ -1,7 +1,7 @@
 import json
 import logging
 
-from airflow.decorators import task
+from airflow.sdk import task
 from airflow.models import Connection
 from pendulum import DateTime
 

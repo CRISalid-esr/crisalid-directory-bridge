@@ -1,6 +1,6 @@
 import re
 
-from airflow.decorators import task
+from airflow.sdk import task
 
 
 @task(task_id="convert_ldap_structure_acronyms")

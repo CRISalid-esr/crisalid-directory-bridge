@@ -1,5 +1,5 @@
 import logging
-from airflow.decorators import task
+from airflow.sdk import task
 from utils.url_validators import is_valid_website_url
 
 logger = logging.getLogger(__name__)
