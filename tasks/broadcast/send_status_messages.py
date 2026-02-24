@@ -1,7 +1,7 @@
 import json
 import logging
 
-from airflow.decorators import task
+from airflow.sdk import task
 from pika.adapters.blocking_connection import BlockingChannel
 
 from utils.config import get_env_variable

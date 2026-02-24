@@ -1,5 +1,5 @@
 import logging
-from airflow.decorators import task
+from airflow.sdk import task
 from airflow.hooks.base import BaseHook
 from utils.rabbitmq import get_rabbitmq_conn_id
 

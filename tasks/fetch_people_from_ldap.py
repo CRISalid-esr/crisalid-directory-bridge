@@ -1,6 +1,6 @@
 import logging
 
-from airflow.decorators import task
+from airflow.sdk import task
 from ldap3 import SUBTREE
 from ldap3.core.exceptions import LDAPExceptionError
 

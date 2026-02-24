@@ -1,7 +1,7 @@
 import logging
 
 import pendulum
-from airflow.decorators import dag, task
+from airflow.sdk import dag, task
 
 from tasks.broadcast.send_status_messages import send_status_messages
 from tasks.compute_status import compute_entity_statuses

@@ -2,7 +2,7 @@ import logging
 
 import fsspec
 import yaml
-from airflow.decorators import task
+from airflow.sdk import task
 
 from utils.exceptions import ConfigurationError
 

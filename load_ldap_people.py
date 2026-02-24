@@ -1,7 +1,7 @@
 import logging
 
 import pendulum
-from airflow.decorators import dag
+from airflow.sdk import dag
 from airflow.providers.standard.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.utils.task_group import TaskGroup
 
