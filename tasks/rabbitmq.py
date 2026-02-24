@@ -1,9 +1,11 @@
 import logging
-from airflow.sdk import task
-from airflow.hooks.base import BaseHook
+
+from airflow.sdk import task, BaseHook
+
 from utils.rabbitmq import get_rabbitmq_conn_id
 
 logger = logging.getLogger(__name__)
+
 
 @task
 def ensure_rabbitmq_connection() -> dict:
