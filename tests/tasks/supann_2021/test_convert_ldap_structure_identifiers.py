@@ -73,7 +73,7 @@ def test_missing_supann_code_entite(dag, unique_logical_date):
     :return:
     """
     dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
-    ti = dag_run.get_task_instance(task_id=TEST_TASK_ID)
-    ti.task = dag.get_task(task_id=TEST_TASK_ID)
+    ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
+
     with pytest.raises(AssertionError, match="missing supannCodeEntite"):
         ti.run(ignore_ti_state=True)
