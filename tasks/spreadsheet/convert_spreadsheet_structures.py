@@ -66,7 +66,7 @@ def _parse_relationships(inclusions_str, participations_str):
 
 
 @task(task_id="convert_spreadsheet_structures")
-def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> list[dict[str, str | dict]]:
+def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[str, dict[str, str | dict]]:
     """
     Convert spreadsheet structure data to ESUP-Portail v2 format
 
@@ -74,10 +74,10 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> list[di
         source_data (list): List of structure records from CSV
 
     Returns:
-        list: A list of converted results with ESUP-Portail v2 format
+        dict: A dict of converted results with the local_id as key and ESUP-Portail v2 format as value
     """
 
-    task_results = []
+    task_results = {}
 
     for row in source_data:
         local_id = row.get(LOCAL_STRUCTURE_IDENTIFIER) or row.get('tracking_id')
@@ -160,7 +160,7 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> list[di
         if row.get('local_types'):
             local_types = [t.strip() for t in str(row['local_types']).split('|') if t.strip()]
 
-        task_results.append({
+        task_results[local_id] = {
             'generic_type': row.get('generic_type', 'unit'),
             'type': row.get('type') or None,
             'local_types': local_types,
@@ -172,17 +172,7 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> list[di
             'identifiers': non_empty_identifiers,
             'relationships': relationships,
             'contacts': contacts
-        })
+        }
 
-    # Convert list to dict with local_id as key
-    result_dict = {}
-    for structure in task_results:
-        local_id = next(
-            (i['value'] for i in structure.get('identifiers', []) if i.get('type') == 'local'),
-            None
-        )
-        if local_id:
-            result_dict[local_id] = structure
-
-    return result_dict
+    return task_results
 
