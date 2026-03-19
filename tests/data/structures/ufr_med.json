@@ -1,0 +1,40 @@
+{
+  "structures_event": {
+    "type": "created",
+    "data": {
+      "generic_type": "institution_subdivision",
+      "type": "UFR",
+      "local_types": [],
+      "main_mission": "research",
+      "secondary_missions": ["teaching"],
+      "long_labels": [
+        {
+          "value": "UFR de Médecine",
+          "language": "fr"
+        }
+      ],
+      "short_labels": [
+        {
+          "value": "UFR Médecine",
+          "language": "fr"
+        }
+      ],
+      "descriptions": [
+        {
+          "value": "Unité de Formation et de Recherche en Médecine",
+          "language": "fr"
+        }
+      ],
+      "identifiers": [
+        {"type": "local", "value": "UFR_MED"}
+      ],
+      "relationships": [
+        {
+          "type": "member_of",
+          "target": "FAC_SCI"
+        }
+      ],
+      "contacts": []
+    }
+  }
+}

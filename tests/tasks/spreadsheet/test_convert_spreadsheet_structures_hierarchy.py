@@ -13,12 +13,11 @@ TEST_TASK_ID = "convert_spreadsheet_structures"
 TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spreadsheet_structures'
 
 
-@pytest.mark.parametrize("dag, expected_result_path", [
-    (
-            {
-                "task_name": TESTED_TASK_NAME,
-                "param_names": ["raw_results"],
-                "raw_results": [
+@pytest.mark.parametrize("dag", [
+    {
+        "task_name": TESTED_TASK_NAME,
+        "param_names": ["raw_results"],
+        "raw_results": [
                     {
                         'generic_type': 'institution',
                         'type': None,
@@ -270,13 +269,11 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_structures.convert_spr
                         'local_types': ''
                     }
                 ]
-            },
-            "./tests/data/test_convert_sorbonne_universite_structures.json"
-    )
+            }
 ], indirect=['dag'])
-def test_convert_spreadsheet_structures(dag, expected_result_path, unique_logical_date) -> None:
+def test_convert_spreadsheet_structures(dag, unique_logical_date) -> None:
     """
-    Test that the csv data are converted to the expected format with Sorbonne hierarchy
+    Test that the csv data are converted to the expected format with complete hierarchy
     """
     dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
@@ -285,17 +282,18 @@ def test_convert_spreadsheet_structures(dag, expected_result_path, unique_logica
     assert ti.state == TaskInstanceState.SUCCESS
     result = ti.xcom_pull(task_ids=TEST_TASK_ID)
 
-    with open(expected_result_path, 'r', encoding='utf-8') as f:
-        expected = json.load(f)
-
     # Result should be a dict with 10 structures (keyed by local_id)
     assert len(result) == 10
     
-    # Extract the expected data structures from the fixture
-    expected_data_list = [item['data'] for item in expected['structures_event']]
+    # Load expected data from individual structure files
+    structure_ids = ['su', 'inserm', 'fac_sci', 'ufr_med', 'casu', 'summit', 'plat_xyz', 'abc_unit', 'patho_unit', 'equipe_patho']
+    expected_structures = {}
     
-    # Convert result dict to list of values for comparison
-    result_list = list(result.values())
+    for structure_id in structure_ids:
+        file_path = f"./tests/data/structures/{structure_id}.json"
+        with open(file_path, 'r', encoding='utf-8') as f:
+            structure_event = json.load(f)
+            expected_structures[structure_id.upper()] = structure_event['structures_event']['data']
     
     # Compare each structure
-    assert result_list == expected_data_list
+    assert result == expected_structures

@@ -1,0 +1,55 @@
+{
+  "structures_event": {
+    "type": "created",
+    "data": {
+      "generic_type": "unit",
+      "type": "UMR",
+      "local_types": [],
+      "main_mission": "research",
+      "secondary_missions": [],
+      "long_labels": [
+        {
+          "value": "Pathologie",
+          "language": "fr"
+        }
+      ],
+      "short_labels": [
+        {
+          "value": "Pathologie",
+          "language": "fr"
+        }
+      ],
+      "descriptions": [
+        {
+          "value": "Unité de Recherche en Pathologie - UMR/INSERM/CNRS",
+          "language": "fr"
+        }
+      ],
+      "identifiers": [
+        {"type": "local", "value": "PATHO_UNIT"},
+        {"type": "nns", "value": "000123456"}
+      ],
+      "relationships": [
+        {
+          "type": "member_of",
+          "target": "PLAT_XYZ"
+        },
+        {
+          "type": "member_of",
+          "target": "UFR_MED"
+        },
+        {
+          "type": "member_of",
+          "subtype": "main_supervision",
+          "target": "SU"
+        },
+        {
+          "type": "member_of",
+          "subtype": "associated_supervision",
+          "target": "INSERM"
+        }
+      ],
+      "contacts": []
+    }
+  }
+}

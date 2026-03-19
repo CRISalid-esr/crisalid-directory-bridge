@@ -1,0 +1,40 @@
+{
+  "structures_event": {
+    "type": "created",
+    "data": {
+      "generic_type": "team",
+      "type": "TEAM",
+      "local_types": [],
+      "main_mission": "research",
+      "secondary_missions": [],
+      "long_labels": [
+        {
+          "value": "Équipe de Pathologie",
+          "language": "fr"
+        }
+      ],
+      "short_labels": [
+        {
+          "value": "Équipe Pathologie",
+          "language": "fr"
+        }
+      ],
+      "descriptions": [
+        {
+          "value": "Équipe de recherche en pathologie",
+          "language": "fr"
+        }
+      ],
+      "identifiers": [
+        {"type": "local", "value": "EQUIPE_PATHO"}
+      ],
+      "relationships": [
+        {
+          "type": "member_of",
+          "target": "PATHO_UNIT"
+        }
+      ],
+      "contacts": []
+    }
+  }
+}
