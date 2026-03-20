@@ -45,7 +45,7 @@ def _parse_relationships(inclusions_str, participations_str):
             inc = inc.strip()
             if inc:
                 relationships.append({
-                    'type': 'member_of',
+                    'type': 'is_part_of',
                     'target': re.sub(r'\[.*?\]', '', inc).strip()
                 })
     

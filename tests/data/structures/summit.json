@@ -30,7 +30,7 @@
       ],
       "relationships": [
         {
-          "type": "member_of",
+          "type": "is_part_of",
           "target": "CASU"
         }
       ],

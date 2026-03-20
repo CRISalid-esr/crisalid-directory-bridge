@@ -31,11 +31,11 @@
       ],
       "relationships": [
         {
-          "type": "member_of",
+          "type": "is_part_of",
           "target": "PLAT_XYZ"
         },
         {
-          "type": "member_of",
+          "type": "is_part_of",
           "target": "UFR_MED"
         },
         {
