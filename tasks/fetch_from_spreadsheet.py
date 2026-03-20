@@ -44,6 +44,9 @@ FETCH_PARAMETERS = {
         "columns": [
             "generic_type",
             "type",
+            "local_types",
+            "main_mission",
+            "secondary_missions",
             "local_id",
             "short_labels",
             "long_labels",
@@ -61,10 +64,7 @@ FETCH_PARAMETERS = {
             "hal_collection",
             "web",
             "signature",
-            "campus",
-            "main_mission",
-            "secondary_missions",
-            "local_types"
+            "campus"
         ]
     }
 }

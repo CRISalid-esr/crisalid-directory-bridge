@@ -1,11 +1,11 @@
-generic_type,type,local_id,short_labels,long_labels,descriptions,inclusions,participations,uai,nns,ror,isni,wikidata,scopus,erc_research_field,hceres_research_areas,hal_collection,web,signature,campus,main_mission,secondary_missions,local_types
-institution,,SU,Sorbonne Université[fr],Sorbonne Université[fr],Sorbonne Université est une université française multidisciplinaire[fr],,,,0750973U,130023385,02en5vm52,,,,,,,https://www.sorbonne-universite.fr/,Sorbonne Université,,research,teaching|scientific_services,
-institution,,INSERM,INSERM[fr],INSERM[fr],Institut National de la Santé et de la Recherche Médicale[fr],,,,,,00z0af360,,,,,,,https://www.inserm.fr/,INSERM,,research,scientific_services,
-institution_subdivision,FAC,FAC_SCI,Fac Sciences[fr],Faculté des Sciences[fr],Faculté des Sciences de Sorbonne Université[fr],SU[],,,,,,,,,,,,,,research,teaching,
-institution_subdivision,UFR,UFR_MED,UFR Médecine[fr],UFR de Médecine[fr],Unité de Formation et de Recherche en Médecine[fr],FAC_SCI[],,,,,,,,,,,,,,research,teaching,
-institution_subdivision,UFR,CASU,CASU[fr],Centre d'Anatomie et de Stérilité de l'Université[fr],Centre d'Anatomie et de Stérilité de l'Université - Sorbonne Université[fr],SU[],,,,,,,,,,,,,,research,,
-unit,USM,SUMMIT,SUMMIT[fr],SUMMIT[fr],Unité de Service et de Micro-technologie en Imagerie et Transformation[fr],CASU[],,,,,,,,,,,,,,research,,
-unit,PLATEFORME,PLAT_XYZ,Plat XYZ[fr],Plateforme XYZ[fr],Plateforme de recherche XYZ - Sorbonne Université[fr],UFR_MED[],,,,,,,,,,,,,,research,,plateforme
-unit,UMR,ABC_UNIT,ABC[fr],ABC Unit[fr],ABC Unit de recherche[fr],PLAT_XYZ[],,,,,,,,,,,,,,research,,
-unit,UMR,PATHO_UNIT,Pathologie[fr],Pathologie[fr],Unité de Recherche en Pathologie - UMR/INSERM/CNRS[fr],PLAT_XYZ[]|UFR_MED[],SU[main_supervision]|INSERM[associated_supervision],,000123456,,,,,,,,,research,,
-team,TEAM,EQUIPE_PATHO,Équipe Pathologie[fr],Équipe de Pathologie[fr],Équipe de recherche en pathologie[fr],PATHO_UNIT[],,,,,,,,,,,,,,research,,
+generic_type,type,local_types,main_mission,secondary_missions,local_id,short_labels,long_labels,descriptions,inclusions,participations,uai,nns,ror,isni,wikidata,scopus,erc_research_field,hceres_research_areas,hal_collection,web,signature,campus
+institution,,,,research,,SU,Sorbonne Université[fr],Sorbonne Université[fr],Sorbonne Université est une université française multidisciplinaire[fr],,,,0750973U,130023385,02en5vm52,,,,,,,https://www.sorbonne-universite.fr/,Sorbonne Université,,
+institution,,,,research,,INSERM,INSERM[fr],INSERM[fr],Institut National de la Santé et de la Recherche Médicale[fr],,,,,,00z0af360,,,,,,,https://www.inserm.fr/,INSERM,,
+institution_subdivision,FAC,,,research,teaching,FAC_SCI,Fac Sciences[fr],Faculté des Sciences[fr],Faculté des Sciences de Sorbonne Université[fr],SU[],,,,,,,,,,,,,,
+institution_subdivision,UFR,,,research,teaching,UFR_MED,UFR Médecine[fr],UFR de Médecine[fr],Unité de Formation et de Recherche en Médecine[fr],FAC_SCI[],,,,,,,,,,,,,,
+institution_subdivision,UFR,,,research,,CASU,CASU[fr],Centre d'Anatomie et de Stérilité de l'Université[fr],Centre d'Anatomie et de Stérilité de l'Université - Sorbonne Université[fr],SU[],,,,,,,,,,,,,,
+unit,USM,,research,,SUMMIT,SUMMIT[fr],SUMMIT[fr],Unité de Service et de Micro-technologie en Imagerie et Transformation[fr],CASU[],,,,,,,,,,,,,,
+unit,PLATEFORME,plateforme,research,,PLAT_XYZ,Plat XYZ[fr],Plateforme XYZ[fr],Plateforme de recherche XYZ - Sorbonne Université[fr],UFR_MED[],,,,,,,,,,,,,,
+unit,UMR,,research,,ABC_UNIT,ABC[fr],ABC Unit[fr],ABC Unit de recherche[fr],PLAT_XYZ[],,,,,,,,,,,,,,
+unit,UMR,,research,,PATHO_UNIT,Pathologie[fr],Pathologie[fr],Unité de Recherche en Pathologie - UMR/INSERM/CNRS[fr],PLAT_XYZ[]|UFR_MED[],SU[main_supervision]|INSERM[associated_supervision],,000123456,,,,,,,,,
+team,TEAM,,research,,EQUIPE_PATHO,Équipe Pathologie[fr],Équipe de Pathologie[fr],Équipe de recherche en pathologie[fr],PATHO_UNIT[],,,,,,,,,,,,,,
