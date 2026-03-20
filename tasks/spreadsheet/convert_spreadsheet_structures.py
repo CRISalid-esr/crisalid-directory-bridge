@@ -35,6 +35,45 @@ def _extract_label_language(label_str):
     return match.group(1) if match else 'fr'
 
 
+def _parse_identifier_value(identifier_str):
+    """
+    Parse identifier value with optional dates.
+    
+    Formats supported:
+    - ID[startDate-endDate] -> returns {value: 'ID', start_date: 'startDate', end_date: 'endDate'}
+    - ID[position][startDate-endDate] -> returns {value: 'ID', position: 'position', start_date: 'startDate', end_date: 'endDate'}
+    - ID -> returns {value: 'ID'}
+    
+    Example:
+    - "E6[20190902-20251231]" -> {value: 'E6', start_date: '20190902', end_date: '20251231'}
+    - "E42[20260101-]" -> {value: 'E42', start_date: '20260101', end_date: None}
+    - "PATHO[1][20190902-20251231]" -> {value: 'PATHO', position: '1', start_date: '20190902', end_date: '20251231'}
+    """
+    identifier_str = identifier_str.strip()
+    result = {}
+    
+    # Try to match pattern with position and dates: ID[position][startDate-endDate]
+    match = re.match(r'^(\w+)\[(\d+)\]\[(\d+)(?:-(\d*))?\]$', identifier_str)
+    if match:
+        result['value'] = match.group(1)
+        result['position'] = match.group(2)
+        result['start_date'] = match.group(3)
+        result['end_date'] = match.group(4) if match.group(4) else None
+        return result
+    
+    # Try to match pattern with dates only: ID[startDate-endDate]
+    match = re.match(r'^(\w+)\[(\d+)(?:-(\d*))?\]$', identifier_str)
+    if match:
+        result['value'] = match.group(1)
+        result['start_date'] = match.group(2)
+        result['end_date'] = match.group(3) if match.group(3) else None
+        return result
+    
+    # Simple ID with no dates
+    result['value'] = identifier_str
+    return result
+
+
 def _parse_relationships(inclusions_str, participations_str):
     """Parse relationship strings into proper format"""
     relationships = []
@@ -117,14 +156,23 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[st
                     })
 
         # Build identifiers
-        non_empty_identifiers = [
-            {
-                'type': IDENTIFIER_TYPE_MAP.get(identifier, identifier),
-                'value': row[identifier]
-            }
-            for identifier in STRUCTURE_IDENTIFIERS if row.get(identifier)
-                                                       and str(row[identifier]).strip()
-        ]
+        non_empty_identifiers = []
+        for identifier in STRUCTURE_IDENTIFIERS:
+            if row.get(identifier) and str(row[identifier]).strip():
+                identifier_values = str(row[identifier]).split('|')
+                for val in identifier_values:
+                    parsed = _parse_identifier_value(val.strip())
+                    identifier_obj = {
+                        'type': IDENTIFIER_TYPE_MAP.get(identifier, identifier),
+                        'value': parsed['value']
+                    }
+                    if 'position' in parsed:
+                        identifier_obj['position'] = parsed['position']
+                    if 'start_date' in parsed:
+                        identifier_obj['start_date'] = parsed['start_date']
+                    if 'end_date' in parsed:
+                        identifier_obj['end_date'] = parsed['end_date']
+                    non_empty_identifiers.append(identifier_obj)
 
         # Build contacts
         contacts = []

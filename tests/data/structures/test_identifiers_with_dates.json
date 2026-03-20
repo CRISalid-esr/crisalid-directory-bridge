@@ -1,0 +1,45 @@
+{
+  "structures_event": {
+    "type": "created",
+    "data": {
+      "generic_type": "unit",
+      "type": "UMR",
+      "local_types": [],
+      "main_mission": "research",
+      "secondary_missions": [],
+      "long_labels": [
+        {
+          "value": "Unit with temporal identifiers",
+          "language": "fr"
+        }
+      ],
+      "short_labels": [
+        {
+          "value": "Temporal Unit",
+          "language": "fr"
+        }
+      ],
+      "descriptions": [],
+      "identifiers": [
+        {
+          "type": "local",
+          "value": "TEMPORAL_UNIT"
+        },
+        {
+          "type": "nns",
+          "value": "E6",
+          "start_date": "20190902",
+          "end_date": "20251231"
+        },
+        {
+          "type": "nns",
+          "value": "E42",
+          "start_date": "20260101",
+          "end_date": null
+        }
+      ],
+      "relationships": [],
+      "contacts": []
+    }
+  }
+}
