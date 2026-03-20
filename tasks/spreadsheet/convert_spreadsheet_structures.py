@@ -8,14 +8,15 @@ logger = logging.getLogger(__name__)
 
 LOCAL_STRUCTURE_IDENTIFIER = 'local_id'
 
-STRUCTURE_IDENTIFIERS = ['local_id', 'uai', 'nns', 'ror', 'isni', 'wikidata', 'scopus', 'erc_research_field', 'hceres_research_areas']
+STRUCTURE_IDENTIFIERS = ['local_id', 'uai', 'nns', 'ror', 'isni', 'wikidata', 'scopus']
 
 # Mapping of identifiers to their standardized type names
 IDENTIFIER_TYPE_MAP = {
-    'local_id': 'local',
-    'erc_research_field': 'erc',
-    'hceres_research_areas': 'hceres'
+    'local_id': 'local'
 }
+
+# Research classifications (not identifiers)
+STRUCTURE_RESEARCH_CLASSIFICATIONS = ['erc_research_field', 'hceres_research_areas']
 
 
 def _extract_label_value(label_str):
@@ -208,6 +209,14 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[st
         if row.get('local_types'):
             local_types = [t.strip() for t in str(row['local_types']).split('|') if t.strip()]
 
+        # Parse research classifications
+        research_classifications = {}
+        for classification_type in STRUCTURE_RESEARCH_CLASSIFICATIONS:
+            if row.get(classification_type):
+                values = [v.strip() for v in str(row[classification_type]).split('|') if v.strip()]
+                if values:
+                    research_classifications[classification_type] = values
+
         task_results[local_id] = {
             'generic_type': row.get('generic_type', 'unit'),
             'type': row.get('type') or None,
@@ -221,6 +230,10 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[st
             'relationships': relationships,
             'contacts': contacts
         }
+        
+        # Add research classifications if present
+        if research_classifications:
+            task_results[local_id]['research_classifications'] = research_classifications
 
     return task_results
 
