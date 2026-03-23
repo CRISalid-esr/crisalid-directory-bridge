@@ -38,69 +38,108 @@ def _extract_label_language(label_str):
 
 def _parse_identifier_value(identifier_str):
     """
-    Parse identifier value with optional dates.
+    Extract base identifier value, removing any date brackets.
     
-    Formats supported:
-    - ID[startDate-endDate] -> returns {value: 'ID', start_date: 'startDate', end_date: 'endDate'}
-    - ID[position][startDate-endDate] -> returns {value: 'ID', position: 'position', start_date: 'startDate', end_date: 'endDate'}
-    - ID -> returns {value: 'ID'}
+    Dates are not stored in identifiers; they belong to relationships.
     
-    Example:
-    - "E6[20190902-20251231]" -> {value: 'E6', start_date: '20190902', end_date: '20251231'}
-    - "E42[20260101-]" -> {value: 'E42', start_date: '20260101', end_date: None}
-    - "PATHO[1][20190902-20251231]" -> {value: 'PATHO', position: '1', start_date: '20190902', end_date: '20251231'}
+    Examples:
+    - "E6[20190902-20251231]" -> 'E6'
+    - "E42[20260101-]" -> 'E42'
+    - "PATHO[1][20190902-20251231]" -> 'PATHO'
+    - "SIMPLE_ID" -> 'SIMPLE_ID'
     """
     identifier_str = identifier_str.strip()
-    result = {}
+    
+    # Remove all brackets and their content to get just the base value
+    # Matches: ID[...][...] or ID[...]
+    match = re.match(r'^(\w+)', identifier_str)
+    return match.group(1) if match else identifier_str
+
+
+def _extract_dates_from_identifier(identifier_str):
+    """
+    Extract date range from identifier string.
+    
+    Formats:
+    - ID[startDate-endDate] -> {'start_date': 'startDate', 'end_date': 'endDate'}
+    - ID[position][startDate-endDate] -> {'start_date': 'startDate', 'end_date': 'endDate'}
+    - ID -> {}
+    
+    Returns: dict with start_date and/or end_date keys (or empty dict if no dates)
+    """
+    identifier_str = identifier_str.strip()
     
     # Try to match pattern with position and dates: ID[position][startDate-endDate]
     match = re.match(r'^(\w+)\[(\d+)\]\[(\d+)(?:-(\d*))?\]$', identifier_str)
     if match:
-        result['value'] = match.group(1)
-        result['position'] = match.group(2)
-        result['start_date'] = match.group(3)
-        result['end_date'] = match.group(4) if match.group(4) else None
-        return result
+        return {
+            'start_date': match.group(3),
+            'end_date': match.group(4) if match.group(4) else None
+        }
     
     # Try to match pattern with dates only: ID[startDate-endDate]
     match = re.match(r'^(\w+)\[(\d+)(?:-(\d*))?\]$', identifier_str)
     if match:
-        result['value'] = match.group(1)
-        result['start_date'] = match.group(2)
-        result['end_date'] = match.group(3) if match.group(3) else None
-        return result
+        return {
+            'start_date': match.group(2),
+            'end_date': match.group(3) if match.group(3) else None
+        }
     
-    # Simple ID with no dates
-    result['value'] = identifier_str
-    return result
+    # No dates found
+    return {}
 
 
 def _parse_relationships(inclusions_str, participations_str):
-    """Parse relationship strings into proper format"""
+    """
+    Parse relationship strings into proper format with dates on relationships.
+    
+    Formats:
+    - inclusions: "TARGET_ID[startDate-endDate]" or "TARGET_ID" (is_part_of)
+    - participations: "TARGET_ID[subtype]" or "TARGET_ID[subtype][startDate-endDate]" (member_of)
+    """
     relationships = []
     
-    # Parse inclusions: "ID1[]|ID2[role1]"
+    # Parse inclusions: is_part_of relationships
     if inclusions_str and inclusions_str.strip():
         for inc in inclusions_str.split('|'):
             inc = inc.strip()
             if inc:
-                relationships.append({
+                target = _parse_identifier_value(inc)
+                dates = _extract_dates_from_identifier(inc)
+                rel = {
                     'type': 'is_part_of',
-                    'target': re.sub(r'\[.*?\]', '', inc).strip()
-                })
+                    'target': target
+                }
+                rel.update(dates)  # Add start_date/end_date if present
+                relationships.append(rel)
     
-    # Parse participations: "ID[role1]|ID2[role2]"
+    # Parse participations: member_of relationships
     if participations_str and participations_str.strip():
         for part in participations_str.split('|'):
             part = part.strip()
             if part:
-                match = re.match(r'(\w+)\[(\w+)\]', part)
-                if match:
-                    relationships.append({
-                        'type': 'member_of',
-                        'subtype': match.group(2),
-                        'target': match.group(1)
-                    })
+                # Format: TARGET[subtype] or TARGET[subtype][dates]
+                # First extract the target and everything else
+                target_match = re.match(r'^(\w+)', part)
+                if not target_match:
+                    continue
+                    
+                target = target_match.group(1)
+                rel = {
+                    'type': 'member_of',
+                    'target': target
+                }
+                
+                # Try to extract subtype: TARGET[subtype]...
+                subtype_match = re.match(r'^\w+\[(\w+)\]', part)
+                if subtype_match:
+                    rel['subtype'] = subtype_match.group(1)
+                
+                # Try to extract dates if present
+                dates = _extract_dates_from_identifier(part)
+                rel.update(dates)  # Add start_date/end_date if present
+                
+                relationships.append(rel)
     
     return relationships
 
@@ -162,18 +201,14 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[st
             if row.get(identifier) and str(row[identifier]).strip():
                 identifier_values = str(row[identifier]).split('|')
                 for val in identifier_values:
-                    parsed = _parse_identifier_value(val.strip())
-                    identifier_obj = {
-                        'type': IDENTIFIER_TYPE_MAP.get(identifier, identifier),
-                        'value': parsed['value']
-                    }
-                    if 'position' in parsed:
-                        identifier_obj['position'] = parsed['position']
-                    if 'start_date' in parsed:
-                        identifier_obj['start_date'] = parsed['start_date']
-                    if 'end_date' in parsed:
-                        identifier_obj['end_date'] = parsed['end_date']
-                    non_empty_identifiers.append(identifier_obj)
+                    # Extract just the base identifier value (no dates)
+                    value = _parse_identifier_value(val.strip())
+                    if value:  # Only add non-empty values
+                        identifier_obj = {
+                            'type': IDENTIFIER_TYPE_MAP.get(identifier, identifier),
+                            'value': value
+                        }
+                        non_empty_identifiers.append(identifier_obj)
 
         # Build contacts
         contacts = []
