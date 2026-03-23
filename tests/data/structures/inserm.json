@@ -1,0 +1,42 @@
+{
+  "structures_event": {
+    "type": "created",
+    "data": {
+      "generic_type": "institution",
+      "type": null,
+      "local_types": [],
+      "main_mission": "research",
+      "secondary_missions": ["scientific_services"],
+      "long_labels": [
+        {
+          "value": "INSERM",
+          "language": "fr"
+        }
+      ],
+      "short_labels": [
+        {
+          "value": "INSERM",
+          "language": "fr"
+        }
+      ],
+      "descriptions": [
+        {
+          "value": "Institut National de la Santé et de la Recherche Médicale",
+          "language": "fr"
+        }
+      ],
+      "identifiers": [
+        {"type": "local", "value": "INSERM"},
+        {"type": "ror", "value": "00z0af360"}
+      ],
+      "relationships": [],
+      "contacts": [
+        {
+          "type": "electronical_address",
+          "format": "website_address",
+          "value": {"uri": "https://www.inserm.fr/"}
+        }
+      ]
+    }
+  }
+}

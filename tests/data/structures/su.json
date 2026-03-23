@@ -1,0 +1,44 @@
+{
+  "structures_event": {
+    "type": "created",
+    "data": {
+      "generic_type": "institution",
+      "type": null,
+      "local_types": [],
+      "main_mission": "research",
+      "secondary_missions": ["teaching", "scientific_services"],
+      "long_labels": [
+        {
+          "value": "Sorbonne Université",
+          "language": "fr"
+        }
+      ],
+      "short_labels": [
+        {
+          "value": "Sorbonne Université",
+          "language": "fr"
+        }
+      ],
+      "descriptions": [
+        {
+          "value": "Sorbonne Université est une université française multidisciplinaire",
+          "language": "fr"
+        }
+      ],
+      "identifiers": [
+        {"type": "local", "value": "SU"},
+        {"type": "uai", "value": "0750973U"},
+        {"type": "nns", "value": "130023385"},
+        {"type": "ror", "value": "02en5vm52"}
+      ],
+      "relationships": [],
+      "contacts": [
+        {
+          "type": "electronical_address",
+          "format": "website_address",
+          "value": {"uri": "https://www.sorbonne-universite.fr/"}
+        }
+      ]
+    }
+  }
+}
