@@ -165,6 +165,167 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
             },
             "./tests/data/test_convert_spreadsheet_with_employment.json"
     ),
+    (
+            {
+                "task_name": TESTED_TASK_NAME,
+                "param_names": ["raw_results", "bodies_position_dict"],
+                "raw_results": [
+                    {
+                        'first_names': 'Joe',
+                        'last_name': 'Dupond',
+                        'main_research_structure': 'U01',
+                        'tracking_id': 'jdupond_stat',
+                        'eppn': '',
+                        'idhali': '',
+                        'idhals': '',
+                        'orcid': '',
+                        'idref': '',
+                        'scopus': '',
+                        'membership_type': 'stat_mmb',
+                    },
+                    {
+                        'first_names': 'Joe',
+                        'last_name': 'Dupond',
+                        'main_research_structure': 'U01',
+                        'tracking_id': 'jdupond_assoc',
+                        'eppn': '',
+                        'idhali': '',
+                        'idhals': '',
+                        'orcid': '',
+                        'idref': '',
+                        'scopus': '',
+                        'membership_type': 'assoc_mmb',
+                    },
+                    {
+                        'first_names': 'Joe',
+                        'last_name': 'Dupond',
+                        'main_research_structure': 'U01',
+                        'tracking_id': 'jdupond_second',
+                        'eppn': '',
+                        'idhali': '',
+                        'idhals': '',
+                        'orcid': '',
+                        'idref': '',
+                        'scopus': '',
+                        'membership_type': 'second_mmb',
+                    },
+                    {
+                        'first_names': 'Joe',
+                        'last_name': 'Dupond',
+                        'main_research_structure': 'U01',
+                        'tracking_id': 'jdupond_visit',
+                        'eppn': '',
+                        'idhali': '',
+                        'idhals': '',
+                        'orcid': '',
+                        'idref': '',
+                        'scopus': '',
+                        'membership_type': 'visit_mmb',
+                    }
+                ],
+                "bodies_position_dict": {}
+            },
+            "./tests/data/test_convert_spreadsheet_people_with_membership_types.json"
+    ),
+    (
+            {
+                "task_name": TESTED_TASK_NAME,
+                "param_names": ["raw_results", "bodies_position_dict"],
+                "raw_results": [
+                    {
+                        'first_names': 'Joe',
+                        'last_name': 'Dupond',
+                        'main_research_structure': 'U01',
+                        'tracking_id': 'jdupond',
+                        "eppn": 'jdupond@univ-exemple.fr',
+                        'idhali': '',
+                        'idhals': '',
+                        'orcid': '0000-0000-0000-0001',
+                        'idref': '12345678X',
+                        'scopus': '',
+                        'contact_email': 'joe.dupond@example.fr',
+                        'auth_email': 'jdupond@univ-exemple.fr',
+                    }
+                ],
+                "bodies_position_dict": {}
+            },
+            "./tests/data/test_convert_spreadsheet_people_with_emails.json"
+    ),
+    (
+            {
+                "task_name": TESTED_TASK_NAME,
+                "param_names": ["raw_results", "bodies_position_dict"],
+                "raw_results": [
+                    {
+                        'first_names': 'Joe',
+                        'last_name': 'Dupond',
+                        'main_research_structure': 'U01',
+                        'tracking_id': 'jdupond',
+                        "eppn": 'jdupond@univ-exemple.fr',
+                        'idhali': '',
+                        'idhals': '',
+                        'orcid': '0000-0000-0000-0001',
+                        'idref': '12345678X',
+                        'scopus': '',
+                        'membership_start_date': '2010-04-18',
+                        'membership_end_date': '2021-06-20',
+                    }
+                ],
+                "bodies_position_dict": {}
+            },
+            "./tests/data/test_convert_spreadsheet_people_with_membership_dates.json"
+    ),
+    (
+            {
+                "task_name": TESTED_TASK_NAME,
+                "param_names": ["raw_results", "bodies_position_dict"],
+                "raw_results": [
+                    {
+                        'first_names': 'Joe',
+                        'last_name': 'Dupond',
+                        'main_research_structure': 'U01',
+                        'tracking_id': 'jdupond',
+                        "eppn": 'jdupond@univ-exemple.fr',
+                        'idhali': '',
+                        'idhals': '',
+                        'orcid': '0000-0000-0000-0001',
+                        'idref': '12345678X',
+                        'scopus': '',
+                        'institution_identifier': '03wnrjx73',
+                        'institution_id_nomenclature': 'ROR',
+                        'position': 'MCF',
+                        'employment_start_date': '2010-04-18',
+                        'employment_end_date': '2021-06-20',
+                        'hdr': 'no',
+                    }
+                ],
+                "bodies_position_dict": {'MCF': 'Maître de conférences'}
+            },
+            "./tests/data/test_convert_spreadsheet_with_employment_ror.json"
+    ),
+    (
+            {
+                "task_name": TESTED_TASK_NAME,
+                "param_names": ["raw_results", "bodies_position_dict"],
+                "raw_results": [
+                    {
+                        'first_names': 'Joe',
+                        'last_name': 'Dupond',
+                        'main_research_structure': 'U01',
+                        'tracking_id': 'jdupond',
+                        "eppn": 'jdupond@univ-exemple.fr',
+                        'idhali': '',
+                        'idhals': '',
+                        'orcid': '0000-0000-0000-0001',
+                        'idref': '12345678X',
+                        'scopus': '',
+                        'researcherid': 'B-9809-2012',
+                    }
+                ],
+                "bodies_position_dict": {}
+            },
+            "./tests/data/test_convert_spreadsheet_people_with_researcherid.json"
+    ),
 ],
                          indirect=["dag"],
                          ids=[
@@ -173,7 +334,12 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                              "test_convert_spreadsheet_with_two_people",
                              "test_convert_spreadsheet_with_two_first_names",
                              "test_convert_spreadsheet_with_empty_laboratory",
-                             "test_convert_spreadsheet_with_employment"
+                             "test_convert_spreadsheet_with_employment",
+                             "test_convert_spreadsheet_people_with_membership_types",
+                             "test_convert_spreadsheet_people_with_emails",
+                             "test_convert_spreadsheet_people_with_membership_dates",
+                             "test_convert_spreadsheet_with_employment_ror",
+                             "test_convert_spreadsheet_people_with_researcherid"
                          ]
                          )
 def test_convert_spreadsheet_people(dag, expected_result_path, unique_logical_date):

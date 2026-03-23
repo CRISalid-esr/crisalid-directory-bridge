@@ -32,6 +32,10 @@
       {
         "type": "idref",
         "value": "12345678X"
+      },
+      {
+        "type": "researcherid",
+        "value": "B-9809-2012"
       }
     ],
     "memberships": [
