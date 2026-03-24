@@ -23,7 +23,9 @@ def _clean_value(val):
 
 
 @task
-def fetch_from_postgresql_view(view_name: str, postgres_conn_id: str = "postgres_default") -> list[dict[str, Any]]:
+def fetch_from_postgresql_view(
+    view_name: str, postgres_conn_id: str = "postgres_default"
+) -> list[dict[str, Any]]:
     """
     Fetch data from a PostgreSQL view using Airflow PostgresHook.
 
@@ -81,7 +83,9 @@ def fetch_from_postgresql_view(view_name: str, postgres_conn_id: str = "postgres
 
 
 @task
-def fetch_from_postgresql(query: str, postgres_conn_id: str = "postgres_default") -> list[dict[str, Any]]:
+def fetch_from_postgresql(
+    query: str, postgres_conn_id: str = "postgres_default"
+) -> list[dict[str, Any]]:
     """
     Fetch data from PostgreSQL using a custom SQL query with Airflow PostgresHook.
 
