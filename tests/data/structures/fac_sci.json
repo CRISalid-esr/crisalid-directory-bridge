@@ -31,7 +31,9 @@
       "relationships": [
         {
           "type": "is_part_of",
-          "target": "SU"
+          "target": "SU",
+          "start_date": "20100101",
+          "end_date": "20301231"
         }
       ],
       "contacts": []
