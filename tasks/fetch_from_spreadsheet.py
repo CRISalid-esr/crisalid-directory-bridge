@@ -42,18 +42,29 @@ FETCH_PARAMETERS = {
     "spreadsheet_structures": {
         "path": "STRUCTURE_SPREADSHEET_PATH",
         "columns": [
-            "name",
-            "acronym",
-            "description",
-            "tracking_id",
+            "generic_type",
+            "type",
+            "local_types",
+            "main_mission",
+            "secondary_missions",
+            "local_id",
+            "short_labels",
+            "long_labels",
+            "descriptions",
+            "inclusions",
+            "participations",
+            "uai",
             "nns",
             "ror",
-            "city_name",
-            "city_code",
-            "city_adress",
+            "isni",
+            "wikidata",
             "scopus",
+            "erc_research_field",
+            "hceres_research_areas",
             "hal_collection",
-            "web"
+            "web",
+            "signature",
+            "campus"
         ]
     }
 }
