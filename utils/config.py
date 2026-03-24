@@ -27,3 +27,27 @@ def get_env_variable(var_name: str, default_value: str = None) -> str:
     if value is None:
         raise ValueError(f"Environment variable {var_name} not set")
     return value
+
+
+def get_postgresql_connection_string() -> str:
+    """
+    Get PostgreSQL connection string from environment variables.
+    Returns:
+        str: PostgreSQL connection string (postgresql://user:password@host:port/database)
+    """
+    return get_env_variable("POSTGRESQL_CONNECTION_STRING")
+
+
+def get_postgresql_config() -> dict:
+    """
+    Get all PostgreSQL connection parameters.
+    Returns:
+        dict: Dictionary with host, port, user, password, database keys
+    """
+    return {
+        "host": get_env_variable("POSTGRESQL_HOST"),
+        "port": int(get_env_variable("POSTGRESQL_PORT", "5432")),
+        "user": get_env_variable("POSTGRESQL_USER"),
+        "password": get_env_variable("POSTGRESQL_PASSWORD"),
+        "database": get_env_variable("POSTGRESQL_DATABASE"),
+    }
