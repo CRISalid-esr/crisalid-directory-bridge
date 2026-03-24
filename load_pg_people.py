@@ -1,10 +1,10 @@
 """
 DAG to load people data from PostgreSQL va_people_crisalid view
-and convert it to ESUP-Portail v2 format.
+and convert it to the standard output format.
 
 This DAG:
 1. Fetches data from PostgreSQL view (va_people_crisalid)
-2. Converts data using the same ESUP-Portail transformation pipeline
+2. Converts data using the standard transformation pipeline
 3. Stores results in Redis with 'people:postgresql:' prefix
 4. Triggers the broadcast_entities DAG to propagate changes
 """
@@ -37,7 +37,7 @@ logger = logging.getLogger(__name__)
 )
 def load_pg_people():
     """
-    Load people from PostgreSQL view and convert to ESUP-Portail v2 format.
+    Load people from PostgreSQL view and convert to the standard output format.
     
     This DAG fetches data from the va_people_crisalid view which aggregates:
     - Individual information (prenom, nom, edupersonprincipalname, mail)
@@ -78,7 +78,7 @@ def load_pg_people():
         wait_for_completion=False,
     )
 
-    # Step 5: Convert data using ESUP-Portail transformation pipeline
+    # Step 5: Convert data using standard transformation pipeline
     converted_result = convert_spreadsheet_people(
         source_data=people_source_data,
         config=bodies_position
