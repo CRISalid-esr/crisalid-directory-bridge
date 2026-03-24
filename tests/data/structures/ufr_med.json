@@ -31,7 +31,9 @@
       "relationships": [
         {
           "type": "is_part_of",
-          "target": "FAC_SCI"
+          "target": "FAC_SCI",
+          "start_date": "20100101",
+          "end_date": null
         }
       ],
       "contacts": []
