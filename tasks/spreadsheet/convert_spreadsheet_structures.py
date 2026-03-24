@@ -147,13 +147,13 @@ def _parse_relationships(inclusions_str, participations_str):
 @task(task_id="convert_spreadsheet_structures")
 def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[str, dict[str, str | dict]]:
     """
-    Convert spreadsheet structure data to ESUP-Portail v2 format
+    Convert spreadsheet structure data to the standard output format
 
     Args:
         source_data (list): List of structure records from CSV
 
     Returns:
-        dict: A dict of converted results with the local_id as key and ESUP-Portail v2 format as value
+        dict: A dict of converted results with the local_id as key and standard format as value
     """
 
     task_results = {}
