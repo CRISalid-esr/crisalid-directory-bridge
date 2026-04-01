@@ -37,7 +37,9 @@
     "memberships": [
       {
         "entity_uid": "U01",
-        "membership_type": "stat_mmb"
+        "membership_type": "stat_mmb",
+        "start_date": "2010-04-18",
+        "end_date": "2021-06-20"
       }
     ]
   }

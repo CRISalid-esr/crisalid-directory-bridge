@@ -52,7 +52,8 @@
     ],
     "memberships": [
       {
-        "entity_uid": "U85"
+        "entity_uid": "U85",
+        "membership_type": "stat_mmb"
       }
     ]
   }

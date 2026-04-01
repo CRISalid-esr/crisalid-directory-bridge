@@ -39,6 +39,8 @@
         "entity_uid": "U01",
         "membership_type": "stat_mmb"
       }
-    ]
+    ],
+    "contact_email": "joe.dupond@example.fr",
+    "auth_email": "jdupond@univ-exemple.fr"
   }
 }

@@ -34,6 +34,18 @@
         "value": "12345678X"
       }
     ],
+    "employments": [
+      {
+        "position": {
+          "title": "Maître de conférences",
+          "code": "MCF"
+        },
+        "entity_uid": "ror-03wnrjx73",
+        "start_date": "2010-04-18",
+        "end_date": "2021-06-20",
+        "hdr": false
+      }
+    ],
     "memberships": [
       {
         "entity_uid": "U01",
