@@ -74,6 +74,10 @@ def extract_membership_type(row_data: dict, person_id: str) -> str:
     membership_type = row_data.get('membership_type', '').strip().lower()
 
     if not membership_type:
+        logger.warning(
+            "No membership_type provided for person %s. Defaulting to %s.",
+            person_id, DEFAULT_MEMBERSHIP_TYPE
+        )
         return DEFAULT_MEMBERSHIP_TYPE
 
     if membership_type in VALID_MEMBERSHIP_TYPES:
@@ -101,9 +105,9 @@ def extract_contact_email(row_data: dict, person_id: str) -> str | None:
     contact_email = row_data.get('contact_email', '').strip()
     
     if not contact_email:
+        logger.debug("No contact email provided for person %s.", person_id)
         return None
     
-    logger.debug("Contact email found for person %s: %s", person_id, contact_email)
     return contact_email
 
 
@@ -121,9 +125,9 @@ def extract_auth_email(row_data: dict, person_id: str) -> str | None:
     auth_email = row_data.get('auth_email', '').strip()
     
     if not auth_email:
+        logger.debug("No authentication email provided for person %s.", person_id)
         return None
     
-    logger.debug("Auth email found for person %s: %s", person_id, auth_email)
     return auth_email
 
 
