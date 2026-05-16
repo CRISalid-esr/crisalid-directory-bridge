@@ -31,7 +31,7 @@ def load_ldap_structures():
     """
     entity_type = "structures"
     entity_source = "ldap"
-    task_keys = ["NAME", "ACRONYM", "DESCRIPTION", "ADDRESS", "IDENTIFIER"]
+    task_keys = ["NAME", "ACRONYM", "DESCRIPTION", "ADDRESS", "IDENTIFIER", "GENERIC_TYPE"]
     tasks = {}
 
     for key in task_keys:

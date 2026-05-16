@@ -32,6 +32,6 @@ def convert_ldap_structure_names(ldap_results: dict[str, dict[str, str | dict]])
         else:
             logger.error("Invalid name for %s: %s", dn, name)
             name = None
-        task_results[dn] = {"names": [{"value": name, "language": language}]}
+        task_results[dn] = {"long_labels": [{"value": name, "language": language}]}
 
     return task_results

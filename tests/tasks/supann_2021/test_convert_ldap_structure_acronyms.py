@@ -36,7 +36,7 @@ def test_acronym_is_converted_from_ldap(dag, unique_logical_date) -> None:
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
     assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {
-        "U082": {'acronym': 'UEX'}
+        "U082": {'short_labels': [{'value': 'UEX', 'language': 'fr'}]}
     }
 
 
@@ -64,5 +64,5 @@ def test_acronym_is_empty_if_not_present(dag, unique_logical_date) -> None:
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
     assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {
-        "uid=1234,ou=people,dc=example,dc=org": {'acronym': None}
+        "uid=1234,ou=people,dc=example,dc=org": {'short_labels': []}
     }

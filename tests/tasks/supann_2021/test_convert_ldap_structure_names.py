@@ -37,7 +37,7 @@ def test_name_is_converted_from_ldap(dag, unique_logical_date):
     assert ti.state == TaskInstanceState.SUCCESS
     assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {
         "uid=1234,ou=people,dc=example,dc=org": {
-            "names": [
+            "long_labels": [
                 {
                     'language': 'fr',
                     'value': 'University of Example'
@@ -72,7 +72,7 @@ def test_description_used_if_name_not_present(dag, unique_logical_date):
     assert ti.state == TaskInstanceState.SUCCESS
     assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {
         "uid=1234,ou=people,dc=example,dc=org": {
-            "names": [
+            "long_labels": [
                 {
                     'language': 'fr',
                     'value': 'A university in Example'
@@ -109,7 +109,7 @@ def test_language_is_set_to_en(dag, unique_logical_date, monkeypatch):
     assert ti.state == TaskInstanceState.SUCCESS
     assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {
         "uid=1234,ou=people,dc=example,dc=org": {
-            "names": [
+            "long_labels": [
                 {
                     'language': 'en',
                     'value': 'University of Example'
