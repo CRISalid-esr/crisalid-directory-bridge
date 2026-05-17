@@ -5,8 +5,8 @@ from airflow.sdk import task
 from utils.config import get_env_variable
 
 
-@task(task_id="convert_ldap_structure_acronyms")
-def convert_ldap_structure_acronyms(ldap_results: dict[str, dict[str, str | dict]]) \
+@task(task_id="convert_ldap_structure_short_labels")
+def convert_ldap_structure_short_labels(ldap_results: dict[str, dict[str, str | dict]]) \
         -> dict[str, dict]:
     """
     Extract the acronym from a dict of LDAP entries.

@@ -7,8 +7,8 @@ from utils.config import get_env_variable
 logger = logging.getLogger(__name__)
 
 
-@task(task_id="convert_ldap_structure_names")
-def convert_ldap_structure_names(ldap_results: dict[str, dict[str, str | dict]]) \
+@task(task_id="convert_ldap_structure_long_labels")
+def convert_ldap_structure_long_labels(ldap_results: dict[str, dict[str, str | dict]]) \
         -> dict[str, list[dict]]:
     """
     Extract the 'name' field from a dict of LDAP entries.
@@ -17,7 +17,7 @@ def convert_ldap_structure_names(ldap_results: dict[str, dict[str, str | dict]])
         ldap_results (dict): A dict of LDAP results with dn as key and entry as value.
 
     Returns:
-        dict: A dict of names with dn as key and a
+        dict: A dict of long_labels with dn as key and a
         list containing dictionaries with 'value' and 'language'
     """
     task_results = {}

@@ -6,9 +6,9 @@ from test_utils.dags import create_dag_run, \
     DATA_INTERVAL_END, \
     create_task_instance
 
-TESTED_TASK_NAME = "tasks.supann_2021.convert_ldap_structure_acronyms" \
-                   ".convert_ldap_structure_acronyms"
-TEST_TASK_ID = "convert_ldap_structure_acronyms"
+TESTED_TASK_NAME = ("tasks.supann_2021.convert_ldap_structure_short_labels"
+                    ".convert_ldap_structure_short_labels")
+TEST_TASK_ID = "convert_ldap_structure_short_labels"
 
 
 @pytest.mark.parametrize("dag", [
@@ -25,12 +25,7 @@ TEST_TASK_ID = "convert_ldap_structure_acronyms"
     },
 ], indirect=True)
 def test_acronym_is_converted_from_ldap(dag, unique_logical_date) -> None:
-    """
-    Test that the acronym is converted from the LDAP entry
-    :param dag: The DAG object
-    :param unique_logical_date: unique execution date
-    :return: None
-    """
+    """Test that the acronym is converted from the LDAP entry."""
     dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
@@ -53,12 +48,7 @@ def test_acronym_is_converted_from_ldap(dag, unique_logical_date) -> None:
     },
 ], indirect=True)
 def test_acronym_is_empty_if_not_present(dag, unique_logical_date) -> None:
-    """
-    Test that the acronym is empty if not present in the LDAP entry
-    :param dag: The DAG object
-    :param unique_logical_date: unique execution date
-    :return: None
-    """
+    """Test that short_labels is empty if no acronym can be extracted."""
     dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
     ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
     ti.run(ignore_ti_state=True)
