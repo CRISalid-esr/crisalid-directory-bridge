@@ -25,8 +25,7 @@ def convert_ldap_structure_long_labels(ldap_results: dict[str, dict[str, str | d
     for dn, ldap_entry in ldap_results.items():
         assert ldap_entry is not None, f"LDAP entry is None for dn: {dn}"
         logger.error("LDAP entry: %s", ldap_entry)
-        name = ldap_entry.get('eduorglegalname', ldap_entry.get('ou', ldap_entry.get(
-            'description', [])))
+        name = ldap_entry.get('eduorglegalname', ldap_entry.get('description', []))
         if isinstance(name, list) and len(name) > 0:
             name = name[0]
         else:
