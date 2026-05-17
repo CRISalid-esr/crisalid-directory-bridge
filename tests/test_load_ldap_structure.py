@@ -13,7 +13,7 @@ def test_dag_loaded(dagbag) -> None:
     # https://www.mail-archive.com/commits@airflow.apache.org/msg416071.html
     # assert dagbag.import_errors == {}
     assert dag is not None
-    assert len(dag.tasks) == 11
+    assert len(dag.tasks) == 12
 
 
 def test_dag(dagbag) -> None:
@@ -33,6 +33,7 @@ def test_dag(dagbag) -> None:
                 "structure_fields_conversion_tasks.convert_ldap_structure_contacts",
                 "structure_fields_conversion_tasks.convert_ldap_structure_identifiers",
                 "structure_fields_conversion_tasks.convert_ldap_structure_type",
+                "structure_fields_conversion_tasks.convert_ldap_structure_relationships",
             ],
             "structure_fields_conversion_tasks.convert_ldap_structure_long_labels":
                 ["combine_batch_results"],
@@ -45,6 +46,8 @@ def test_dag(dagbag) -> None:
             "structure_fields_conversion_tasks.convert_ldap_structure_identifiers":
                 ["combine_batch_results"],
             "structure_fields_conversion_tasks.convert_ldap_structure_type":
+                ["combine_batch_results"],
+            "structure_fields_conversion_tasks.convert_ldap_structure_relationships":
                 ["combine_batch_results"],
             "combine_batch_results": ["update_database"],
             "update_database": ["trigger_broadcast"],
