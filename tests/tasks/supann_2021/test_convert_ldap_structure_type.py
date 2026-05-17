@@ -6,9 +6,9 @@ from test_utils.dags import create_dag_run, \
     DATA_INTERVAL_END, \
     create_task_instance
 
-TESTED_TASK_NAME = ("tasks.supann_2021.convert_ldap_structure_generic_type"
-                    ".convert_ldap_structure_generic_type")
-TEST_TASK_ID = "convert_ldap_structure_generic_type"
+TESTED_TASK_NAME = ("tasks.supann_2021.convert_ldap_structure_type"
+                    ".convert_ldap_structure_type")
+TEST_TASK_ID = "convert_ldap_structure_type"
 
 SAMPLE_LDAP_RESULTS = {
     "uid=U031,ou=structures,dc=example,dc=org": {
@@ -32,7 +32,10 @@ def test_generic_type_defaults_to_unit(dag, unique_logical_date) -> None:
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
     assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {
-        "uid=U031,ou=structures,dc=example,dc=org": {"generic_type": "unit"}
+        "uid=U031,ou=structures,dc=example,dc=org": {
+            "generic_type": "unit",
+            "main_mission": "research",
+        }
     }
 
 
@@ -51,5 +54,8 @@ def test_generic_type_uses_env_variable(dag, unique_logical_date, monkeypatch) -
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
     assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {
-        "uid=U031,ou=structures,dc=example,dc=org": {"generic_type": "institution"}
+        "uid=U031,ou=structures,dc=example,dc=org": {
+            "generic_type": "institution",
+            "main_mission": "research",
+        }
     }
