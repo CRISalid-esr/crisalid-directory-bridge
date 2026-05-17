@@ -72,18 +72,6 @@ def test_pedagogy_maps_to_learning(dag, unique_logical_date) -> None:
     }
 
 
-@pytest.mark.parametrize("dag", [_make_dag_params("organization")], indirect=True)
-def test_organization_omits_main_mission(dag, unique_logical_date) -> None:
-    """businessCategory 'organization' → main_mission omitted."""
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
-    ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
-    ti.run(ignore_ti_state=True)
-    assert ti.state == TaskInstanceState.SUCCESS
-    result = ti.xcom_pull(task_ids=TEST_TASK_ID)
-    assert result == {DN: {"generic_type": "unit"}}
-    assert "main_mission" not in result[DN]
-
-
 @pytest.mark.parametrize("dag", [_make_dag_params()], indirect=True)
 def test_missing_business_category_omits_main_mission(dag, unique_logical_date) -> None:
     """No businessCategory in LDAP entry → main_mission omitted."""

@@ -7,7 +7,6 @@ BUSINESS_CATEGORY_TO_MAIN_MISSION = {
     "library": "scientific_services",
     "research": "research",
     "pedagogy": "learning",
-    "organization": None,
 }
 
 
@@ -40,8 +39,6 @@ def convert_ldap_structure_type(ldap_results: dict) -> dict:
             raw = raw[0] if raw else None
         business_category = raw if isinstance(raw, str) and raw else None
         if business_category and business_category in BUSINESS_CATEGORY_TO_MAIN_MISSION:
-            main_mission = BUSINESS_CATEGORY_TO_MAIN_MISSION[business_category]
-            if main_mission is not None:
-                result["main_mission"] = main_mission
+            result["main_mission"] = BUSINESS_CATEGORY_TO_MAIN_MISSION[business_category]
         task_results[dn] = result
     return task_results
