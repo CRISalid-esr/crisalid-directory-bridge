@@ -68,7 +68,7 @@ def test_pedagogy_maps_to_learning(dag, unique_logical_date) -> None:
     ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
     assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {
-        DN: {"generic_type": "unit", "main_mission": "learning"}
+        DN: {"generic_type": "unit", "main_mission": "teaching"}
     }
 
 

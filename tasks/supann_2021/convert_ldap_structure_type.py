@@ -6,7 +6,7 @@ BUSINESS_CATEGORY_TO_MAIN_MISSION = {
     "administration": "administrative_services",
     "library": "scientific_services",
     "research": "research",
-    "pedagogy": "learning",
+    "pedagogy": "teaching",
 }
 
 
