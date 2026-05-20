@@ -1,0 +1,40 @@
+{
+  "structures_event": {
+    "type": "created",
+    "data": {
+      "generic_type": "unit",
+      "type": "UMR",
+      "local_types": [],
+      "main_mission": "research",
+      "secondary_missions": [],
+      "long_labels": [
+        {
+          "value": "ABC Unit",
+          "language": "fr"
+        }
+      ],
+      "short_labels": [
+        {
+          "value": "ABC",
+          "language": "fr"
+        }
+      ],
+      "descriptions": [
+        {
+          "value": "ABC Unit de recherche",
+          "language": "fr"
+        }
+      ],
+      "identifiers": [
+        {"type": "local", "value": "ABC_UNIT"}
+      ],
+      "relationships": [
+        {
+          "type": "is_part_of",
+          "target": "PLAT_XYZ"
+        }
+      ],
+      "contacts": []
+    }
+  }
+}

@@ -8,6 +8,9 @@ logger = logging.getLogger(__name__)
 
 LOCAL_PERSON_IDENTIFIER = 'tracking_id'
 
+VALID_MEMBERSHIP_TYPES = {'stat_mmb', 'assoc_mmb', 'second_mmb', 'visit_mmb'}
+DEFAULT_MEMBERSHIP_TYPE = 'stat_mmb'
+
 PERSON_IDENTIFIERS = [
     LOCAL_PERSON_IDENTIFIER,
     'eppn',
@@ -15,7 +18,8 @@ PERSON_IDENTIFIERS = [
     'idhals',
     'orcid',
     'idref',
-    'scopus'
+    'scopus',
+    'researcherid'
 ]
 
 IDENTIFIER_TYPE_MAP = {
@@ -51,6 +55,111 @@ def extract_identifiers(row_data: dict[str, str]) -> list[dict[str, str]]:
         for identifier in PERSON_IDENTIFIERS
         if row_data.get(identifier) and row_data[identifier].strip()
     ]
+
+
+def extract_membership_type(row_data: dict, person_id: str) -> str:
+    """
+    Extract and validate membership type from spreadsheet row.
+
+    Args:
+        row_data (dict): The spreadsheet row containing membership type.
+        person_id (str): Identifier of the person.
+
+    Returns:
+        str: One of the valid membership types (stat_mmb, assoc_mmb, second_mmb, visit_mmb).
+             Defaults to stat_mmb if not provided or invalid.
+
+    Logs a warning if an invalid membership type is provided.
+    """
+    membership_type = row_data.get('membership_type', '').strip().lower()
+
+    if not membership_type:
+        logger.warning(
+            "No membership_type provided for person %s. Defaulting to %s.",
+            person_id, DEFAULT_MEMBERSHIP_TYPE
+        )
+        return DEFAULT_MEMBERSHIP_TYPE
+
+    if membership_type in VALID_MEMBERSHIP_TYPES:
+        return membership_type
+
+    logger.warning(
+        "Invalid membership_type '%s' for person %s. Valid types are: %s. "
+        "Defaulting to %s.",
+        membership_type, person_id, ', '.join(VALID_MEMBERSHIP_TYPES), DEFAULT_MEMBERSHIP_TYPE
+    )
+    return DEFAULT_MEMBERSHIP_TYPE
+
+
+def extract_contact_email(row_data: dict, person_id: str) -> str | None:
+    """
+    Extract contact email from spreadsheet row.
+
+    Args:
+        row_data (dict): The spreadsheet row containing contact email.
+        person_id (str): Identifier of the person.
+
+    Returns:
+        str | None: The contact email if provided, None otherwise.
+    """
+    contact_email = row_data.get('contact_email', '').strip()
+    
+    if not contact_email:
+        logger.debug("No contact email provided for person %s.", person_id)
+        return None
+    
+    return contact_email
+
+
+def extract_auth_email(row_data: dict, person_id: str) -> str | None:
+    """
+    Extract authentication email from spreadsheet row.
+
+    Args:
+        row_data (dict): The spreadsheet row containing auth email.
+        person_id (str): Identifier of the person.
+
+    Returns:
+        str | None: The authentication email if provided, None otherwise.
+    """
+    auth_email = row_data.get('auth_email', '').strip()
+    
+    if not auth_email:
+        logger.debug("No authentication email provided for person %s.", person_id)
+        return None
+    
+    return auth_email
+
+
+def extract_membership_dates(row_data: dict, person_id: str) -> dict[str, str]:
+    """
+    Extract and validate membership start and end dates from spreadsheet row.
+
+    Dates should be in ISO8601 format (YYYY-MM-DD).
+
+    Args:
+        row_data (dict): The spreadsheet row containing membership dates.
+        person_id (str): Identifier of the person.
+
+    Returns:
+        dict[str, str]: A dictionary with "start_date" and/or "end_date" keys.
+                       Empty dict if no valid dates provided.
+
+    Logs a warning if any provided date has an invalid format.
+    """
+    dates = {}
+    for date_key in ["membership_start_date", "membership_end_date"]:
+        date_value = row_data.get(date_key, '').strip()
+        if date_value:
+            if is_valid_iso_date(date_value):
+                dates[date_key.replace("membership_", "")] = date_value
+            else:
+                logger.warning(
+                    "Invalid date format '%s' for person %s in field '%s'. "
+                    "Expected format is YYYY-MM-DD. Skipping this date.",
+                    date_value, person_id, date_key
+                )
+    return dates
 
 
 def extract_employment_position(row_data: dict,
@@ -182,14 +291,14 @@ def _build_employment(entry: dict[str, str],
             f"Invalid institution_id_nomenclature '{institution_id_nomenclature}' "
             f"for person {person_id}. Must be 'UAI' or 'ROR'.")
 
-    # TODO use institution_id_nomenclature to determine the correct prefix
-    # (e.g., "uai-" or "ror-") when building the entity_uid
+    # Determine the prefix based on institution_id_nomenclature
+    prefix = "uai-" if institution_id_nomenclature.upper() == "UAI" else "ror-"
 
     dates = extract_employment_dates(entry, person_id)
     position = extract_employment_position(entry, bodies_labels_dict, person_id)
 
     employment: dict[str, str | dict] = {
-        "entity_uid": f"uai-{institution_id}",
+        "entity_uid": f"{prefix}{institution_id}",
         "hdr": extract_employment_hdr(entry, person_id)
     }
 
@@ -236,6 +345,22 @@ def convert_spreadsheet_people(
             logger.warning("No identifiers for row: %s", entry)
 
         entity_uid = entry.get('main_research_structure', '').strip()
+        person_id = entry.get(LOCAL_PERSON_IDENTIFIER)
+
+        memberships = []
+        if entity_uid:
+            membership_type = extract_membership_type(entry, person_id)
+            membership_dates = extract_membership_dates(entry, person_id)
+            
+            membership = {'entity_uid': entity_uid, 'membership_type': membership_type}
+            
+            # Add dates if provided
+            if 'start_date' in membership_dates:
+                membership['start_date'] = membership_dates['start_date']
+            if 'end_date' in membership_dates:
+                membership['end_date'] = membership_dates['end_date']
+            
+            memberships = [membership]
 
         result_entry = {
             'names': [
@@ -248,12 +373,21 @@ def convert_spreadsheet_people(
                 }
             ],
             'identifiers': non_empty_identifiers,
-            'memberships': [{'entity_uid': entity_uid}] if entity_uid else [],
+            'memberships': memberships,
         }
 
         employment = _build_employment(entry, config)
         if employment:
             result_entry['employments'] = [employment]
+
+        # Add emails if provided
+        contact_email = extract_contact_email(entry, person_id)
+        if contact_email:
+            result_entry['contact_email'] = contact_email
+
+        auth_email = extract_auth_email(entry, person_id)
+        if auth_email:
+            result_entry['auth_email'] = auth_email
 
         task_results[entry[LOCAL_PERSON_IDENTIFIER]] = result_entry
 

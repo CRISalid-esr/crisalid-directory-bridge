@@ -1,0 +1,42 @@
+{
+  "structures_event": {
+    "type": "created",
+    "data": {
+      "generic_type": "unit",
+      "type": "USM",
+      "local_types": [],
+      "main_mission": "research",
+      "secondary_missions": [],
+      "long_labels": [
+        {
+          "value": "SUMMIT",
+          "language": "fr"
+        }
+      ],
+      "short_labels": [
+        {
+          "value": "SUMMIT",
+          "language": "fr"
+        }
+      ],
+      "descriptions": [
+        {
+          "value": "Unité de Service et de Micro-technologie en Imagerie et Transformation",
+          "language": "fr"
+        }
+      ],
+      "identifiers": [
+        {"type": "local", "value": "SUMMIT"}
+      ],
+      "relationships": [
+        {
+          "type": "is_part_of",
+          "target": "CASU",
+          "start_date": "20150601",
+          "end_date": "20251231"
+        }
+      ],
+      "contacts": []
+    }
+  }
+}

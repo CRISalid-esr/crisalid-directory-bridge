@@ -28,13 +28,16 @@ def fetch_structures_from_ldap():
             search_filter=structures_filter,
             search_scope=SUBTREE,
             attributes=["supannCodeEntite",
+                        "supannTypeEntite",
+                        "supannCodeEntiteParent",
                         "eduOrgLegalName",
                         "ou",
                         "description",
                         "acronym",
                         "postalAddress",
                         "labeledURI",
-                        "supannRefId"]
+                        "supannRefId",
+                        "businessCategory"]
         )
         ldap_response = ldap_connexion.entries
 

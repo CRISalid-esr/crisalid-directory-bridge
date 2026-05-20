@@ -1,0 +1,40 @@
+{
+  "structures_event": {
+    "type": "created",
+    "data": {
+      "generic_type": "unit",
+      "type": "PLATEFORME",
+      "local_types": ["plateforme"],
+      "main_mission": "research",
+      "secondary_missions": [],
+      "long_labels": [
+        {
+          "value": "Plateforme XYZ",
+          "language": "fr"
+        }
+      ],
+      "short_labels": [
+        {
+          "value": "Plat XYZ",
+          "language": "fr"
+        }
+      ],
+      "descriptions": [
+        {
+          "value": "Plateforme de recherche XYZ - Sorbonne Université",
+          "language": "fr"
+        }
+      ],
+      "identifiers": [
+        {"type": "local", "value": "PLAT_XYZ"}
+      ],
+      "relationships": [
+        {
+          "type": "is_part_of",
+          "target": "UFR_MED"
+        }
+      ],
+      "contacts": []
+    }
+  }
+}
