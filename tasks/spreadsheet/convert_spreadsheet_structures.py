@@ -58,7 +58,7 @@ def _parse_identifier_value(identifier_str):
     result = {}
 
     # Try to match pattern with position and dates: ID[position][startDate-endDate]
-    match = re.match(r'^(\w+)\[(\d+)\]\[(\d+)(?:-(\d*))?\]$', identifier_str)
+    match = re.match(r'^([\w-]+)\[(\d+)\]\[(\d+)(?:-(\d*))?\]$', identifier_str)
     if match:
         result['value'] = match.group(1)
         result['position'] = match.group(2)
@@ -67,7 +67,7 @@ def _parse_identifier_value(identifier_str):
         return result
 
     # Try to match pattern with dates only: ID[startDate-endDate]
-    match = re.match(r'^(\w+)\[(\d+)(?:-(\d*))?\]$', identifier_str)
+    match = re.match(r'^([\w-]+)\[(\d+)(?:-(\d*))?\]$', identifier_str)
     if match:
         result['value'] = match.group(1)
         result['start_date'] = match.group(2)
@@ -75,7 +75,7 @@ def _parse_identifier_value(identifier_str):
         return result
 
     # Try to match pattern with empty brackets or subtype: ID[] or ID[subtype]
-    match = re.match(r'^(\w+)\[\w*\]$', identifier_str)
+    match = re.match(r'^([\w-]+)\[\w*\]$', identifier_str)
     if match:
         result['value'] = match.group(1)
         return result
