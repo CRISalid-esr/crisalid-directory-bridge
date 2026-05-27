@@ -113,7 +113,7 @@
         ],
         "relationships": [
           {
-            "type": "is_part_of",
+            "type": "part_of",
             "target": "SU"
           }
         ],
@@ -151,7 +151,7 @@
         ],
         "relationships": [
           {
-            "type": "is_part_of",
+            "type": "part_of",
             "target": "FAC_SCI"
           }
         ],
@@ -189,7 +189,7 @@
         ],
         "relationships": [
           {
-            "type": "is_part_of",
+            "type": "part_of",
             "target": "SU"
           }
         ],
@@ -227,7 +227,7 @@
         ],
         "relationships": [
           {
-            "type": "is_part_of",
+            "type": "part_of",
             "target": "CASU"
           }
         ],
@@ -265,7 +265,7 @@
         ],
         "relationships": [
           {
-            "type": "is_part_of",
+            "type": "part_of",
             "target": "UFR_MED"
           }
         ],
@@ -303,7 +303,7 @@
         ],
         "relationships": [
           {
-            "type": "is_part_of",
+            "type": "part_of",
             "target": "PLAT_XYZ"
           }
         ],
@@ -342,11 +342,11 @@
         ],
         "relationships": [
           {
-            "type": "is_part_of",
+            "type": "part_of",
             "target": "PLAT_XYZ"
           },
           {
-            "type": "is_part_of",
+            "type": "part_of",
             "target": "UFR_MED"
           },
           {
@@ -394,7 +394,7 @@
         ],
         "relationships": [
           {
-            "type": "is_part_of",
+            "type": "part_of",
             "target": "PATHO_UNIT"
           }
         ],

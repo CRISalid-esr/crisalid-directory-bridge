@@ -30,7 +30,7 @@
       ],
       "relationships": [
         {
-          "type": "is_part_of",
+          "type": "part_of",
           "target": "UFR_MED"
         }
       ],
