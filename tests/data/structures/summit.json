@@ -30,7 +30,7 @@
       ],
       "relationships": [
         {
-          "type": "is_part_of",
+          "type": "part_of",
           "target": "CASU",
           "start_date": "20150601",
           "end_date": "20251231"

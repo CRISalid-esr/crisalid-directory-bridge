@@ -2,6 +2,7 @@ import logging
 import re
 
 from airflow.sdk import task
+
 from utils.url_validators import is_valid_website_url
 
 logger = logging.getLogger(__name__)
@@ -46,14 +47,16 @@ def _parse_identifier_value(identifier_str):
     - "SU[main_supervision]" -> {'value': 'SU'}  (subtype in brackets, no dates)
     - "E6[20190902-20251231]" -> {'value': 'E6', 'start_date': '20190902', 'end_date': '20251231'}
     - "E42[20260101-]" -> {'value': 'E42', 'start_date': '20260101', 'end_date': None}
-    - "PATHO[1][20190902-20251231]" -> {'value': 'PATHO', 'position': '1', 'start_date': '20190902', 'end_date': '20251231'}
-    - "PATHO[2][20260101-]" -> {'value': 'PATHO', 'position': '2', 'start_date': '20260101', 'end_date': None}
+    - "PATHO[1][20190902-20251231]" ->
+        {'value': 'PATHO', 'position': '1', 'start_date': '20190902', 'end_date': '20251231'}
+    - "PATHO[2][20260101-]" ->
+        {'value': 'PATHO', 'position': '2', 'start_date': '20260101', 'end_date': None}
     
     Returns: dict with 'value' key, and optionally 'position', 'start_date', 'end_date'
     """
     identifier_str = identifier_str.strip()
     result = {}
-    
+
     # Try to match pattern with position and dates: ID[position][startDate-endDate]
     match = re.match(r'^(\w+)\[(\d+)\]\[(\d+)(?:-(\d*))?\]$', identifier_str)
     if match:
@@ -62,7 +65,7 @@ def _parse_identifier_value(identifier_str):
         result['start_date'] = match.group(3)
         result['end_date'] = match.group(4) if match.group(4) else None
         return result
-    
+
     # Try to match pattern with dates only: ID[startDate-endDate]
     match = re.match(r'^(\w+)\[(\d+)(?:-(\d*))?\]$', identifier_str)
     if match:
@@ -70,13 +73,13 @@ def _parse_identifier_value(identifier_str):
         result['start_date'] = match.group(2)
         result['end_date'] = match.group(3) if match.group(3) else None
         return result
-    
+
     # Try to match pattern with empty brackets or subtype: ID[] or ID[subtype]
     match = re.match(r'^(\w+)\[\w*\]$', identifier_str)
     if match:
         result['value'] = match.group(1)
         return result
-    
+
     # No dates or position found, just the identifier
     result['value'] = identifier_str
     return result
@@ -87,19 +90,19 @@ def _parse_relationships(inclusions_str, participations_str):
     Parse relationship strings into proper format with dates on relationships.
     
     Formats:
-    - inclusions: "TARGET_ID[startDate-endDate]" or "TARGET_ID" (is_part_of)
+    - inclusions: "TARGET_ID[startDate-endDate]" or "TARGET_ID" (part_of)
     - participations: "TARGET_ID[subtype]" or "TARGET_ID[subtype][startDate-endDate]" (member_of)
     """
     relationships = []
-    
-    # Parse inclusions: is_part_of relationships
+
+    # Parse inclusions: part_of relationships
     if inclusions_str and inclusions_str.strip():
         for inc in inclusions_str.split('|'):
             inc = inc.strip()
             if inc:
                 parsed = _parse_identifier_value(inc)
                 rel = {
-                    'type': 'is_part_of',
+                    'type': 'part_of',
                     'target': parsed['value']
                 }
                 # Add dates if present
@@ -108,7 +111,7 @@ def _parse_relationships(inclusions_str, participations_str):
                 if 'end_date' in parsed:
                     rel['end_date'] = parsed['end_date']
                 relationships.append(rel)
-    
+
     # Parse participations: member_of relationships
     if participations_str and participations_str.strip():
         for part in participations_str.split('|'):
@@ -121,25 +124,26 @@ def _parse_relationships(inclusions_str, participations_str):
                     'type': 'member_of',
                     'target': target
                 }
-                
+
                 # Try to extract subtype: TARGET[subtype]...
                 subtype_match = re.match(r'^\w+\[(\w+)\]', part)
                 if subtype_match:
                     rel['subtype'] = subtype_match.group(1)
-                
+
                 # Add dates if present
                 if 'start_date' in parsed:
                     rel['start_date'] = parsed['start_date']
                 if 'end_date' in parsed:
                     rel['end_date'] = parsed['end_date']
-                
+
                 relationships.append(rel)
-    
+
     return relationships
 
 
 @task(task_id="convert_spreadsheet_structures")
-def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[str, dict[str, str | dict]]:
+def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[
+    str, dict[str, str | dict]]:
     """
     Convert spreadsheet structure data to the standard output format
 
@@ -232,7 +236,8 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[st
         # Parse secondary_missions
         secondary_missions = []
         if row.get('secondary_missions'):
-            secondary_missions = [m.strip() for m in str(row['secondary_missions']).split('|') if m.strip()]
+            secondary_missions = [m.strip() for m in str(row['secondary_missions']).split('|') if
+                                  m.strip()]
 
         # Parse local_types
         local_types = []
@@ -260,10 +265,9 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[st
             'relationships': relationships,
             'contacts': contacts
         }
-        
+
         # Add research classifications if present
         if research_classifications:
             task_results[local_id]['research_classifications'] = research_classifications
 
     return task_results
-

@@ -30,7 +30,7 @@
       ],
       "relationships": [
         {
-          "type": "is_part_of",
+          "type": "part_of",
           "target": "SU",
           "start_date": "20100101",
           "end_date": "20301231"

@@ -30,7 +30,7 @@
       ],
       "relationships": [
         {
-          "type": "is_part_of",
+          "type": "part_of",
           "target": "FAC_SCI",
           "start_date": "20100101",
           "end_date": null
