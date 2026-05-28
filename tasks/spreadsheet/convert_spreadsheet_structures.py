@@ -44,7 +44,9 @@ def _parse_identifier_value(identifier_str):
     Examples:
     - "PATHO_UNIT" -> {'value': 'PATHO_UNIT'}
     - "SU[]" -> {'value': 'SU'}  (empty brackets, no dates)
-    - "SU[main_supervision]" -> {'value': 'SU'}  (subtype in brackets, no dates)
+    - "SU[main_supervision]" -> {'value': 'SU', 'subtype': 'main_supervision'}
+    - "uai-0780491K[associated_supervision][20210101]" ->
+        {'value': 'uai-0780491K', 'subtype': 'associated_supervision', 'start_date': '20210101', 'end_date': None}
     - "E6[20190902-20251231]" -> {'value': 'E6', 'start_date': '20190902', 'end_date': '20251231'}
     - "E42[20260101-]" -> {'value': 'E42', 'start_date': '20260101', 'end_date': None}
     - "PATHO[1][20190902-20251231]" ->
@@ -56,6 +58,22 @@ def _parse_identifier_value(identifier_str):
     """
     identifier_str = identifier_str.strip()
     result = {}
+
+    # ID[text_subtype][startDate-endDate]  e.g. uai-0780491K[associated_supervision][20210101]
+    match = re.match(r'^([\w-]+)\[([a-zA-Z_]+)\]\[(\d+)(?:-(\d*))?\]$', identifier_str)
+    if match:
+        result['value'] = match.group(1)
+        result['subtype'] = match.group(2)
+        result['start_date'] = match.group(3)
+        result['end_date'] = match.group(4) if match.group(4) else None
+        return result
+
+    # ID[text_subtype]  e.g. uai-0753639Y[main_supervision]
+    match = re.match(r'^([\w-]+)\[([a-zA-Z_]+)\]$', identifier_str)
+    if match:
+        result['value'] = match.group(1)
+        result['subtype'] = match.group(2)
+        return result
 
     # Try to match pattern with position and dates: ID[position][startDate-endDate]
     match = re.match(r'^([\w-]+)\[(\d+)\]\[(\d+)(?:-(\d*))?\]$', identifier_str)
@@ -125,10 +143,8 @@ def _parse_relationships(inclusions_str, participations_str):
                     'target': target
                 }
 
-                # Try to extract subtype: TARGET[subtype]...
-                subtype_match = re.match(r'^\w+\[(\w+)\]', part)
-                if subtype_match:
-                    rel['subtype'] = subtype_match.group(1)
+                if 'subtype' in parsed:
+                    rel['subtype'] = parsed['subtype']
 
                 # Add dates if present
                 if 'start_date' in parsed:

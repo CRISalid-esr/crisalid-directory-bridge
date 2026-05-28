@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRISalid — Structure Hierarchy</title>
+  <script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; margin: 0; background: #f5f5f5; color: #333; }
+    header { background: #2c3e50; color: white; padding: 1rem 2rem; }
+    header h1 { margin: 0; font-size: 1.2rem; font-weight: 600; }
+    header p  { margin: 0.25rem 0 0; font-size: 0.85rem; opacity: 0.65; }
+
+    #controls {
+      display: flex; align-items: center; gap: 1.5rem;
+      padding: 0.6rem 2rem; background: white;
+      border-bottom: 1px solid #ddd; flex-wrap: wrap;
+    }
+    #legend { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: #555; }
+    .legend-dot  { width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0; }
+    .legend-line { width: 28px; height: 0; border-top: 2px solid #555; flex-shrink: 0; }
+    .legend-line.dashed { border-top-style: dashed; border-color: #aaa; }
+
+    #layout-btns { margin-left: auto; display: flex; gap: 0.4rem; }
+    button {
+      padding: 0.35rem 0.75rem; border: 1px solid #ccc; border-radius: 4px;
+      background: white; cursor: pointer; font-size: 0.78rem; color: #444;
+    }
+    button:hover  { background: #f0f0f0; }
+    button.active { background: #2c3e50; color: white; border-color: #2c3e50; }
+
+    #network-container { width: 100%; height: 70vh; background: white; border-bottom: 1px solid #eee; }
+
+    #isolated-section { margin: 1.25rem 2rem 2rem; }
+    #isolated-title   { font-size: 0.9rem; color: #888; margin: 0 0 0.75rem; font-weight: 500; }
+    .isolated-grid    { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .isolated-chip {
+      background: #fafafa; border: 1px solid #e0e0e0; border-left-width: 4px;
+      border-radius: 4px; padding: 0.3rem 0.75rem; font-size: 0.8rem;
+    }
+    .isolated-chip small { color: #aaa; margin-left: 0.3rem; }
+
+    #detail-panel {
+      position: fixed; bottom: 1.25rem; right: 1.25rem;
+      background: white; border: 1px solid #ddd; border-radius: 8px;
+      padding: 0.9rem 1.1rem; font-size: 0.83rem; max-width: 300px;
+      display: none; box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    }
+    #detail-panel h3  { margin: 0 0 0.5rem; font-size: 0.95rem; color: #2c3e50; }
+    #detail-panel p   { margin: 0.2rem 0; color: #555; line-height: 1.4; }
+    #detail-close     { float: right; cursor: pointer; color: #aaa; font-size: 1rem; line-height: 1; }
+    #detail-close:hover { color: #333; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1 id="page-title">CRISalid — Structure Hierarchy</h1>
+  <p  id="page-subtitle"></p>
+</header>
+
+<div id="controls">
+  <div id="legend"></div>
+  <div id="layout-btns">
+    <button id="btn-hierarchical" class="active" onclick="setLayout('hierarchical')">Hierarchical</button>
+    <button id="btn-force"                        onclick="setLayout('force')">Force</button>
+    <button onclick="network.fit()">Fit view</button>
+  </div>
+</div>
+
+<div id="network-container"></div>
+
+<div id="isolated-section">
+  <p id="isolated-title"></p>
+  <div class="isolated-grid" id="isolated-grid"></div>
+</div>
+
+<div id="detail-panel">
+  <span id="detail-close" onclick="closeDetail()">✕</span>
+  <h3 id="dp-label"></h3>
+  <p  id="dp-id"></p>
+  <p  id="dp-type"></p>
+  <p  id="dp-mission"></p>
+  <p  id="dp-long-label"></p>
+</div>
+
+<script>
+/* __GRAPH_DATA__ */
+
+// ── Colour map ────────────────────────────────────────────────────────────────
+const TYPE_COLORS = {
+  institution:             { background: '#4A90D9', border: '#2c6fad', font: '#fff' },
+  institution_subdivision: { background: '#7BB3E0', border: '#4A90D9', font: '#fff' },
+  unit:                    { background: '#27AE60', border: '#1a7a42', font: '#fff' },
+  unit_subdivision:        { background: '#82C9A0', border: '#27AE60', font: '#333' },
+  team:                    { background: '#E67E22', border: '#b35a0d', font: '#fff' },
+  external:                { background: '#e0e0e0', border: '#aaa',    font: '#888' },
+};
+
+// ── Header ────────────────────────────────────────────────────────────────────
+document.getElementById('page-title').textContent = 'CRISalid — ' + DATA.filename;
+document.getElementById('page-subtitle').textContent =
+  DATA.stats.total + ' structures · '
+  + DATA.stats.inclusion_edges + ' inclusion edges · '
+  + DATA.stats.participation_edges + ' participation edges'
+  + (DATA.stats.isolated_count ? ' · ' + DATA.stats.isolated_count + ' isolated' : '');
+
+// ── Legend ────────────────────────────────────────────────────────────────────
+const legendEl = document.getElementById('legend');
+Object.entries(TYPE_COLORS).forEach(([type, c]) => {
+  if (type === 'external') return;
+  legendEl.innerHTML +=
+    `<span class="legend-item">
+       <span class="legend-dot" style="background:${c.background};border:2px solid ${c.border}"></span>
+       ${type.replace('_', ' ')}
+     </span>`;
+});
+legendEl.innerHTML +=
+  `<span class="legend-item"><span class="legend-line"></span>part_of</span>
+   <span class="legend-item"><span class="legend-line dashed"></span>member_of</span>`;
+
+// ── Level map (institution at top = 0, teams at bottom = 4) ──────────────────
+const TYPE_LEVEL = {
+  institution: 0, institution_subdivision: 1,
+  unit: 2, unit_subdivision: 3, team: 4,
+  external: 0,
+};
+
+// Only include levels that are actually present in the data
+const presentLevels = new Set(DATA.nodes.map(n => TYPE_LEVEL[n.group]).filter(l => l !== undefined));
+// Compact: remap to consecutive integers (0, 1, 2 …) so gaps don't create empty tiers
+const sortedLevels = [...presentLevels].sort((a, b) => a - b);
+const compactLevel = Object.fromEntries(sortedLevels.map((l, i) => [l, i]));
+
+// ── vis.js datasets ───────────────────────────────────────────────────────────
+const visNodes = new vis.DataSet(DATA.nodes.map(n => {
+  const c = TYPE_COLORS[n.group] || TYPE_COLORS.external;
+  const rawLevel = TYPE_LEVEL[n.group];
+  return {
+    id:    n.id,
+    label: n.label,
+    level: rawLevel !== undefined ? compactLevel[rawLevel] : undefined,
+    color: { background: c.background, border: c.border,
+             highlight: { background: c.background, border: '#ff0' } },
+    font:  { color: c.font, size: 13 },
+    shape: n.group === 'external' ? 'diamond' : 'box',
+    borderWidth: n.group === 'external' ? 1 : 2,
+    _data: n,
+  };
+}));
+
+const visEdges = new vis.DataSet(DATA.edges.map((e, i) => ({
+  id:     i,
+  from:   e.to,   // stored as child→parent (inclusions) or unit→supervisor (participations); flip both to top-down
+  to:     e.from,
+  label:  e.label || '',
+  dashes: e.dashes,
+  arrows: 'to',
+  color:  { color: e.dashes ? '#bbb' : '#666', opacity: 0.85 },
+  font:   { size: 10, color: '#999', align: 'middle' },
+  width:  e.dashes ? 1 : 2,
+  smooth: { type: 'cubicBezier', forceDirection: 'vertical', roundness: 0.4 },
+})));
+
+// ── Layout options ────────────────────────────────────────────────────────────
+function makeOptions(layout) {
+  const opts = {
+    nodes: { widthConstraint: { minimum: 80, maximum: 180 } },
+    interaction: { hover: true, multiselect: false },
+  };
+  if (layout === 'hierarchical') {
+    opts.layout = { hierarchical: {
+      enabled: true, direction: 'UD', sortMethod: 'directed',
+      levelSeparation: 130, nodeSpacing: 200, treeSpacing: 220,
+      blockShifting: true, edgeMinimization: true,
+    }};
+    opts.physics = { enabled: false };
+  } else {
+    opts.layout  = { hierarchical: { enabled: false } };
+    opts.physics = { enabled: true, solver: 'forceAtlas2Based',
+      forceAtlas2Based: { gravitationalConstant: -60, springLength: 130, springConstant: 0.05 },
+      stabilization: { iterations: 300 },
+    };
+  }
+  return opts;
+}
+
+const container = document.getElementById('network-container');
+let network = new vis.Network(
+  container,
+  { nodes: visNodes, edges: visEdges },
+  makeOptions('hierarchical')
+);
+
+// ── Layout toggle ─────────────────────────────────────────────────────────────
+function setLayout(mode) {
+  document.getElementById('btn-hierarchical').classList.toggle('active', mode === 'hierarchical');
+  document.getElementById('btn-force').classList.toggle('active', mode === 'force');
+  network.setOptions(makeOptions(mode));
+  if (mode === 'hierarchical') setTimeout(() => network.fit(), 400);
+}
+
+// ── Detail panel ──────────────────────────────────────────────────────────────
+function closeDetail() {
+  document.getElementById('detail-panel').style.display = 'none';
+  resetOpacity();
+}
+
+function resetOpacity() {
+  visNodes.forEach(n => visNodes.update({ id: n.id, opacity: 1 }));
+  visEdges.forEach(e => visEdges.update({ id: e.id, color: { opacity: 0.85 } }));
+}
+
+network.on('click', function(params) {
+  if (!params.nodes.length) { closeDetail(); return; }
+  const nodeId = params.nodes[0];
+  const node   = visNodes.get(nodeId);
+  if (!node || !node._data) return;
+
+  const d = node._data;
+  document.getElementById('dp-label').textContent     = d.label;
+  document.getElementById('dp-id').textContent        = d.local_id || d.id;
+  document.getElementById('dp-type').textContent      = [d.generic_type, d.national_type].filter(Boolean).join(' · ');
+  document.getElementById('dp-mission').textContent   = d.main_mission ? 'Mission: ' + d.main_mission : '';
+  document.getElementById('dp-long-label').textContent = d.long_label || '';
+  document.getElementById('detail-panel').style.display = 'block';
+
+  const connected = new Set(network.getConnectedNodes(nodeId));
+  connected.add(nodeId);
+  visNodes.forEach(n => visNodes.update({ id: n.id, opacity: connected.has(n.id) ? 1 : 0.15 }));
+  visEdges.forEach(e => {
+    const visible = connected.has(e.from) && connected.has(e.to);
+    visEdges.update({ id: e.id, color: { opacity: visible ? 0.85 : 0.04 } });
+  });
+});
+
+// ── Isolated panel ────────────────────────────────────────────────────────────
+const isoGrid  = document.getElementById('isolated-grid');
+const isoTitle = document.getElementById('isolated-title');
+if (DATA.isolated.length) {
+  isoTitle.textContent =
+    DATA.isolated.length + ' isolated structure(s) — not connected to any other structure in this file';
+  DATA.isolated.forEach(n => {
+    const c = TYPE_COLORS[n.group] || TYPE_COLORS.external;
+    isoGrid.innerHTML +=
+      `<span class="isolated-chip" style="border-left-color:${c.background}">
+         ${n.label}<small>${n.local_id}</small>
+       </span>`;
+  });
+}
+</script>
+</body>
+</html>
