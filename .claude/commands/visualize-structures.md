@@ -90,7 +90,7 @@ Remove isolated nodes from the main node list (they are rendered separately in t
 
 ## Step 7 — read the template
 
-Read `templates/structures-visualization.html` from the root of the `crisalid-directory-bridge` repository (the directory that contains `.claude/`).
+Read `structures-visualization.html` from the same directory as this command file (`.claude/commands/`).
 
 ---
 
