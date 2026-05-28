@@ -2,8 +2,12 @@
 """
 Validate a CRISalid structures CSV file.
 
+This is the standalone Python equivalent of the /check-structures Claude Code command
+(.claude/commands/check-structures.md). It implements the same checks (4a–4m) and
+produces the same output format, so it can be run in CI or without Claude Code.
+
 Usage:
-    python check_structures.py <csv-path>
+    python .claude/commands/check_structures.py <csv-path>
 """
 import csv
 import re
