@@ -6,7 +6,10 @@ from airflow.sdk import dag, TaskGroup
 
 from tasks.combine_batch_results import combine_batch_results
 from tasks.database import update_database, create_redis_connection
+from tasks.fetch_from_spreadsheet import fetch_from_spreadsheet
 from tasks.fetch_structures_from_ldap import fetch_structures_from_ldap
+from tasks.spreadsheet.convert_spreadsheet_structures import convert_spreadsheet_structures
+from tasks.supann_2021.override_ldap_structure_data import override_ldap_structure_data
 from utils.config import get_env_variable
 from utils.dependencies import import_from_path
 
@@ -62,7 +65,16 @@ def load_ldap_structures():
             converted_result = task(ldap_results=ldap_results)
             batch_results.append(converted_result)
     combined_results = combine_batch_results(batch_results)
-    redis_keys = update_database(result=combined_results, prefix=f"{entity_type}:{entity_source}:")
+    if get_env_variable("OVERRIDE_LDAP_STRUCTURE_DATA_FROM_SPREADSHEET"):
+        raw_spreadsheet = fetch_from_spreadsheet(entity_source, entity_type)
+        spreadsheet_structures = convert_spreadsheet_structures(source_data=raw_spreadsheet)
+        final_results = override_ldap_structure_data(
+            ldap_source=combined_results,
+            spreadsheet_source=spreadsheet_structures,
+        )
+    else:
+        final_results = combined_results
+    redis_keys = update_database(result=final_results, prefix=f"{entity_type}:{entity_source}:")
     connexion >> redis_keys >> trigger_broadcast  # pylint: disable=pointless-statement
 
 
