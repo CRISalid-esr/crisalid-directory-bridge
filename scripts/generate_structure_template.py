@@ -15,6 +15,12 @@ import sys
 # Ensure the repo root is on sys.path regardless of how the script is invoked
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+import logging
+
+# utils/config.py warns about the absence of a bare .env file at import time.
+# We use .env.dev — silence that warning before the import triggers it.
+logging.getLogger("utils.config").setLevel(logging.ERROR)
+
 from ldap3 import SUBTREE
 from ldap3.core.exceptions import LDAPExceptionError
 
