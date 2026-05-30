@@ -1,7 +1,7 @@
 """
 Generate a CSV template pre-filled from live LDAP data.
 
-Usage (from repo root):
+Usage (from anywhere):
     APP_ENV=DEV python scripts/generate_structure_template.py --output data/structures_template.csv
 
 Credentials and LDAP parameters are read from the environment (.env.dev when APP_ENV=DEV).
@@ -11,6 +11,9 @@ import argparse
 import csv
 import os
 import sys
+
+# Ensure the repo root is on sys.path regardless of how the script is invoked
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from ldap3 import SUBTREE
 from ldap3.core.exceptions import LDAPExceptionError
