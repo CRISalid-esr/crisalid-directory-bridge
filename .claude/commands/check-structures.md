@@ -44,6 +44,7 @@ This single index is used for both reference-integrity checks (does the target e
 ### 4a — required fields
 
 - `local_id` must be non-empty → ERROR: "missing local_id"
+- If `generic_type` is `"ignore"`: the row marks a structure that the override task will exclude from processing. Only check 4b (local_id format) and 4c (duplicate); skip all other checks for this row.
 - `generic_type` must be one of `institution`, `institution_subdivision`, `unit`, `unit_subdivision`, `team` → ERROR: "unknown generic_type '{value}'"
 - At least one of `type`, `local_types`, `long_labels` must be non-empty → ERROR: "no national_type, local_type, or long_label — at least one is required"
 - `short_labels` must be non-empty → ERROR: "missing short_label — at least one is required"

@@ -176,11 +176,12 @@ override layer: it can enrich or correct any field.
 
 ### Merge rules
 
-| Situation                | Result                                                                                                                      |
-|--------------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| Key in LDAP only         | Keep LDAP record as-is                                                                                                      |
-| Key in both LDAP and CSV | Deep-merge: CSV fields take precedence over LDAP fields. Non-empty CSV values overwrite; empty CSV values do not overwrite. |
-| Key in CSV only          | Add the CSV record (new structure not in LDAP)                                                                              |
+| Situation                           | Result                                                                                                                      |
+|-------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| Key in LDAP only                    | Keep LDAP record as-is                                                                                                      |
+| Key in both LDAP and CSV            | Deep-merge: CSV fields take precedence over LDAP fields. Non-empty CSV values overwrite; empty CSV values do not overwrite. |
+| Key in CSV only                     | Add the CSV record (new structure not in LDAP)                                                                              |
+| CSV record has `generic_type` = `"ignore"`  | Drop the entry from the result entirely, even if it was present in LDAP. Log at INFO level.                           |
 
 The merge key is `supannCodeEntite` on the LDAP side and `local_id` on the CSV side. A CSV
 `local_id` with no matching LDAP key is expected and valid — the entry is simply added to the
@@ -208,6 +209,7 @@ Test cases:
 4. **Both, empty CSV field** — LDAP value is preserved.
 5. **Both, nested field (e.g. `identifiers`)** — merge is deep, not shallow replace.
 6. **Empty inputs** — both empty dicts → empty output.
+7. **`generic_type=ignore`** — CSV record with `generic_type="ignore"` causes the entry to be removed from the result whether it came from LDAP, CSV-only, or both.
 
 ---
 

@@ -178,6 +178,15 @@ def check(csv_path: str) -> int:
             _error(issues, i, '', 'missing local_id')
             continue  # can't do further checks without an ID
 
+        # generic_type=ignore marks a structure as intentionally excluded — skip field validation
+        if generic_type == 'ignore':
+            if lid in seen_ids_for_dup:
+                _error(issues, i, lid,
+                       f"duplicate local_id '{lid}' (also on row {seen_ids_for_dup[lid]})")
+            else:
+                seen_ids_for_dup[lid] = i
+            continue
+
         if generic_type not in VALID_GENERIC_TYPES:
             _error(issues, i, lid, f"unknown generic_type '{generic_type}'")
 
