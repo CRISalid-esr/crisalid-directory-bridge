@@ -1,8 +1,12 @@
 Generate an interactive HTML visualisation of the structure hierarchy from a CSV file.
 
-**Usage:** `/visualize-structures <csv-path> [output-html-path]`
+**Usage:** `/visualize-structures <csv-path> [output-html-path] [--root-institution <local_id>]`
 
 If `output-html-path` is omitted, write the HTML file to the same directory as the CSV, with the same basename but a `.html` extension (e.g. `structures.csv` → `structures.html`).
+
+`--root-institution <local_id>` sets the root node for initial 1-level expand and viewport centering. When omitted the graph starts fully expanded with no centering.
+
+The output is a self-contained HTML file using **Cytoscape.js** with a **dagre** hierarchical layout (CDN, no build step). Inclusion edges (solid) drive the hierarchy; participation edges (dashed, colour-coded by role) overlay supervision relationships.
 
 ---
 
@@ -21,7 +25,9 @@ Parse the CSV (UTF-8, comma-separated, first row = header). Collect all rows.
 
 ## Step 3 — build the node list
 
-For every row produce a node object:
+Skip rows where `generic_type` is `"ignore"`.
+
+For every remaining row produce a node object:
 
 ```json
 {
@@ -32,12 +38,14 @@ For every row produce a node object:
   "generic_type": "{generic_type}",
   "national_type":"{type}",
   "main_mission": "{main_mission}",
-  "group":        "{generic_type}",
-  "tooltip":      ""
+  "group":        "{generic_type or 'external'}",
+  "description":  "{first description stripped of [lang] suffix}",
+  "nns":  "{nns}", "ror":  "{ror}", "uai":  "{uai}",
+  "isni": "{isni}", "wikidata": "{wikidata}", "scopus": "{scopus}"
 }
 ```
 
-Collect all known UIDs into a set (`"local-{local_id}"` for every row).
+Collect all known UIDs into a set (`"local-{local_id}"` for every included row).
 
 ---
 
@@ -55,7 +63,7 @@ Helper — strip annotations from a relationship entry:
 - Split on `|`, strip each entry.
 - For every non-empty bare target: add edge `{ "from": "local-{local_id}", "to": "{target}", "dashes": true, "label": "{position_code_or_empty}" }`.
 
-**Ghost nodes** — for every target referenced in any edge that is NOT in the known UIDs set, add a ghost node: `{ "id": "{target}", "local_id": "{target}", "label": "{target}", "group": "external" }`.
+**Ghost nodes** — for every target referenced in any edge that is NOT in the known UIDs set, add a ghost node with `"group": "external"`.
 
 ---
 
@@ -63,9 +71,7 @@ Helper — strip annotations from a relationship entry:
 
 A node is isolated if its `id` does not appear in any edge's `from` or `to` field.
 
-Build the `isolated` array from those nodes (same structure as the node objects above).
-
-Remove isolated nodes from the main node list (they are rendered separately in the panel, not in the graph).
+Build the `isolated` array (same node structure). Remove isolated nodes from the main node list — they are listed in the sidebar panel, not drawn in the graph.
 
 ---
 
@@ -119,3 +125,19 @@ Print a single line:
 ```
 Generated: <output-path>  (<N> nodes, <I> inclusion edges, <P> participation edges, <X> isolated)
 ```
+
+---
+
+## Visualization features
+
+| Feature | Description |
+|---|---|
+| Layout | dagre BT (parents at top); participation edges have weight=0 so they don't distort the hierarchy |
+| Node colours | institution=dark blue, inst_subdivision=blue, unit=dark green, unit_subdivision=green, team=orange, external=grey |
+| Node shapes | institution/subdivision=rectangle, unit=round-rectangle, team=ellipse, external=ellipse |
+| Participation edge colours | main_supervision=red, associated_supervision=blue, participating_supervision=green |
+| Expand/collapse | Double-click any node with children; toolbar "Expand all" / "Collapse all" |
+| Toggles | Show/hide participation edges; show/hide external nodes |
+| Search | Filter/highlight nodes by label or ID |
+| Node info panel | Click any node → show full name, type, mission, identifiers (NNS, ROR, UAI, ISNI, Wikidata, Scopus) |
+| Isolated list | Structures with no edges listed in sidebar |
