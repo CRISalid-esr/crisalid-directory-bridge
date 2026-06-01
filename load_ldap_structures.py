@@ -65,7 +65,7 @@ def load_ldap_structures():
             converted_result = task(ldap_results=ldap_results)
             batch_results.append(converted_result)
     combined_results = combine_batch_results(batch_results)
-    if get_env_variable("OVERRIDE_LDAP_STRUCTURE_DATA_FROM_SPREADSHEET"):
+    if get_env_variable("OVERRIDE_LDAP_STRUCTURE_DATA_FROM_SPREADSHEET") == "True":
         raw_spreadsheet = fetch_from_spreadsheet(entity_source, entity_type)
         spreadsheet_structures = convert_spreadsheet_structures(source_data=raw_spreadsheet)
         final_results = override_ldap_structure_data(
