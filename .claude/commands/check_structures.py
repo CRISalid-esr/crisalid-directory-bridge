@@ -36,6 +36,8 @@ VALID_MISSIONS = {
 
 KNOWN_EXTERNAL_PREFIXES = {'uai-', 'ror-', 'nns-', 'isni-', 'wikidata-', 'scopus-', 'local-'}
 
+VALID_POSITION_CODES = {'main_supervision', 'associated_supervision', 'participating_supervision'}
+
 FALLBACK_ALLOWED_NATIONAL_TYPES = {
     'institution':             {'UNIV', 'EPE', 'EPST', 'GE', 'COMUE'},
     'institution_subdivision': {'UFR', 'FAC', 'FDR'},
@@ -304,6 +306,16 @@ def check(csv_path: str) -> int:
                         _warn(issues, i, lid,
                               f"suspicious date annotation '[{token}]' — "
                               f"expected YYYYMMDD (8 digits)")
+
+                # 4n — position code in participations must use underscores
+                if col == 'participations':
+                    for token in _bracket_tokens(entry):
+                        if re.fullmatch(r'\d+', token) or re.fullmatch(r'\d+.*', token):
+                            continue  # date token, skip
+                        if re.fullmatch(r'[a-zA-Z][\w-]*', token) and token not in VALID_POSITION_CODES:
+                            _error(issues, i, lid,
+                                   f"invalid position code '[{token}]' in participations — "
+                                   f"must be one of: {', '.join(sorted(VALID_POSITION_CODES))}")
 
         # 4k — isolation
         if generic_type in ('unit_subdivision', 'team') and not inclusions_str:

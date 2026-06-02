@@ -121,6 +121,12 @@ If `generic_type` is `unit_subdivision` or `team` and `inclusions` is empty → 
 
 In `inclusions` and `participations`, find all `[...]` tokens. Any token that looks like a date (contains only digits) but is not exactly 8 digits → WARNING: "suspicious date annotation '{token}' — expected YYYYMMDD (8 digits)"
 
+### 4n — position codes in participations
+
+In `participations`, for each `|`-separated entry find any `[...]` token that is not a date (i.e. not all digits). If the token is not one of the three valid position codes — `main_supervision`, `associated_supervision`, `participating_supervision` — → ERROR: "invalid position code '[{token}]' in participations — must be one of: associated_supervision, main_supervision, participating_supervision"
+
+Note: position codes must use underscores, not hyphens (e.g. `main_supervision`, not `main-supervision`).
+
 ### 4m — label language tags
 
 In `long_labels`, `short_labels`, `local_types`, `descriptions`, for each `|`-separated entry find any `[...]` suffix. If the content is not 2–3 lowercase letters → WARNING: "suspicious tag '[{content}]' in {column} — expected a language code like [fr] or [en]"
