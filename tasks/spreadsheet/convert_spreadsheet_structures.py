@@ -26,7 +26,7 @@ STRUCTURE_RESEARCH_CLASSIFICATIONS = ['erc_research_field', 'hceres_research_are
 
 
 @task(task_id="convert_spreadsheet_structures")
-def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[
+def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[  # pylint: disable=too-many-statements,too-many-branches,too-many-locals
     str, dict[str, str | dict]]:
     """
     Convert spreadsheet structure data to the standard output format
