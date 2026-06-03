@@ -115,7 +115,7 @@ def _load_ror_names() -> dict[str, str]:
     text = ror_csv.read_text(encoding='utf-8-sig')
     for row in csv.DictReader(text.splitlines()):
         ror_id = row.get('id', '').strip()
-        name = row.get('name', '').strip()
+        name = row.get('names.types.ror_display', '').strip()
         if ror_id and name:
             bare = re.sub(r'^https?://ror\.org/', '', ror_id)
             names[bare] = name
