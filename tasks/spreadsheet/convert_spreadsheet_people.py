@@ -103,11 +103,11 @@ def extract_contact_email(row_data: dict, person_id: str) -> str | None:
         str | None: The contact email if provided, None otherwise.
     """
     contact_email = row_data.get('contact_email', '').strip()
-    
+
     if not contact_email:
         logger.debug("No contact email provided for person %s.", person_id)
         return None
-    
+
     return contact_email
 
 
@@ -123,11 +123,11 @@ def extract_auth_email(row_data: dict, person_id: str) -> str | None:
         str | None: The authentication email if provided, None otherwise.
     """
     auth_email = row_data.get('auth_email', '').strip()
-    
+
     if not auth_email:
         logger.debug("No authentication email provided for person %s.", person_id)
         return None
-    
+
     return auth_email
 
 
@@ -313,7 +313,7 @@ def _build_employment(entry: dict[str, str],
 
 
 @task(task_id="convert_spreadsheet_people")
-def convert_spreadsheet_people(
+def convert_spreadsheet_people(  # pylint: disable=too-many-locals
         source_data: list[dict[str, str]],
         config: dict[str, str]
 ) -> dict[str, dict[str, str | dict]]:
@@ -351,15 +351,15 @@ def convert_spreadsheet_people(
         if entity_uid:
             membership_type = extract_membership_type(entry, person_id)
             membership_dates = extract_membership_dates(entry, person_id)
-            
+
             membership = {'entity_uid': entity_uid, 'membership_type': membership_type}
-            
+
             # Add dates if provided
             if 'start_date' in membership_dates:
                 membership['start_date'] = membership_dates['start_date']
             if 'end_date' in membership_dates:
                 membership['end_date'] = membership_dates['end_date']
-            
+
             memberships = [membership]
 
         result_entry = {

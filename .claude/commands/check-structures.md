@@ -44,6 +44,7 @@ This single index is used for both reference-integrity checks (does the target e
 ### 4a — required fields
 
 - `local_id` must be non-empty → ERROR: "missing local_id"
+- If `generic_type` is `"ignore"`: the row marks a structure that the override task will exclude from processing. Only check 4b (local_id format) and 4c (duplicate); skip all other checks for this row.
 - `generic_type` must be one of `institution`, `institution_subdivision`, `unit`, `unit_subdivision`, `team` → ERROR: "unknown generic_type '{value}'"
 - At least one of `type`, `local_types`, `long_labels` must be non-empty → ERROR: "no national_type, local_type, or long_label — at least one is required"
 - `short_labels` must be non-empty → ERROR: "missing short_label — at least one is required"
@@ -119,6 +120,12 @@ If `generic_type` is `unit_subdivision` or `team` and `inclusions` is empty → 
 ### 4l — date annotations
 
 In `inclusions` and `participations`, find all `[...]` tokens. Any token that looks like a date (contains only digits) but is not exactly 8 digits → WARNING: "suspicious date annotation '{token}' — expected YYYYMMDD (8 digits)"
+
+### 4n — position codes in participations
+
+In `participations`, for each `|`-separated entry find any `[...]` token that is not a date (i.e. not all digits). If the token is not one of the three valid position codes — `main_supervision`, `associated_supervision`, `participating_supervision` — → ERROR: "invalid position code '[{token}]' in participations — must be one of: associated_supervision, main_supervision, participating_supervision"
+
+Note: position codes must use underscores, not hyphens (e.g. `main_supervision`, not `main-supervision`).
 
 ### 4m — label language tags
 
