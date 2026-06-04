@@ -326,6 +326,42 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
             },
             "./tests/data/test_convert_spreadsheet_people_with_researcherid.json"
     ),
+    (
+            {
+                "task_name": TESTED_TASK_NAME,
+                "param_names": ["raw_results", "bodies_position_dict"],
+                "raw_results": [
+                    {
+                        'first_names': 'Joe',
+                        'last_name': 'Dupond',
+                        'main_research_structure': 'U01',
+                        'tracking_id': 'jdupond',
+                        "eppn": 'jdupond@univ-exemple.fr',
+                        'idhali': '',
+                        'idhals': '',
+                        'orcid': '0000-0000-0000-0001',
+                        'idref': '12345678X',
+                        'scopus': '',
+                        'membership_type': 'stat_mmb',
+                    },
+                    {
+                        'first_names': 'Joe',
+                        'last_name': 'Dupond',
+                        'main_research_structure': 'U02',
+                        'tracking_id': 'jdupond',
+                        "eppn": 'jdupond@univ-exemple.fr',
+                        'idhali': '',
+                        'idhals': '',
+                        'orcid': '0000-0000-0000-0001',
+                        'idref': '12345678X',
+                        'scopus': '',
+                        'membership_type': 'assoc_mmb',
+                    }
+                ],
+                "bodies_position_dict": {}
+            },
+            "./tests/data/test_convert_spreadsheet_people_with_multiple_memberships.json"
+    ),
 ],
                          indirect=["dag"],
                          ids=[
@@ -339,7 +375,8 @@ TESTED_TASK_NAME = 'tasks.spreadsheet.convert_spreadsheet_people.convert_spreads
                              "test_convert_spreadsheet_people_with_emails",
                              "test_convert_spreadsheet_people_with_membership_dates",
                              "test_convert_spreadsheet_with_employment_ror",
-                             "test_convert_spreadsheet_people_with_researcherid"
+                             "test_convert_spreadsheet_people_with_researcherid",
+                             "test_convert_spreadsheet_people_with_multiple_memberships"
                          ]
                          )
 def test_convert_spreadsheet_people(dag, expected_result_path, unique_logical_date):
