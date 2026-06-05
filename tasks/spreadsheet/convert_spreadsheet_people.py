@@ -389,6 +389,13 @@ def convert_spreadsheet_people(  # pylint: disable=too-many-locals
         if auth_email:
             result_entry['auth_email'] = auth_email
 
-        task_results[entry[LOCAL_PERSON_IDENTIFIER]] = result_entry
+        if person_id in task_results:
+            task_results[person_id]['memberships'].extend(memberships)
+            if employment:
+                existing_employments = task_results[person_id].get('employments', [])
+                existing_employments.append(employment)
+                task_results[person_id]['employments'] = existing_employments
+        else:
+            task_results[person_id] = result_entry
 
     return task_results
