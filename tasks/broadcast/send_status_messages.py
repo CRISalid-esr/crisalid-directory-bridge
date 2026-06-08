@@ -51,7 +51,7 @@ def _send_status_message(channel: BlockingChannel,
     }
     params = {
         'exchange': 'directory',
-        'routing_key': f"{prefix}{status}",
+        'routing_key': f"{prefix}{status}.batch",
         'body': json.dumps(wrapper, default=str)
     }
     channel.basic_publish(**params)
