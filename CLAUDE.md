@@ -119,12 +119,15 @@ The IKG model accepts `contacts` (converted internally to `addresses`/`electroni
 
 ## Claude Code commands (`.claude/commands/`)
 
-Two slash commands help validate and visualise the spreadsheet structures CSV before ingestion.
+Three slash commands help edit, validate and visualise the spreadsheet structures CSV before ingestion.
 
 | Command | Spec | Python equivalent |
 |---|---|---|
+| `/edit-structures <csv> <instruction>` | `edit-structures.md` | — |
 | `/check-structures <csv>` | `check-structures.md` | `check_structures.py` |
 | `/visualize-structures <csv> [output.html]` | `visualize-structures.md` | `visualize_structures.py` |
+
+**`/edit-structures`** — the how-to guide for editing any structures CSV (the file can live anywhere on disk; `etc/structures_p1ps.csv` is the Paris 1 sample): column semantics, formatting rules (language tags, `local-` prefixes, id conventions), and recipes for the recurring tasks — adding a laboratory's research axes/themes as `team`/`THEME` rows from its website, ignoring structures (with live LDAP lookup of `supannCodeEntite`), and attaching units to their parent UFR. Read it before any manual edit of a structures CSV, even without the slash command.
 
 **`/check-structures`** — validates every row against the full rule set: required fields, `local_id` format, duplicate detection, national-type compatibility (fetched live from the IKG repo), mission rules, conditional identifier requirements, identifier format (ROR/ISNI/NNS), reference integrity, ordering, isolation warnings, date annotation format, and label language tags.
 
