@@ -1,0 +1,122 @@
+{
+  "jdupond_stat": {
+    "names": [
+      {
+        "last_names": [
+          {
+            "value": "Dupond",
+            "language": "fr"
+          }
+        ],
+        "first_names": [
+          {
+            "value": "Joe",
+            "language": "fr"
+          }
+        ]
+      }
+    ],
+    "identifiers": [
+      {
+        "type": "local",
+        "value": "jdupond_stat"
+      }
+    ],
+    "memberships": [
+      {
+        "entity_uid": "U01",
+        "membership_type": "stat_mmb"
+      }
+    ]
+  },
+  "jdupond_assoc": {
+    "names": [
+      {
+        "last_names": [
+          {
+            "value": "Dupond",
+            "language": "fr"
+          }
+        ],
+        "first_names": [
+          {
+            "value": "Joe",
+            "language": "fr"
+          }
+        ]
+      }
+    ],
+    "identifiers": [
+      {
+        "type": "local",
+        "value": "jdupond_assoc"
+      }
+    ],
+    "memberships": [
+      {
+        "entity_uid": "U01",
+        "membership_type": "assoc_mmb"
+      }
+    ]
+  },
+  "jdupond_second": {
+    "names": [
+      {
+        "last_names": [
+          {
+            "value": "Dupond",
+            "language": "fr"
+          }
+        ],
+        "first_names": [
+          {
+            "value": "Joe",
+            "language": "fr"
+          }
+        ]
+      }
+    ],
+    "identifiers": [
+      {
+        "type": "local",
+        "value": "jdupond_second"
+      }
+    ],
+    "memberships": [
+      {
+        "entity_uid": "U01",
+        "membership_type": "second_mmb"
+      }
+    ]
+  },
+  "jdupond_visit": {
+    "names": [
+      {
+        "last_names": [
+          {
+            "value": "Dupond",
+            "language": "fr"
+          }
+        ],
+        "first_names": [
+          {
+            "value": "Joe",
+            "language": "fr"
+          }
+        ]
+      }
+    ],
+    "identifiers": [
+      {
+        "type": "local",
+        "value": "jdupond_visit"
+      }
+    ],
+    "memberships": [
+      {
+        "entity_uid": "U01",
+        "membership_type": "visit_mmb"
+      }
+    ]
+  }
+}

@@ -48,7 +48,8 @@
     ],
     "memberships": [
       {
-        "entity_uid": "U01"
+        "entity_uid": "U01",
+        "membership_type": "stat_mmb"
       }
     ]
   }
