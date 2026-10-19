@@ -1,7 +1,7 @@
 import pytest
 from airflow.utils.state import TaskInstanceState
 
-from test_utils.dags import run_task
+from test_utils.dags import create_dag_run, DATA_INTERVAL_START, DATA_INTERVAL_END, create_task_instance
 
 TEST_TASK_ID = "override_ldap_structure_data"
 TESTED_TASK_NAME = "tasks.supann_2021.override_ldap_structure_data.override_ldap_structure_data"
@@ -22,7 +22,9 @@ def _params(ldap_source, spreadsheet_source):
 )], indirect=True)
 def test_ldap_only_entry_kept(dag, unique_logical_date):
     """An LDAP entry with no CSV counterpart is kept unchanged."""
-    ti = run_task(dag, unique_logical_date, TEST_TASK_ID)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
+    ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
+    ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
     result = ti.xcom_pull(task_ids=TEST_TASK_ID)
     assert result == {"U1": {"generic_type": "unit", "main_mission": "research"}}
@@ -34,7 +36,9 @@ def test_ldap_only_entry_kept(dag, unique_logical_date):
 )], indirect=True)
 def test_csv_only_entry_added(dag, unique_logical_date):
     """A CSV entry with no LDAP counterpart is added to the result."""
-    ti = run_task(dag, unique_logical_date, TEST_TASK_ID)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
+    ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
+    ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
     result = ti.xcom_pull(task_ids=TEST_TASK_ID)
     assert result == {"CSV1": {"generic_type": "unit", "type": "UMR"}}
@@ -46,7 +50,9 @@ def test_csv_only_entry_added(dag, unique_logical_date):
 )], indirect=True)
 def test_nonempty_csv_field_overwrites_ldap(dag, unique_logical_date):
     """A non-empty CSV field value overwrites the LDAP value."""
-    ti = run_task(dag, unique_logical_date, TEST_TASK_ID)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
+    ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
+    ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
     result = ti.xcom_pull(task_ids=TEST_TASK_ID)
     assert result["U1"]["type"] == "UMR"
@@ -59,7 +65,9 @@ def test_nonempty_csv_field_overwrites_ldap(dag, unique_logical_date):
 )], indirect=True)
 def test_empty_csv_field_preserves_ldap(dag, unique_logical_date):
     """An empty CSV field value does not overwrite the LDAP value."""
-    ti = run_task(dag, unique_logical_date, TEST_TASK_ID)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
+    ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
+    ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
     result = ti.xcom_pull(task_ids=TEST_TASK_ID)
     assert result["U1"]["main_mission"] == "research"
@@ -76,7 +84,9 @@ def test_empty_csv_field_preserves_ldap(dag, unique_logical_date):
 )], indirect=True)
 def test_nested_field_replaced_by_csv(dag, unique_logical_date):
     """A non-empty CSV list field replaces the LDAP list (field-level override)."""
-    ti = run_task(dag, unique_logical_date, TEST_TASK_ID)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
+    ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
+    ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
     result = ti.xcom_pull(task_ids=TEST_TASK_ID)
     identifiers = result["U1"]["identifiers"]
@@ -90,7 +100,9 @@ def test_nested_field_replaced_by_csv(dag, unique_logical_date):
 )], indirect=True)
 def test_hal_collection_merged_into_ldap_entry(dag, unique_logical_date):
     """hal_collection from the CSV is added to the matching LDAP entry."""
-    ti = run_task(dag, unique_logical_date, TEST_TASK_ID)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
+    ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
+    ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
     result = ti.xcom_pull(task_ids=TEST_TASK_ID)
     assert result["U1"] == {
@@ -107,7 +119,9 @@ def test_hal_collection_merged_into_ldap_entry(dag, unique_logical_date):
 )], indirect=True)
 def test_hal_collection_kept_for_csv_only_entry(dag, unique_logical_date):
     """hal_collection is kept on a CSV-only entry."""
-    ti = run_task(dag, unique_logical_date, TEST_TASK_ID)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
+    ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
+    ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
     result = ti.xcom_pull(task_ids=TEST_TASK_ID)
     assert result["CSV1"]["hal_collection"] == "https://hal.science/COLLECTION"
@@ -119,6 +133,8 @@ def test_hal_collection_kept_for_csv_only_entry(dag, unique_logical_date):
 )], indirect=True)
 def test_empty_inputs_produce_empty_output(dag, unique_logical_date):
     """Both empty dicts → empty output."""
-    ti = run_task(dag, unique_logical_date, TEST_TASK_ID)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
+    ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
+    ti.run(ignore_ti_state=True)
     assert ti.state == TaskInstanceState.SUCCESS
     assert ti.xcom_pull(task_ids=TEST_TASK_ID) == {}

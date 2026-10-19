@@ -1,7 +1,10 @@
 import pytest
 from airflow.utils.state import TaskInstanceState
 
-from test_utils.dags import run_task
+from test_utils.dags import create_dag_run, \
+    DATA_INTERVAL_START, \
+    DATA_INTERVAL_END, \
+    create_task_instance
 
 TEST_TASK_ID = "convert_spreadsheet_structures"
 
@@ -45,7 +48,9 @@ def _row(local_id: str, hal_collection: str) -> dict:
 ], indirect=['dag'])
 def test_hal_collection_is_converted(dag, unique_logical_date) -> None:
     """A non-empty hal_collection cell is stripped and set as a top-level field."""
-    ti = run_task(dag, unique_logical_date, TEST_TASK_ID)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
+    ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
+    ti.run(ignore_ti_state=True)
 
     assert ti.state == TaskInstanceState.SUCCESS
     result = ti.xcom_pull(task_ids=TEST_TASK_ID)
@@ -62,7 +67,9 @@ def test_hal_collection_is_converted(dag, unique_logical_date) -> None:
 ], indirect=['dag'])
 def test_empty_hal_collection_is_omitted(dag, unique_logical_date) -> None:
     """An empty or whitespace-only hal_collection cell leaves the field out of the record."""
-    ti = run_task(dag, unique_logical_date, TEST_TASK_ID)
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
+    ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
+    ti.run(ignore_ti_state=True)
 
     assert ti.state == TaskInstanceState.SUCCESS
     result = ti.xcom_pull(task_ids=TEST_TASK_ID)

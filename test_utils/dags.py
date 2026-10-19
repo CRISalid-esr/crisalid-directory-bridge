@@ -38,7 +38,7 @@ def assert_dag_dict_equal(structure: dict, dag: DAG) -> None:
 
 
 @provide_session
-def create_dag_run(  # pylint: disable=too-many-arguments
+def create_dag_run(
         dag,
         data_interval_start,
         data_interval_end,
@@ -49,9 +49,6 @@ def create_dag_run(  # pylint: disable=too-many-arguments
         state: DagRunState = DagRunState.RUNNING,
         session: Session,
 ) -> DagRun:
-    """
-    Create (and persist) a DagRun for the given dag, serializing the dag to the DB first.
-    """
     if run_id is None:
         run_id = f"manual__{logical_date.isoformat()}"
 
@@ -132,16 +129,4 @@ def create_task_instance(
     session.add(ti)
     session.flush()
 
-    return ti
-
-
-def run_task(dag: DAG, logical_date, task_id: str) -> TaskInstance:
-    """
-    Create a dag run, run task_id in it and return the finished TaskInstance.
-    """
-    # session is injected by @provide_session, which pylint cannot see
-    # pylint: disable=missing-kwoa
-    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, logical_date)
-    ti = create_task_instance(dag, dag_run, task_id)
-    ti.run(ignore_ti_state=True)
     return ti
