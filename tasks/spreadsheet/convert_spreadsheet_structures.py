@@ -154,4 +154,9 @@ def convert_spreadsheet_structures(source_data: list[dict[str, str]]) -> dict[  
         if research_classifications:
             task_results[local_id]['research_classifications'] = research_classifications
 
+        # Add HAL collection if present (single value, not an identifier)
+        hal_collection = str(row.get('hal_collection') or '').strip()
+        if hal_collection:
+            task_results[local_id]['hal_collection'] = hal_collection
+
     return task_results

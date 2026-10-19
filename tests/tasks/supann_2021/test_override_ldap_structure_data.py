@@ -95,6 +95,39 @@ def test_nested_field_replaced_by_csv(dag, unique_logical_date):
 
 
 @pytest.mark.parametrize("dag", [_params(
+    ldap_source={"U1": {"generic_type": "unit", "main_mission": "research"}},
+    spreadsheet_source={"U1": {"hal_collection": "https://hal.science/COLLECTION"}},
+)], indirect=True)
+def test_hal_collection_merged_into_ldap_entry(dag, unique_logical_date):
+    """hal_collection from the CSV is added to the matching LDAP entry."""
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
+    ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
+    ti.run(ignore_ti_state=True)
+    assert ti.state == TaskInstanceState.SUCCESS
+    result = ti.xcom_pull(task_ids=TEST_TASK_ID)
+    assert result["U1"] == {
+        "generic_type": "unit",
+        "main_mission": "research",
+        "hal_collection": "https://hal.science/COLLECTION",
+    }
+
+
+@pytest.mark.parametrize("dag", [_params(
+    ldap_source={},
+    spreadsheet_source={"CSV1": {"generic_type": "unit",
+                                 "hal_collection": "https://hal.science/COLLECTION"}},
+)], indirect=True)
+def test_hal_collection_kept_for_csv_only_entry(dag, unique_logical_date):
+    """hal_collection is kept on a CSV-only entry."""
+    dag_run = create_dag_run(dag, DATA_INTERVAL_START, DATA_INTERVAL_END, unique_logical_date)
+    ti = create_task_instance(dag, dag_run, TEST_TASK_ID)
+    ti.run(ignore_ti_state=True)
+    assert ti.state == TaskInstanceState.SUCCESS
+    result = ti.xcom_pull(task_ids=TEST_TASK_ID)
+    assert result["CSV1"]["hal_collection"] == "https://hal.science/COLLECTION"
+
+
+@pytest.mark.parametrize("dag", [_params(
     ldap_source={},
     spreadsheet_source={},
 )], indirect=True)
