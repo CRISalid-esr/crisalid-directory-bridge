@@ -144,5 +144,6 @@ python .claude/commands/visualize_structures.py structures.csv [output.html]
 
 - All conversion tasks are stateless and pure: they receive a dict of LDAP entries, return a dict of field values.
 - Never import Airflow internals directly in task logic — keep task functions importable without a running Airflow instance.
+- `STRUCTURE_SPREADSHEET_PATH` and `PEOPLE_SPREADSHEET_PATH` can be overridden at runtime by an Airflow Variable of the same name (Admin > Variables). The Variable wins over the environment; the allowlist is `AIRFLOW_VARIABLE_OVERRIDES` in `utils/config.py`.
 - The `LDAP_DEFAULT_LANGUAGE` env var controls the language tag on all label/description literals.
 - `LDAP_STRUCTURE_GENERIC_TYPE` env var sets the `generic_type` for all LDAP-sourced structures (default: `unit`).
